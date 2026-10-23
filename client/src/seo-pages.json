@@ -1,0 +1,48 @@
+{
+  "site": {
+    "url": "https://trackmyship.co",
+    "name": "Track My Ship",
+    "image": "/og-image.png"
+  },
+  "home": {
+    "path": "/",
+    "title": "Track My Ship – Courier & Parcel Tracking with Live Map | AWB, LR, Mobile",
+    "description": "Track your parcel or courier shipment live on a map. Enter an AWB / consignment number, LR number, order ID, mobile number or email. Works for DTDC, Blue Dart, Delhivery, Speed Post, Trackon and more.",
+    "h1": "Track your parcel",
+    "sub": "Live courier tracking on a map — enter your consignment / AWB number, LR number, order ID, mobile number or email."
+  },
+  "couriers": [
+    { "slug": "dtdc", "name": "DTDC", "path": "/dtdc-tracking", "example": "e.g. C1002935719" },
+    { "slug": "bluedart", "name": "Blue Dart", "path": "/bluedart-tracking", "example": "11-digit AWB number" },
+    { "slug": "delhivery", "name": "Delhivery", "path": "/delhivery-tracking", "example": "13–14 digit waybill number" },
+    { "slug": "speedpost", "name": "Speed Post (India Post)", "path": "/speed-post-tracking", "example": "e.g. EE123456789IN" },
+    { "slug": "trackon", "name": "Trackon Couriers", "path": "/trackon-tracking", "example": "Trackon AWB number" },
+    { "slug": "professional", "name": "The Professional Couriers", "path": "/professional-courier-tracking", "example": "Professional consignment number" },
+    { "slug": "stcourier", "name": "ST Courier", "path": "/st-courier-tracking", "example": "ST Courier AWB number" },
+    { "slug": "shreemaruti", "name": "Shree Maruti Courier", "path": "/shree-maruti-courier-tracking", "example": "Shree Maruti tracking number" },
+    { "slug": "shreeanjani", "name": "Shree Anjani Courier", "path": "/shree-anjani-courier-tracking", "example": "Shree Anjani tracking number" },
+    { "slug": "shreetirupati", "name": "Shree Tirupati Courier", "path": "/shree-tirupati-courier-tracking", "example": "Shree Tirupati tracking number" }
+  ],
+  "faq": [
+    {
+      "q": "How do I track my parcel?",
+      "a": "Enter your consignment / AWB number, LR number, order ID, registered mobile number or email in the search box and press Track. You'll see the current status, the full tracking history and the parcel's route on a map."
+    },
+    {
+      "q": "Which couriers can I track here?",
+      "a": "Track My Ship shipments, plus DTDC, Blue Dart, Delhivery, Speed Post (India Post), Trackon, The Professional Couriers, ST Courier, Shree Maruti, Shree Anjani, Shree Tirupati and more. Many courier numbers are recognised automatically; for others, choose the courier from the list."
+    },
+    {
+      "q": "Can I track a parcel with my mobile number?",
+      "a": "Yes. For parcels booked with Track My Ship, enter the 10-digit mobile number or email used at booking to see all your shipments. Courier numbers from other companies need the AWB / tracking number."
+    },
+    {
+      "q": "What is an LR number?",
+      "a": "An LR (Lorry Receipt) number is the receipt number given when goods are booked for road transport. You can enter it directly, for example LR-458921, to track the consignment."
+    },
+    {
+      "q": "Why is my tracking not updating?",
+      "a": "Couriers update scans when a parcel is handled at a hub or branch, so there can be gaps of several hours while it is on a vehicle. If nothing changes for 48 hours, contact the sender or courier with your tracking number."
+    }
+  ]
+}

@@ -1,8 +1,23 @@
 import { useEffect, useState } from 'react';
 import { trackParcel } from './api.js';
+import SEO from './seo-pages.json';
+import Logo from './components/Logo.jsx';
 import SearchBar from './components/SearchBar.jsx';
 import ShipmentList from './components/ShipmentList.jsx';
 import ShipmentDetail from './components/ShipmentDetail.jsx';
+import HomeContent from './components/HomeContent.jsx';
+
+// Courier landing page (e.g. /dtdc-tracking) — the server sends its title/meta; here we set the heading.
+const courierPage = SEO.couriers.find((c) => c.path === window.location.pathname.replace(/\/$/, '')) || null;
+const PAGE = courierPage
+  ? { h1: `${courierPage.name} Tracking`, sub: `Enter your ${courierPage.name} consignment / AWB number (${courierPage.example}) to track it live on a map.` }
+  : { h1: SEO.home.h1, sub: SEO.home.sub };
+const BASE_TITLE = document.title;
+
+function setNoindex(on) {
+  const m = document.querySelector('meta[name="robots"]');
+  if (m) m.setAttribute('content', on ? 'noindex, follow' : 'index, follow, max-image-preview:large');
+}
 
 export default function App() {
   const [loading, setLoading] = useState(false);
@@ -23,7 +38,7 @@ export default function App() {
       const url = new URL(window.location);
       if (['awb', 'lr', 'order'].includes(data.type)) url.searchParams.set('q', q);
       else url.searchParams.delete('q');
-      if (courier) url.searchParams.set('courier', courier);
+      if (courier && !courierPage) url.searchParams.set('courier', courier);
       else url.searchParams.delete('courier');
       window.history.replaceState(null, '', url);
     } catch (e) {
@@ -37,39 +52,58 @@ export default function App() {
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const q = params.get('q');
-    if (q) search(q, 'auto', params.get('courier') || '');
+    if (q) search(q, 'auto', params.get('courier') || courierPage?.slug || '');
   }, []);
+
+  // Tab title shows the parcel being tracked; result pages are kept out of search engines.
+  useEffect(() => {
+    if (selected) document.title = `${selected.awb} – ${selected.statusText} | Track My Ship`;
+    else if (result) document.title = `${result.shipments.length} shipments | Track My Ship`;
+    else document.title = BASE_TITLE;
+    setNoindex(!!result);
+  }, [result, selected]);
 
   const many = result && result.shipments.length > 1;
 
   return (
     <div className="app">
       <header className="topbar">
-        <div className="brand">
-          <span className="brand-mark">◆</span> Track My Ship
-        </div>
+        <a className="brand" href="/" aria-label="Track My Ship home">
+          <Logo size={36} />
+          <span className="brand-name">Track My <span>Ship</span></span>
+        </a>
         <a className="help" href="tel:+910000000000">Need help?</a>
       </header>
 
-      <section className={`hero ${result ? 'hero--compact' : ''}`}>
-        {!result && <h1>Where's my parcel?</h1>}
-        {!result && <p className="sub">Track with your consignment / AWB number, LR number, order ID, mobile number or email.</p>}
-        <SearchBar onSearch={search} loading={loading} />
-        {error && <div className="alert">{error}</div>}
-      </section>
+      <main>
+        <section className={`hero ${result ? 'hero--compact' : ''}`}>
+          {!result && <h1>{PAGE.h1}</h1>}
+          {!result && <p className="sub">{PAGE.sub}</p>}
+          <SearchBar onSearch={search} loading={loading} defaultCourier={courierPage?.slug || ''} />
+          {error && <div className="alert" role="alert">{error}</div>}
+        </section>
 
-      {many && !selected && (
-        <ShipmentList shipments={result.shipments} type={result.type} onSelect={setSelected} />
-      )}
+        {many && !selected && (
+          <ShipmentList shipments={result.shipments} type={result.type} onSelect={setSelected} />
+        )}
 
-      {selected && (
-        <ShipmentDetail
-          shipment={selected}
-          onBack={many ? () => setSelected(null) : null}
-        />
-      )}
+        {selected && (
+          <ShipmentDetail
+            shipment={selected}
+            onBack={many ? () => setSelected(null) : null}
+          />
+        )}
 
-      <footer className="foot">© {new Date().getFullYear()} Track My Ship · Map data © OpenStreetMap contributors</footer>
+        {!result && <HomeContent courier={courierPage} />}
+      </main>
+
+      <footer className="foot">
+        <div className="foot-brand"><Logo size={20} /> Track My Ship</div>
+        <p>
+          © {new Date().getFullYear()} Track My Ship · Map data © OpenStreetMap contributors.
+          Courier names are trademarks of their owners; Track My Ship is an independent tracking service.
+        </p>
+      </footer>
     </div>
   );
 }

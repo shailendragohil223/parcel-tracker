@@ -26,8 +26,10 @@ button { font: inherit; cursor: pointer; }
 .app { max-width: 1120px; margin: 0 auto; padding: 0 16px 40px; }
 
 .topbar { display: flex; justify-content: space-between; align-items: center; padding: 18px 0; }
-.brand { font-weight: 700; font-size: 18px; letter-spacing: -0.01em; }
-.brand-mark { color: var(--accent); }
+.brand { display: inline-flex; align-items: center; gap: 10px; color: var(--ink); text-decoration: none; }
+.brand svg { display: block; border-radius: 9px; }
+.brand-name { font-weight: 700; font-size: 20px; letter-spacing: -0.02em; }
+.brand-name span { color: var(--brand); }
 .help { color: var(--brand); text-decoration: none; font-weight: 500; font-size: 14px; }
 
 .hero { background: linear-gradient(135deg, #0f1f4b, #1d4ed8); color: #fff; border-radius: 20px; padding: 48px 32px; text-align: center; }
@@ -110,6 +112,26 @@ button { font: inherit; cursor: pointer; }
 .t-loc { font-size: 13px; color: #475569; }
 
 .foot { text-align: center; color: var(--muted); font-size: 12px; margin-top: 32px; }
+.foot p { margin: 6px auto 0; max-width: 640px; line-height: 1.5; }
+.foot-brand { display: inline-flex; align-items: center; gap: 6px; font-weight: 600; color: var(--ink); font-size: 13px; }
+.foot-brand svg { border-radius: 5px; }
+
+/* Home / courier page content */
+.home-content h2.panel-title { font-size: 18px; }
+.how { list-style: none; counter-reset: step; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+.how li { counter-increment: step; display: grid; gap: 4px; padding-left: 40px; position: relative; font-size: 14px; color: #475569; }
+.how li::before { content: counter(step); position: absolute; left: 0; top: 0; width: 28px; height: 28px; border-radius: 50%; background: var(--info-bg); color: var(--brand); font-weight: 700; display: grid; place-items: center; }
+.how b { color: var(--ink); font-size: 15px; }
+.courier-links { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 8px; }
+.courier-links a { display: block; padding: 10px 12px; border: 1px solid var(--line); border-radius: 10px; color: var(--ink); text-decoration: none; font-size: 14px; font-weight: 500; }
+.courier-links a:hover, .courier-links a[aria-current] { border-color: var(--brand); color: var(--brand); background: #f8faff; }
+.faq details { border-top: 1px solid var(--line); padding: 12px 0; }
+.faq details:first-child { border-top: 0; padding-top: 0; }
+.faq summary { cursor: pointer; font-weight: 600; font-size: 15px; }
+.faq p { margin: 8px 0 0; color: #475569; font-size: 14px; line-height: 1.6; }
+
+/* Text sent by the server for search engines; replaced by the app on load */
+.prerender { max-width: 1120px; margin: 0 auto; padding: 24px 16px; color: var(--ink); }
 
 @media (max-width: 800px) {
   .grid { grid-template-columns: 1fr; }
@@ -117,6 +139,8 @@ button { font: inherit; cursor: pointer; }
   .map-panel, .map { min-height: 320px; }
   .steps .step-label { font-size: 10px; }
   .btn { padding: 0 16px; min-width: 76px; }
+  .how { grid-template-columns: 1fr; }
+  .brand-name { font-size: 18px; }
   .search-row { flex-wrap: wrap; }
   .courier { max-width: none; width: 100%; padding: 10px; border-right: 0; }
 }

@@ -88,6 +88,15 @@ Courier APIs change their response fields from time to time — check each adapt
 - Map tiles: free OpenStreetMap by default. For heavier traffic use a tile provider like MapTiler or Mapbox — set `VITE_MAP_TILE_URL` in `client/.env`.
 - Geocoding: `GEOCODER=nominatim` (free, 1 request/second — fine for small volume) or `GEOCODER=google` with `GOOGLE_MAPS_API_KEY`. Best option at scale: store lat/lng for your hubs/branches in the DB so most scans need no lookup.
 
+## Branding & SEO
+
+- Logo: `client/public/logo.svg` (full), `logo-mark.svg` (icon); favicons, app icons and `og-image.png` (link previews on WhatsApp, Facebook, LinkedIn, X) in the same folder. In the app it's `client/src/components/Logo.jsx`.
+- Page titles, descriptions, courier pages and FAQ all come from `client/src/seo-pages.json` — edit there.
+- The server (`server/src/seo.js`) sends every page with its own title, description, canonical link, social tags, structured data (Organization, site search box, FAQ, breadcrumbs) and readable text for search engines, and serves `/sitemap.xml` and `/robots.txt`.
+- Courier landing pages for search traffic: `/dtdc-tracking`, `/bluedart-tracking`, `/delhivery-tracking`, `/speed-post-tracking` and more.
+- Tracking result links (`/?q=…`) and the API are marked `noindex` so customers' parcels never appear in Google. Unknown pages return 404.
+- After going live: add the site in Google Search Console and submit `https://trackmyship.co/sitemap.xml`.
+
 ## Security built in
 
 - Rate limit: 20 searches/minute per IP on `/api/track` (stops people guessing phone numbers).

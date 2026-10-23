@@ -10,10 +10,10 @@ const TYPES = [
   { id: 'email', label: 'Email', placeholder: 'you@example.com' },
 ];
 
-export default function SearchBar({ onSearch, loading }) {
+export default function SearchBar({ onSearch, loading, defaultCourier = '' }) {
   const [type, setType] = useState('auto');
   const [q, setQ] = useState('');
-  const [courier, setCourier] = useState('');
+  const [courier, setCourier] = useState(defaultCourier);
   const [couriers, setCouriers] = useState([]);
   const current = TYPES.find((t) => t.id === type);
 
@@ -26,7 +26,8 @@ export default function SearchBar({ onSearch, loading }) {
 
   function submit(e) {
     e.preventDefault();
-    if (q.trim()) onSearch(q.trim(), type, showCourier ? courier : '');
+    // On a courier page (e.g. /dtdc-tracking) that courier is used even if the list isn't loaded.
+    if (q.trim()) onSearch(q.trim(), type, showCourier ? courier : defaultCourier);
   }
 
   return (

@@ -10,6 +10,8 @@ on:
       - 'server/package.json'
       - 'client/package.json'
       - '.github/workflows/lockfiles.yml'
+      - 'client/**'
+      - 'server/**'
   workflow_dispatch:
 
 permissions:
@@ -39,14 +41,36 @@ jobs:
           NODE_ENV=production npm run build
           test -f client/dist/index.html
           test -d server/node_modules/express
-          (PORT=5099 timeout 20 npm start > start.log 2>&1 &) ; sleep 8
+          (PORT=5099 timeout 120 npm start > start.log 2>&1 &) ; sleep 8
           curl -fsS http://localhost:5099/api/health
           curl -fsS "http://localhost:5099/api/track?q=TMS100245781" | head -c 200
           curl -fsS http://localhost:5099/ | grep -q '<div id="root">'
           curl -fsSI http://localhost:5099/ | grep -i 'referrer-policy: strict-origin-when-cross-origin'
+          # SEO checks
+          curl -fsS http://localhost:5099/dtdc-tracking | grep -q '<title>DTDC Tracking'
+          curl -fsS http://localhost:5099/sitemap.xml | grep -q '/speed-post-tracking'
+          curl -fsS http://localhost:5099/robots.txt | grep -q 'Sitemap:'
+          curl -fsS http://localhost:5099/site.webmanifest | grep -q 'Track My Ship'
+          curl -fsSI "http://localhost:5099/?q=TMS100245781" | grep -i 'x-robots-tag: noindex'
+          test "$(curl -s -o /dev/null -w '%{http_code}' http://localhost:5099/no-such-page)" = 404
+          # Screenshots (downloadable from the run's Artifacts)
+          mkdir -p shots
+          for u in "home|/" "dtdc|/dtdc-tracking" "result|/?q=TMS100245781"; do
+            google-chrome --headless=new --no-sandbox --hide-scrollbars --window-size=1280,1600 \
+              --virtual-time-budget=8000 --screenshot="shots/${u%%|*}.png" "http://localhost:5099${u#*|}" 2>/dev/null
+          done
+          google-chrome --headless=new --no-sandbox --hide-scrollbars --window-size=390,1500 \
+            --virtual-time-budget=8000 --screenshot=shots/mobile.png http://localhost:5099/ 2>/dev/null
+          ls -la shots
           rm -f start.log
+      - uses: actions/upload-artifact@v4
+        with:
+          name: screenshots
+          path: shots/
+          retention-days: 3
       - name: Commit lock files
         run: |
+          rm -rf shots
           git add package-lock.json server/package-lock.json client/package-lock.json
           if git diff --cached --quiet; then echo "Lock files already up to date"; exit 0; fi
           git config user.name "github-actions[bot]"

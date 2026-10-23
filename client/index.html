@@ -1,16 +1,92 @@
 <!doctype html>
-<html lang="en">
+<html lang="en-IN">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <!-- Map tiles from OpenStreetMap need the site address sent with each request -->
     <meta name="referrer" content="strict-origin-when-cross-origin" />
-    <title>Track My Ship – Parcel Tracking</title>
+
+    <!-- SEO: the server swaps title/description/canonical for courier pages (see server/src/seo.js) -->
+    <title>Track My Ship – Courier &amp; Parcel Tracking with Live Map | AWB, LR, Mobile</title>
+    <meta name="description" content="Track your parcel or courier shipment live on a map. Enter an AWB / consignment number, LR number, order ID, mobile number or email. Works for DTDC, Blue Dart, Delhivery, Speed Post, Trackon and more." />
+    <meta name="keywords" content="track my ship, track my shipment, parcel tracking, courier tracking, track courier, consignment tracking, AWB tracking, LR number tracking, lorry receipt tracking, track parcel by mobile number, order tracking, shipment tracking India, DTDC tracking, Blue Dart tracking, Delhivery tracking, Speed Post tracking, India Post tracking, Trackon tracking, live parcel tracking map" />
+    <meta name="robots" content="index, follow, max-image-preview:large" />
+    <link rel="canonical" href="https://trackmyship.co/" />
+    <meta name="theme-color" content="#0f1f4b" />
+    <meta name="application-name" content="Track My Ship" />
+    <meta name="geo.region" content="IN" />
+
+    <!-- Icons -->
+    <link rel="icon" href="/favicon.ico" sizes="32x32" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+
+    <!-- Social sharing (WhatsApp, Facebook, LinkedIn, X) -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Track My Ship" />
+    <meta property="og:locale" content="en_IN" />
+    <meta property="og:url" content="https://trackmyship.co/" />
+    <meta property="og:title" content="Track My Ship – Courier &amp; Parcel Tracking with Live Map | AWB, LR, Mobile" />
+    <meta property="og:description" content="Track your parcel or courier shipment live on a map. Enter an AWB / consignment number, LR number, order ID, mobile number or email. Works for DTDC, Blue Dart, Delhivery, Speed Post, Trackon and more." />
+    <meta property="og:image" content="https://trackmyship.co/og-image.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Track My Ship – live parcel and courier tracking" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Track My Ship – Courier &amp; Parcel Tracking with Live Map | AWB, LR, Mobile" />
+    <meta name="twitter:description" content="Track your parcel or courier shipment live on a map. Enter an AWB / consignment number, LR number, order ID, mobile number or email. Works for DTDC, Blue Dart, Delhivery, Speed Post, Trackon and more." />
+    <meta name="twitter:image" content="https://trackmyship.co/og-image.png" />
+
+    <!-- Structured data: brand, site search box, web app -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "Organization",
+          "@id": "https://trackmyship.co/#org",
+          "name": "Track My Ship",
+          "url": "https://trackmyship.co/",
+          "logo": "https://trackmyship.co/icon-512.png"
+        },
+        {
+          "@type": "WebSite",
+          "@id": "https://trackmyship.co/#website",
+          "url": "https://trackmyship.co/",
+          "name": "Track My Ship",
+          "inLanguage": "en-IN",
+          "publisher": { "@id": "https://trackmyship.co/#org" },
+          "potentialAction": {
+            "@type": "SearchAction",
+            "target": { "@type": "EntryPoint", "urlTemplate": "https://trackmyship.co/?q={tracking_number}" },
+            "query-input": "required name=tracking_number"
+          }
+        },
+        {
+          "@type": "WebApplication",
+          "name": "Track My Ship",
+          "url": "https://trackmyship.co/",
+          "applicationCategory": "BusinessApplication",
+          "operatingSystem": "Any",
+          "browserRequirements": "Requires JavaScript",
+          "offers": { "@type": "Offer", "price": "0", "priceCurrency": "INR" },
+          "description": "Free parcel and courier tracking with a live map. Search by AWB, consignment number, LR number, order ID, mobile number or email."
+        }
+      ]
+    }
+    </script>
+
     <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet" />
   </head>
   <body>
     <div id="root"></div>
+    <noscript>
+      <h1>Track My Ship – courier and parcel tracking</h1>
+      <p>Track your parcel by AWB / consignment number, LR number, order ID, mobile number or email. Supports DTDC, Blue Dart, Delhivery, Speed Post, Trackon and more. Please enable JavaScript to use the tracker.</p>
+    </noscript>
     <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>
