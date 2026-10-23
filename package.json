@@ -6,10 +6,11 @@
     "node": ">=20.12"
   },
   "scripts": {
-    "install:all": "npm install --prefix server && npm install --prefix client",
+    "postinstall": "npm install --prefix server --no-audit --no-fund && npm install --prefix client --no-audit --no-fund",
+    "install:all": "npm install",
+    "build": "npm install --prefix client --no-audit --no-fund && npm run build --prefix client",
+    "start": "node scripts/start.mjs",
     "dev:server": "npm run dev --prefix server",
-    "dev:client": "npm run dev --prefix client",
-    "build": "npm run build --prefix client",
-    "start": "node scripts/start.mjs"
+    "dev:client": "npm run dev --prefix client"
   }
 }
