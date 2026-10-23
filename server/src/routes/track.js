@@ -22,7 +22,7 @@ const STATUS_TEXT = {
 };
 
 function activeProviders() {
-  return (process.env.PROVIDERS || 'local')
+  return (process.env.PROVIDERS || 'local,trackcourier')
     .split(',')
     .map((s) => s.trim())
     .filter((n) => ALL[n] && ALL[n].enabled());
