@@ -10,19 +10,21 @@ export default function App() {
   const [result, setResult] = useState(null); // { type, shipments }
   const [selected, setSelected] = useState(null);
 
-  async function search(q, type) {
+  async function search(q, type, courier = '') {
     setLoading(true);
     setError('');
     setResult(null);
     setSelected(null);
     try {
-      const data = await trackParcel(q, type);
+      const data = await trackParcel(q, type, courier);
       setResult(data);
       if (data.shipments.length === 1) setSelected(data.shipments[0]);
       // Shareable link: only for parcel numbers, never put phone/email in the URL.
       const url = new URL(window.location);
       if (['awb', 'lr', 'order'].includes(data.type)) url.searchParams.set('q', q);
       else url.searchParams.delete('q');
+      if (courier) url.searchParams.set('courier', courier);
+      else url.searchParams.delete('courier');
       window.history.replaceState(null, '', url);
     } catch (e) {
       setError(e.message);
@@ -33,8 +35,9 @@ export default function App() {
 
   // Support links like /?q=SDE100245781 (e.g. sent in SMS / WhatsApp to customers)
   useEffect(() => {
-    const q = new URLSearchParams(window.location.search).get('q');
-    if (q) search(q, 'auto');
+    const params = new URLSearchParams(window.location.search);
+    const q = params.get('q');
+    if (q) search(q, 'auto', params.get('courier') || '');
   }, []);
 
   const many = result && result.shipments.length > 1;

@@ -108,34 +108,102 @@ export const delhivery = {
   },
 };
 
-// ---------------- AfterShip (1000+ carriers: BlueDart, DTDC, Ecom, India Post...) ----------------
-export const aftership = {
-  name: 'aftership',
-  enabled: () => !!process.env.AFTERSHIP_API_KEY,
+// ---------------- TrackCourier.io (Indian couriers: DTDC, Blue Dart, Delhivery, Speed Post, Trackon...) ----------------
+// Docs: https://api.trackcourier.io/docs  ·  Free plan: 100 requests/month, 10/minute.
+// The courier slug is required on every call (no auto-detect). Slugs: GET /api/couriers.
+// Results are cached (TRACKCOURIER_CACHE_MINUTES) so repeated searches don't use up the quota.
+const TC_BASE = 'https://api.trackcourier.io/v1';
+const tcCache = new Map(); // key -> { at, value }
+let tcCouriers = null;
+let tcCouriersAt = 0;
+
+const TC_STATE = {
+  pending: 'BOOKED', inforeceived: 'BOOKED', pickedup: 'PICKED_UP',
+  intransit: 'IN_TRANSIT', outfordelivery: 'OUT_FOR_DELIVERY',
+  delivered: 'DELIVERED', exception: 'EXCEPTION', failedattempt: 'EXCEPTION',
+  rto: 'RTO', returned: 'RTO',
+};
+const tcStatus = (state, text) => TC_STATE[String(state || '').toLowerCase().replace(/[^a-z]/g, '')] || mapStatus(text);
+
+const MONTHS = { jan: 0, feb: 1, mar: 2, apr: 3, may: 4, jun: 5, jul: 6, aug: 7, sep: 8, oct: 9, nov: 10, dec: 11 };
+// "18-Sep-2026" + "17:08" (Indian time) -> ISO string
+function tcTime(date = '', time = '') {
+  const m = String(date).match(/(\d{1,2})[-\s/]([A-Za-z]{3})[A-Za-z]*[-\s/](\d{2,4})/);
+  if (!m) {
+    const d = new Date(`${date} ${time}`);
+    return isNaN(d) ? null : d.toISOString();
+  }
+  const [hh = '00', mm = '00'] = String(time).split(':');
+  const y = m[3].length === 2 ? `20${m[3]}` : m[3];
+  const mon = String(MONTHS[m[2].toLowerCase()] + 1).padStart(2, '0');
+  return `${y}-${mon}-${m[1].padStart(2, '0')}T${hh.padStart(2, '0')}:${mm.padStart(2, '0')}:00+05:30`;
+}
+
+async function tcGet(path) {
+  const r = await fetch(`${TC_BASE}${path}`, { headers: { 'X-API-Key': process.env.TRACKCOURIER_API_KEY } });
+  const j = await r.json().catch(() => ({}));
+  if (j.usage && j.usage.percent >= 80) console.warn(`[trackcourier] quota ${j.usage.used}/${j.usage.quota} used (${j.usage.plan})`);
+  if (!j.success) {
+    const code = j.error?.code || `HTTP_${r.status}`;
+    if (['TRACKING_NOT_FOUND', 'INVALID_TRACKING_NUMBER'].includes(code)) return null;
+    const err = new Error(`${code}: ${j.error?.message || 'TrackCourier request failed'}`);
+    err.code = code;
+    throw err;
+  }
+  return j.data;
+}
+
+export const trackcourier = {
+  name: 'trackcourier',
+  enabled: () => !!process.env.TRACKCOURIER_API_KEY,
   supports: ['awb'],
-  async findShipments(query) {
-    const r = await fetch(
-      `https://api.aftership.com/tracking/2024-10/trackings?tracking_numbers=${encodeURIComponent(query)}`,
-      { headers: { 'as-api-key': process.env.AFTERSHIP_API_KEY } }
-    );
-    if (!r.ok) return [];
-    const j = await r.json();
-    return (j.data?.trackings || []).map((t) => ({
-      awb: t.tracking_number,
-      orderId: t.order_id || '',
-      carrier: t.slug,
-      status: mapStatus(t.tag),
-      statusText: t.subtag_message || t.tag,
-      expectedDelivery: t.courier_estimated_delivery_date?.estimated_delivery_date || t.expected_delivery || null,
-      origin: { city: t.origin_city || t.origin_country_region },
-      destination: { city: t.destination_city || t.destination_country_region },
-      events: (t.checkpoints || []).map((c) => ({
-        time: c.checkpoint_time,
-        status: mapStatus(c.tag),
-        description: c.message,
-        location: c.location || [c.city, c.state].filter(Boolean).join(', '),
-        ...(c.coordinate?.latitude ? { lat: c.coordinate.latitude, lng: c.coordinate.longitude } : {}),
-      })),
-    }));
+  needsCourier: true,
+
+  // Live scans for one AWB with a known courier slug. Returns a shipment or null.
+  async track(awb, courier) {
+    if (!courier) return null;
+    const key = `${courier}:${String(awb).toUpperCase().replace(/\s/g, '')}`;
+    const ttl = (+process.env.TRACKCOURIER_CACHE_MINUTES || 30) * 60e3;
+    const hit = tcCache.get(key);
+    if (hit && Date.now() - hit.at < ttl) return hit.value;
+
+    const d = await tcGet(`/track?courier=${encodeURIComponent(courier)}&tracking_number=${encodeURIComponent(awb)}`);
+    let value = null;
+    if (d && !d.CourierHasNoRecordOfShipment && !d.isEmptyTable && d.Checkpoints?.length) {
+      const events = d.Checkpoints.map((c) => ({
+        time: tcTime(c.Date, c.Time),
+        status: tcStatus(c.CheckpointState, c.Activity),
+        description: c.Activity,
+        // "Jaipur to Delhi" -> show as is, geocode the last place
+        location: c.Location,
+        geoQuery: c.Location ? `${String(c.Location).split(/\s+to\s+/i).pop()}, India` : undefined,
+      })).sort((a, b) => new Date(a.time) - new Date(b.time)); // API returns them unsorted
+      value = {
+        awb,
+        carrier: d.Checkpoints[0].CourierName || courier,
+        courier,
+        status: tcStatus(d.ShipmentState, d.MostRecentStatus),
+        statusText: d.MostRecentStatus,
+        origin: null,
+        destination: null,
+        events,
+      };
+    }
+    tcCache.set(key, { at: Date.now(), value });
+    return value;
+  },
+
+  async findShipments(query, _type, opts = {}) {
+    const s = await this.track(query, opts.courier);
+    return s ? [s] : [];
+  },
+
+  // Supported couriers (free call, doesn't use quota). Cached for a day.
+  async listCouriers() {
+    if (tcCouriers && Date.now() - tcCouriersAt < 24 * 3600e3) return tcCouriers;
+    const d = await tcGet('/couriers');
+    tcCouriers = (d?.couriers || []).sort((a, b) => a.name.localeCompare(b.name));
+    tcCouriersAt = Date.now();
+    return tcCouriers;
   },
 };

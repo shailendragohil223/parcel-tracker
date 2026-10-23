@@ -36,10 +36,11 @@ export async function geocode(place) {
 // Fill in coordinates for any event that lacks them.
 export async function enrichWithCoords(shipment) {
   for (const ev of shipment.events) {
-    if (ev.lat == null && ev.location) {
-      const c = await geocode(ev.location);
+    if (ev.lat == null && (ev.geoQuery || ev.location)) {
+      const c = await geocode(ev.geoQuery || ev.location);
       if (c) Object.assign(ev, c);
     }
+    delete ev.geoQuery;
   }
   for (const k of ['origin', 'destination']) {
     const p = shipment[k];

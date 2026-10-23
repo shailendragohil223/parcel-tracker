@@ -12,7 +12,7 @@ parcel-tracker/
 │   ├── src/lib/geocode.js  location name → lat/lng (OpenStreetMap Nominatim or Google)
 │   ├── src/providers/
 │   │   ├── local.js        your own shipments (demo JSON → replace with your DB)
-│   │   └── carriers.js     Shiprocket, Delhivery, AfterShip adapters
+│   │   └── carriers.js     Shiprocket, Delhivery, TrackCourier.io adapters
 │   └── src/data/shipments.json   demo data
 └── client/                 React (Vite) + Leaflet map
     └── src/components/     SearchBar, ShipmentList, ShipmentDetail, TrackingMap, StatusBadge
@@ -39,6 +39,7 @@ Try these demo values:
 | `rahul.mehta@example.com` | 2 parcels for that email |
 | `ORD-10052` | out for delivery in Delhi |
 | `SDE100245830` | delayed (exception) |
+| `LR-459150` | sent via DTDC — live scans from TrackCourier.io when a key is set |
 
 A link like `http://localhost:5173/?q=SDE100245781` opens straight to a parcel — useful in SMS/WhatsApp updates. Phone and email are never put in the URL.
 
@@ -62,14 +63,23 @@ case 'phone': return Shipment.find({ phone: normalizePhone(query) }).lean();
 **Courier APIs** — add keys in `server/.env` and list them:
 
 ```
-PROVIDERS=local,shiprocket,delhivery,aftership
+PROVIDERS=local,shiprocket,delhivery,trackcourier
 ```
 
 | Provider | Searches by | Notes |
 |---|---|---|
 | Shiprocket | AWB, order ID | email + password of an API user |
 | Delhivery | AWB (waybill), order ref | API token from Delhivery One |
-| AfterShip | AWB | covers BlueDart, DTDC, Ecom Express, India Post and 1000+ carriers; parcels must be registered with AfterShip first |
+| TrackCourier.io | AWB + courier | DTDC, Blue Dart, Delhivery, Speed Post, Trackon, Professional and other Indian couriers. Free plan: 100 requests/month, 10/minute |
+
+### TrackCourier.io
+
+TrackCourier.io needs the courier name with every lookup (it can't guess it from the number), and the free plan allows 100 lookups a month. It's used in two ways:
+
+1. **Parcels in your database sent by an outside courier.** Save `courierSlug` (e.g. `dtdc`) and, if different from your own number, `courierAwb` on the shipment. When a customer searches by your AWB, LR, order ID, phone or email, the server fetches the courier's latest scans and merges them in. Delivered parcels are never re-checked. See `SDE100245870` in `shipments.json` (search `LR-459150`).
+2. **Any courier number.** When `trackcourier` is enabled, a courier drop-down appears beside the search box. Picking e.g. "DTDC" and entering their number tracks it directly.
+
+Every result is cached for `TRACKCOURIER_CACHE_MINUTES` (default 30), so repeat searches don't use quota. The courier list (`GET /api/couriers`) is free. A warning is logged when 80% of the monthly quota is used; if it runs out, parcels in your database still show their stored scans. On the free plan, a phone search that finds several courier parcels uses one request per parcel — upgrade or raise the cache time if traffic grows.
 
 Courier APIs change their response fields from time to time — check each adapter in `carriers.js` against the provider's current docs when you plug in real keys. To add another courier, copy one adapter and map its fields to the same shape.
 

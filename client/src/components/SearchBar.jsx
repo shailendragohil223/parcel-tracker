@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { fetchCouriers } from '../api.js';
 
 const TYPES = [
   { id: 'auto', label: 'Any', placeholder: 'AWB, LR no., order ID, mobile or email' },
@@ -12,11 +13,20 @@ const TYPES = [
 export default function SearchBar({ onSearch, loading }) {
   const [type, setType] = useState('auto');
   const [q, setQ] = useState('');
+  const [courier, setCourier] = useState('');
+  const [couriers, setCouriers] = useState([]);
   const current = TYPES.find((t) => t.id === type);
+
+  // Courier list comes from TrackCourier.io via the server; empty when it's not configured.
+  useEffect(() => {
+    fetchCouriers().then(setCouriers).catch(() => setCouriers([]));
+  }, []);
+
+  const showCourier = couriers.length > 0 && (type === 'awb' || type === 'auto');
 
   function submit(e) {
     e.preventDefault();
-    if (q.trim()) onSearch(q.trim(), type);
+    if (q.trim()) onSearch(q.trim(), type, showCourier ? courier : '');
   }
 
   return (
@@ -36,10 +46,23 @@ export default function SearchBar({ onSearch, loading }) {
         ))}
       </div>
       <div className="search-row">
+        {showCourier && (
+          <select
+            className="courier"
+            value={courier}
+            onChange={(e) => setCourier(e.target.value)}
+            aria-label="Courier"
+          >
+            <option value="">Our parcel</option>
+            {couriers.map((c) => (
+              <option key={c.slug} value={c.slug}>{c.name}</option>
+            ))}
+          </select>
+        )}
         <input
           value={q}
           onChange={(e) => setQ(e.target.value)}
-          placeholder={current.placeholder}
+          placeholder={courier ? 'Courier AWB / tracking number' : current.placeholder}
           inputMode={type === 'phone' ? 'tel' : type === 'email' ? 'email' : 'text'}
           autoComplete="off"
           maxLength={80}

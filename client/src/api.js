@@ -1,7 +1,14 @@
 const BASE = import.meta.env.VITE_API_URL || '';
 
-export async function trackParcel(q, type = 'auto') {
+export async function fetchCouriers() {
+  const res = await fetch(`${BASE}/api/couriers`);
+  if (!res.ok) return [];
+  return (await res.json()).couriers || [];
+}
+
+export async function trackParcel(q, type = 'auto', courier = '') {
   const params = new URLSearchParams({ q, type });
+  if (courier) params.set('courier', courier);
   const res = await fetch(`${BASE}/api/track?${params}`);
   const data = await res.json().catch(() => ({}));
   if (!res.ok) throw new Error(data.error || 'Something went wrong. Please try again.');
