@@ -18,8 +18,7 @@ try {
     run('npm install --prefix server --omit=dev --no-audit --no-fund');
   }
   if (!has('client/dist/index.html')) {
-    // Vite is a dev dependency, so include dev packages even when NODE_ENV=production.
-    run('npm install --prefix client --include=dev --no-audit --no-fund');
+    run('npm install --prefix client --no-audit --no-fund');
     run('npm run build --prefix client');
   }
 } catch (e) {
