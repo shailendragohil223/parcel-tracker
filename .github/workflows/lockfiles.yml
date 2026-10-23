@@ -1,0 +1,42 @@
+# Keeps package-lock.json files in sync with package.json (root, server/, client/).
+# Runs when a package.json changes, or manually from the Actions tab.
+name: Update lock files
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'package.json'
+      - 'server/package.json'
+      - 'client/package.json'
+      - '.github/workflows/lockfiles.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  lockfiles:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Generate lock files
+        run: |
+          npm install --package-lock-only --no-audit --no-fund
+          (cd server && npm install --package-lock-only --no-audit --no-fund)
+          (cd client && npm install --package-lock-only --no-audit --no-fund)
+      - name: Check they install cleanly and the client builds
+        run: |
+          (cd server && npm ci --omit=dev --no-audit --no-fund)
+          (cd client && npm ci --no-audit --no-fund && npm run build)
+      - name: Commit lock files
+        run: |
+          git add package-lock.json server/package-lock.json client/package-lock.json
+          if git diff --cached --quiet; then echo "Lock files already up to date"; exit 0; fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "Update package-lock.json files"
+          git push
