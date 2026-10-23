@@ -33,7 +33,7 @@ export default function App() {
     }
   }
 
-  // Support links like /?q=SDE100245781 (e.g. sent in SMS / WhatsApp to customers)
+  // Support links like /?q=TMS100245781 (e.g. sent in SMS / WhatsApp to customers)
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const q = params.get('q');
@@ -46,7 +46,7 @@ export default function App() {
     <div className="app">
       <header className="topbar">
         <div className="brand">
-          <span className="brand-mark">◆</span> SDE Logistics
+          <span className="brand-mark">◆</span> Track My Ship
         </div>
         <a className="help" href="tel:+910000000000">Need help?</a>
       </header>
@@ -69,7 +69,7 @@ export default function App() {
         />
       )}
 
-      <footer className="foot">© {new Date().getFullYear()} SDE Logistics · Map data © OpenStreetMap contributors</footer>
+      <footer className="foot">© {new Date().getFullYear()} Track My Ship · Map data © OpenStreetMap contributors</footer>
     </div>
   );
 }

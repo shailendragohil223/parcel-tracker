@@ -41,7 +41,7 @@ jobs:
           test -d server/node_modules/express
           (PORT=5099 timeout 20 npm start > start.log 2>&1 &) ; sleep 8
           curl -fsS http://localhost:5099/api/health
-          curl -fsS "http://localhost:5099/api/track?q=SDE100245781" | head -c 200
+          curl -fsS "http://localhost:5099/api/track?q=TMS100245781" | head -c 200
           curl -fsS http://localhost:5099/ | grep -q '<div id="root">'
           rm -f start.log
       - name: Commit lock files

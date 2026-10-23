@@ -22,7 +22,7 @@ export async function geocode(place) {
       if (wait > 0) await new Promise((r) => setTimeout(r, wait));
       lastNominatimCall = Date.now();
       const url = `https://nominatim.openstreetmap.org/search?format=json&limit=1&q=${encodeURIComponent(place)}`;
-      const r = await fetch(url, { headers: { 'User-Agent': process.env.GEOCODER_USER_AGENT || 'parcel-tracker/1.0' } });
+      const r = await fetch(url, { headers: { 'User-Agent': process.env.GEOCODER_USER_AGENT || 'track-my-ship/1.0' } });
       const j = await r.json();
       if (j[0]) result = { lat: +j[0].lat, lng: +j[0].lon };
     }

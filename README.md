@@ -1,4 +1,4 @@
-# Parcel Tracker (React + Node.js)
+# Track My Ship (React + Node.js)
 
 Customer-facing order / parcel tracking with a live map.
 Search by **consignment / AWB number, LR number, order ID, mobile number or email** — the type is detected automatically, or the customer can pick it.
@@ -33,15 +33,15 @@ Try these demo values:
 
 | Search | Result |
 |---|---|
-| `SDE100245781` | AWB, in transit Ahmedabad → Bengaluru |
+| `TMS100245781` | AWB, in transit Ahmedabad → Bengaluru |
 | `LR-458921` or `458921` | same parcel by LR number |
 | `9876543210` / `+91 98765 43210` | 2 parcels for that mobile |
 | `rahul.mehta@example.com` | 2 parcels for that email |
 | `ORD-10052` | out for delivery in Delhi |
-| `SDE100245830` | delayed (exception) |
+| `TMS100245830` | delayed (exception) |
 | `LR-459150` | sent via DTDC — live scans from TrackCourier.io when a key is set |
 
-A link like `http://localhost:5173/?q=SDE100245781` opens straight to a parcel — useful in SMS/WhatsApp updates. Phone and email are never put in the URL.
+A link like `http://localhost:5173/?q=TMS100245781` opens straight to a parcel — useful in SMS/WhatsApp updates. Phone and email are never put in the URL.
 
 ## How tracking works
 
@@ -76,7 +76,7 @@ PROVIDERS=local,shiprocket,delhivery,trackcourier
 
 TrackCourier.io needs the courier name with every lookup (it can't guess it from the number), and the free plan allows 100 lookups a month. It's used in two ways:
 
-1. **Parcels in your database sent by an outside courier.** Save `courierSlug` (e.g. `dtdc`) and, if different from your own number, `courierAwb` on the shipment. When a customer searches by your AWB, LR, order ID, phone or email, the server fetches the courier's latest scans and merges them in. Delivered parcels are never re-checked. See `SDE100245870` in `shipments.json` (search `LR-459150`).
+1. **Parcels in your database sent by an outside courier.** Save `courierSlug` (e.g. `dtdc`) and, if different from your own number, `courierAwb` on the shipment. When a customer searches by your AWB, LR, order ID, phone or email, the server fetches the courier's latest scans and merges them in. Delivered parcels are never re-checked. See `TMS100245870` in `shipments.json` (search `LR-459150`).
 2. **Any courier number.** When `trackcourier` is enabled, a courier drop-down appears beside the search box. Picking e.g. "DTDC" and entering their number tracks it directly.
 
 Every result is cached for `TRACKCOURIER_CACHE_MINUTES` (default 30), so repeat searches don't use quota. The courier list (`GET /api/couriers`) is free. A warning is logged when 80% of the monthly quota is used; if it runs out, parcels in your database still show their stored scans. On the free plan, a phone search that finds several courier parcels uses one request per parcel — upgrade or raise the cache time if traffic grows.

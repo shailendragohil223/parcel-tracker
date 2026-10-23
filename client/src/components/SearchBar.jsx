@@ -3,7 +3,7 @@ import { fetchCouriers } from '../api.js';
 
 const TYPES = [
   { id: 'auto', label: 'Any', placeholder: 'AWB, LR no., order ID, mobile or email' },
-  { id: 'awb', label: 'Consignment / AWB', placeholder: 'e.g. SDE100245781' },
+  { id: 'awb', label: 'Consignment / AWB', placeholder: 'e.g. TMS100245781' },
   { id: 'lr', label: 'LR No.', placeholder: 'e.g. LR-458921' },
   { id: 'order', label: 'Order ID', placeholder: 'e.g. ORD-10045' },
   { id: 'phone', label: 'Mobile', placeholder: '10-digit mobile number' },

@@ -102,7 +102,7 @@ const LIVE_ERRORS = {
 
 const router = Router();
 
-// GET /api/track?q=SDE100245781&type=auto[&courier=dtdc]
+// GET /api/track?q=TMS100245781&type=auto[&courier=dtdc]
 // type: auto | awb | lr | order | phone | email
 // courier: TrackCourier.io slug — only needed for parcels that are NOT in your own database.
 router.get('/track', async (req, res) => {
