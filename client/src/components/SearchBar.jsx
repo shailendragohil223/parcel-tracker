@@ -32,7 +32,8 @@ export default function SearchBar({ onSearch, loading, defaultCourier = '' }) {
 
   return (
     <form className="search" onSubmit={submit}>
-      <div className="chips" role="tablist">
+      {/* Courier pages (e.g. /dtdc-tracking) only take that courier's number, so no type tabs */}
+      {!defaultCourier && <div className="chips" role="tablist">
         {TYPES.map((t) => (
           <button
             type="button"
@@ -45,7 +46,7 @@ export default function SearchBar({ onSearch, loading, defaultCourier = '' }) {
             {t.label}
           </button>
         ))}
-      </div>
+      </div>}
       <div className="search-row">
         {showCourier && (
           <select

@@ -15,8 +15,11 @@ export async function trackParcel(q, type = 'auto', courier = '') {
   return data;
 }
 
+// Scan times are shown in Indian time (IST) for every visitor, matching courier websites.
+const TZ = 'Asia/Kolkata';
+
 export const fmtDate = (d) =>
-  d ? new Date(d).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' }) : '—';
+  d ? new Date(d).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric', timeZone: TZ }) : '—';
 
 export const fmtDateTime = (d) =>
-  d ? new Date(d).toLocaleString('en-IN', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' }) : '';
+  d ? new Date(d).toLocaleString('en-IN', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit', timeZone: TZ }) : '';
