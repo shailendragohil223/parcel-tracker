@@ -98,9 +98,11 @@ Courier APIs change their response fields from time to time — check each adapt
 ## Deploy (single Node server)
 
 ```bash
-npm run install:all
-npm run build           # builds client/dist
-npm start               # server serves the API and the React app on PORT
+npm start
 ```
 
-Works on any Node host (VPS with PM2, Render, Railway, cPanel "Setup Node.js App" with `server/src/index.js` as the startup file). Set the `.env` values on the host.
+`npm start` (`scripts/start.mjs`) installs the server packages and builds the React app **only if they're missing**, then starts the server, which serves both the API and the website on `PORT`. So it works on hosts that don't run `npm install` or a build step themselves, such as GoDaddy. The first start takes a minute or two; later restarts are instant while the files are kept.
+
+**GoDaddy:** deploy the repo with start command `npm start`. Add the settings from `server/.env.example` as environment variables in the GoDaddy panel (at least `TRACKCOURIER_API_KEY`); `.env` files are not in GitHub. The host sets `PORT` itself.
+
+**VPS / PM2 / Render / Railway:** same `npm start`, or run `npm run install:all && npm run build` during the build step for faster starts.
