@@ -2,6 +2,16 @@
 <html lang="en-IN">
   <head>
     <meta charset="UTF-8" />
+    <!-- Google tag (gtag.js) – Google Analytics 4 -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-9SSY3WPVGQ"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      // Tracking links (/?q=AWB) are reported without the tracking number, so customers'
+      // parcel numbers never reach Google Analytics.
+      gtag('config', 'G-9SSY3WPVGQ', { page_location: location.origin + location.pathname });
+    </script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <!-- Map tiles from OpenStreetMap need the site address sent with each request -->
     <meta name="referrer" content="strict-origin-when-cross-origin" />

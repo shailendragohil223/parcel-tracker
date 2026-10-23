@@ -32,6 +32,10 @@ export default function App() {
     setSelected(null);
     try {
       const data = await trackParcel(q, type, courier);
+      // Analytics: what kind of search worked (never the number, phone or email itself)
+      window.gtag?.('event', 'track_search', {
+        search_type: data.type, courier: courier || 'auto', results: data.shipments.length, found: true,
+      });
       setResult(data);
       if (data.shipments.length === 1) setSelected(data.shipments[0]);
       // Shareable link: only for parcel numbers, never put phone/email in the URL.
@@ -42,6 +46,7 @@ export default function App() {
       else url.searchParams.delete('courier');
       window.history.replaceState(null, '', url);
     } catch (e) {
+      window.gtag?.('event', 'track_search', { search_type: type, courier: courier || 'auto', results: 0, found: false });
       setError(e.message);
     } finally {
       setLoading(false);

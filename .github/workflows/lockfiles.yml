@@ -53,6 +53,7 @@ jobs:
           curl -fsSI http://localhost:5099/ | grep -i 'referrer-policy: strict-origin-when-cross-origin'
           # SEO checks
           curl -fsS http://localhost:5099/dtdc-tracking | grep -q '<title>DTDC Tracking'
+          curl -fsS http://localhost:5099/ | grep -q 'googletagmanager.com/gtag/js?id=G-9SSY3WPVGQ'
           curl -fsS http://localhost:5099/sitemap.xml | grep -q '/speed-post-tracking'
           curl -fsS http://localhost:5099/robots.txt | grep -q 'Sitemap:'
           curl -fsS http://localhost:5099/site.webmanifest | grep -q 'Track My Ship'
