@@ -76,6 +76,30 @@ function toPublic(s) {
   };
 }
 
+// Common Indian courier number formats -> TrackCourier.io slug.
+// Only one guess is tried per search, so at most one API request is used.
+const COURIER_PATTERNS = [
+  [/^[A-Z]{2}\d{9}IN$/i, 'speedpost'],        // India Post / Speed Post: EE123456789IN
+  [/^(?:[A-Z]\d{8,10}|7X\d{8,9})$/i, 'dtdc'],  // DTDC: C1002935719, B33464684, 7X12345678
+  [/^\d{13,14}$/, 'delhivery'],                // Delhivery waybill: 13–14 digits
+  [/^\d{11}$/, 'bluedart'],                    // Blue Dart AWB: 11 digits
+];
+export function guessCourier(raw) {
+  const q = String(raw).replace(/[\s-]/g, '');
+  return COURIER_PATTERNS.find(([re]) => re.test(q))?.[1] || null;
+}
+
+// Messages shown when the live courier lookup itself fails (the real code is in the server log).
+const LIVE_ERRORS = {
+  INVALID_API_KEY: 'Courier tracking is not set up correctly (API key). Please contact support.',
+  QUOTA_EXCEEDED: 'Courier tracking limit reached for this month. Please try again later or contact support.',
+  ACCOUNT_NEEDS_ATTENTION: 'Courier tracking is unavailable right now. Please contact support.',
+  COURIER_NOT_FOUND: 'That courier is not supported. Please choose another courier.',
+  COURIER_NOT_SUPPORTED: 'That courier is not supported. Please choose another courier.',
+  TIMEOUT: 'The courier website is not responding. Please try again in a minute.',
+  default: 'Courier tracking is unavailable right now. Please try again in a minute.',
+};
+
 const router = Router();
 
 // GET /api/track?q=SDE100245781&type=auto[&courier=dtdc]
@@ -95,11 +119,11 @@ router.get('/track', async (req, res) => {
 
   const seen = new Set();
   const found = [];
-  let quotaHit = false;
-  settled.forEach((r, i) => {
+  let liveError = null;
+  const collect = (r, from) => {
     if (r.status === 'rejected') {
-      if (r.reason?.code === 'QUOTA_EXCEEDED') quotaHit = true;
-      return console.warn(`[${providers[i]}]`, r.reason?.message);
+      liveError = liveError || r.reason?.code || 'ERROR';
+      return console.warn(`[${from}]`, r.reason?.message);
     }
     for (const s of r.value) {
       const key = String(s.awb).toUpperCase();
@@ -107,7 +131,19 @@ router.get('/track', async (req, res) => {
       seen.add(key);
       found.push(s);
     }
-  });
+  };
+  settled.forEach((r, i) => collect(r, providers[i]));
+
+  // Not in our database and no courier picked: guess the courier from the number's
+  // format (e.g. C1002935719 -> DTDC) and ask TrackCourier.io once.
+  let guessed = null;
+  if (!found.length && !courier && type === 'awb' && activeProviders().includes('trackcourier')) {
+    guessed = guessCourier(q);
+    if (guessed) {
+      const [r] = await Promise.allSettled([trackcourier.findShipments(q, type, { courier: guessed })]);
+      collect(r, `trackcourier:${guessed}`);
+    }
+  }
 
   const shipments = await Promise.all(
     found.map(async (s) => enrichWithCoords(await refreshFromTrackCourier(structuredClone(s))))
@@ -115,9 +151,11 @@ router.get('/track', async (req, res) => {
   shipments.sort((a, b) => new Date(b.events.at(-1)?.time || 0) - new Date(a.events.at(-1)?.time || 0));
 
   if (!shipments.length) {
-    if (quotaHit) return res.status(503).json({ type, error: 'Live courier tracking is temporarily unavailable. Please try again later.' });
+    if (liveError) {
+      return res.status(503).json({ type, code: liveError, error: LIVE_ERRORS[liveError] || LIVE_ERRORS.default });
+    }
     const hint = !courier && type === 'awb' && activeProviders().includes('trackcourier')
-      ? ' If it was sent by another courier, choose the courier and try again.' : '';
+      ? ` If it was sent by another courier, choose the courier and try again.` : '';
     return res.status(404).json({ type, error: `No shipment found. Please check the number and try again.${hint}` });
   }
   res.json({ type, count: shipments.length, shipments: shipments.map(toPublic) });

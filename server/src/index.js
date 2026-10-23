@@ -30,4 +30,10 @@ if (existsSync(clientDist)) {
 }
 
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(`Parcel tracker API on http://localhost:${PORT}`));
+app.listen(PORT, () => {
+  console.log(`Parcel tracker API on http://localhost:${PORT}`);
+  const wanted = (process.env.PROVIDERS || 'local,trackcourier').split(',').map((s) => s.trim());
+  if (wanted.includes('trackcourier') && !process.env.TRACKCOURIER_API_KEY) {
+    console.warn('⚠  TrackCourier.io is OFF: set TRACKCOURIER_API_KEY in server/.env and restart.');
+  }
+});
