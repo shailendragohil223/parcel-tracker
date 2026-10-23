@@ -1,0 +1,162 @@
+import SEO from '../seo-pages.json';
+
+// About & Contact, Privacy Policy and Terms of Use.
+// Google Ads (and Google Analytics' terms) require a privacy policy and real
+// contact details on the site. Business details come from seo-pages.json → "business".
+const B = SEO.business;
+const UPDATED = '23 October 2026';
+
+function ContactDetails() {
+  const wa = (B.whatsapp || '').replace(/\D/g, '');
+  const items = [
+    B.email && <li key="e"><b>Email:</b> <a href={`mailto:${B.email}`}>{B.email}</a></li>,
+    B.phone && <li key="p"><b>Phone:</b> <a href={`tel:${B.phone.replace(/\s/g, '')}`}>{B.phone}</a></li>,
+    wa && <li key="w"><b>WhatsApp:</b> <a href={`https://wa.me/${wa}`} target="_blank" rel="noopener noreferrer">{B.whatsapp}</a></li>,
+    B.address && <li key="a"><b>Address:</b> {B.address}</li>,
+  ].filter(Boolean);
+  if (!items.length) return <p className="muted">Contact details will be published here shortly.</p>;
+  return <ul className="contact-list">{items}</ul>;
+}
+
+function Contact() {
+  return (
+    <>
+      <h2>About Track My Ship</h2>
+      <p>
+        Track My Ship is a free online service for tracking parcels and courier shipments in India. Enter an AWB /
+        consignment number, LR number, order ID, mobile number or email to see the latest status, the full tracking
+        history and the parcel's route on a map.
+      </p>
+      <p>
+        For shipments booked with Track My Ship, tracking comes from our own records. For other couriers (such as DTDC,
+        Blue Dart, Delhivery and Speed Post), we show the latest scans published by that courier. Track My Ship is an
+        independent service and is not affiliated with or endorsed by these couriers.
+      </p>
+      <h2>Contact us</h2>
+      <p>For help with tracking, corrections or business enquiries:</p>
+      <ContactDetails />
+      <p className="muted">
+        For delivery problems with another courier's parcel (delay, damage, address change), please contact that courier or
+        the sender directly — they hold your shipment and can act on it.
+      </p>
+    </>
+  );
+}
+
+function Privacy() {
+  return (
+    <>
+      <p className="muted">Last updated: {UPDATED}</p>
+      <p>
+        This policy explains what information {B.name} ("we") handles when you use trackmyship.co, and why. We follow the
+        Digital Personal Data Protection Act, 2023 and other applicable Indian law.
+      </p>
+
+      <h2>What we collect</h2>
+      <ul>
+        <li><b>What you search for:</b> the tracking number, LR number, order ID, mobile number or email you enter. We use it only to look up your shipment.</li>
+        <li><b>Shipment details:</b> for shipments booked with us — sender/receiver name, contact number, email, addresses and delivery scans, provided when the shipment was booked.</li>
+        <li><b>Technical data:</b> IP address, browser type and pages visited, recorded in server logs and by Google Analytics.</li>
+      </ul>
+
+      <h2>How we use it</h2>
+      <ul>
+        <li>To find and show the status of your shipment.</li>
+        <li>To keep the service secure, for example limiting the number of searches to prevent misuse.</li>
+        <li>To understand how the site is used and improve it (Google Analytics).</li>
+      </ul>
+      <p>
+        Results never show full phone numbers or email addresses — they are partly hidden — and only the receiver's first
+        name is displayed. Links shared for tracking contain only the tracking number, never a phone number or email.
+      </p>
+
+      <h2>Who we share it with</h2>
+      <ul>
+        <li><b>Courier data providers:</b> when you track another courier's shipment, the tracking number (not your phone or email) is sent to a tracking data provider (TrackCourier.io) or to the courier to fetch its status. Results are kept in temporary memory for up to 30 minutes so repeat searches are faster.</li>
+        <li><b>Google Analytics:</b> collects usage statistics with cookies. Tracking numbers are removed from page addresses before they are sent. See <a href="https://policies.google.com/technologies/partner-sites" target="_blank" rel="noopener noreferrer">how Google uses data from sites that use its services</a>; you can opt out with the <a href="https://tools.google.com/dlpage/gaoptout" target="_blank" rel="noopener noreferrer">Google Analytics opt-out add-on</a>.</li>
+        <li><b>Map and font services:</b> map images are loaded from OpenStreetMap and fonts from Google Fonts, which receive your IP address when your browser requests them.</li>
+        <li><b>Advertising:</b> we may use Google Ads to show ads for our service and measure how ads perform, using the cookies described above.</li>
+        <li>Authorities, when required by law.</li>
+      </ul>
+      <p>We do not sell your personal information.</p>
+
+      <h2>Cookies</h2>
+      <p>
+        The site itself does not need cookies to work. Google Analytics and Google Ads set cookies to measure visits and ad
+        performance. You can block or delete cookies in your browser settings at any time.
+      </p>
+
+      <h2>How long we keep it</h2>
+      <p>
+        Searches are not stored in a database. Server logs are kept for a limited period for security. Records of shipments
+        booked with us are kept as required for business and legal purposes.
+      </p>
+
+      <h2>Your rights</h2>
+      <p>
+        You can ask to access, correct or delete personal information we hold about you, or raise a complaint, by contacting
+        us using the details below{B.grievanceOfficer ? ` (Grievance Officer: ${B.grievanceOfficer})` : ''}. We will respond
+        within the time required by law.
+      </p>
+      <ContactDetails />
+
+      <h2>Changes</h2>
+      <p>We may update this policy. The date at the top shows when it last changed.</p>
+    </>
+  );
+}
+
+function Terms() {
+  return (
+    <>
+      <p className="muted">Last updated: {UPDATED}</p>
+      <p>By using trackmyship.co you agree to these terms.</p>
+
+      <h2>The service</h2>
+      <p>
+        Track My Ship shows tracking information for parcels and courier shipments. Information for other couriers' shipments
+        comes from those couriers or their data providers; we do not control it and cannot guarantee it is complete, accurate
+        or up to date. Delivery dates are estimates. For decisions that matter, confirm with the courier.
+      </p>
+
+      <h2>Not affiliated with couriers</h2>
+      <p>
+        Courier names such as DTDC, Blue Dart, Delhivery and India Post are trademarks of their owners and are used only to
+        identify the shipments you can track. Track My Ship is not affiliated with or endorsed by them.
+      </p>
+
+      <h2>Fair use</h2>
+      <ul>
+        <li>Only track shipments you are the sender or receiver of, or are authorised to track.</li>
+        <li>Do not use automated tools to search in bulk, scrape the site or try to guess other people's numbers. Searches are rate-limited.</li>
+        <li>Do not interfere with the site's security or operation.</li>
+      </ul>
+
+      <h2>Liability</h2>
+      <p>
+        The service is provided free and "as is". To the extent permitted by law, we are not liable for losses arising from
+        delays, missing or incorrect tracking information, or the actions of couriers. Claims about a shipment (loss, damage,
+        delay) must be made with the courier that carried it.
+      </p>
+
+      <h2>Governing law</h2>
+      <p>These terms are governed by the laws of India.</p>
+
+      <h2>Contact</h2>
+      <ContactDetails />
+    </>
+  );
+}
+
+const BODIES = { '/contact': Contact, '/privacy-policy': Privacy, '/terms': Terms };
+
+export const infoPageFor = (path) => SEO.pages.find((p) => p.path === path.replace(/\/$/, '')) || null;
+
+export default function InfoPage({ page }) {
+  const Body = BODIES[page.path];
+  return (
+    <article className="panel info-page">
+      <Body />
+    </article>
+  );
+}

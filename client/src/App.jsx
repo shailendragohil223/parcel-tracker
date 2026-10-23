@@ -6,6 +6,7 @@ import SearchBar from './components/SearchBar.jsx';
 import ShipmentList from './components/ShipmentList.jsx';
 import ShipmentDetail from './components/ShipmentDetail.jsx';
 import HomeContent from './components/HomeContent.jsx';
+import InfoPage, { infoPageFor } from './components/InfoPage.jsx';
 
 // Courier landing page (e.g. /dtdc-tracking) — the server sends its title/meta; here we set the heading.
 const courierPage = SEO.couriers.find((c) => c.path === window.location.pathname.replace(/\/$/, '')) || null;
@@ -13,6 +14,8 @@ const PAGE = courierPage
   ? { h1: `${courierPage.name} Tracking`, sub: `Enter your ${courierPage.name} consignment / AWB number (${courierPage.example}) to track it live on a map.` }
   : { h1: SEO.home.h1, sub: SEO.home.sub };
 const BASE_TITLE = document.title;
+// About & Contact, Privacy Policy, Terms of Use
+const infoPage = infoPageFor(window.location.pathname);
 
 function setNoindex(on) {
   const m = document.querySelector('meta[name="robots"]');
@@ -77,9 +80,18 @@ export default function App() {
           <Logo size={36} />
           <span className="brand-name">Track My <span>Ship</span></span>
         </a>
-        <a className="help" href="tel:+910000000000">Need help?</a>
+        <a className="help" href="/contact">Need help?</a>
       </header>
 
+      {infoPage ? (
+        <main>
+          <section className="hero hero--page">
+            <h1>{infoPage.h1}</h1>
+            <p className="sub">{infoPage.sub}</p>
+          </section>
+          <InfoPage page={infoPage} />
+        </main>
+      ) : (
       <main>
         <section className={`hero ${result ? 'hero--compact' : ''}`}>
           {!result && <h1>{PAGE.h1}</h1>}
@@ -101,9 +113,16 @@ export default function App() {
 
         {!result && <HomeContent courier={courierPage} />}
       </main>
+      )}
 
       <footer className="foot">
         <div className="foot-brand"><Logo size={20} /> Track My Ship</div>
+        <nav className="foot-links" aria-label="Footer">
+          <a href="/">Track a parcel</a>
+          <a href="/contact">About &amp; Contact</a>
+          <a href="/privacy-policy">Privacy Policy</a>
+          <a href="/terms">Terms of Use</a>
+        </nav>
         <p>
           © {new Date().getFullYear()} Track My Ship · Map data © OpenStreetMap contributors.
           Courier names are trademarks of their owners; Track My Ship is an independent tracking service.

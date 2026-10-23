@@ -56,12 +56,15 @@ jobs:
           curl -fsS http://localhost:5099/ | grep -q 'googletagmanager.com/gtag/js?id=G-9SSY3WPVGQ'
           curl -fsS http://localhost:5099/sitemap.xml | grep -q '/speed-post-tracking'
           curl -fsS http://localhost:5099/robots.txt | grep -q 'Sitemap:'
+          curl -fsS http://localhost:5099/privacy-policy | grep -q '<title>Privacy Policy'
+          curl -fsS http://localhost:5099/terms | grep -q '<title>Terms of Use'
+          curl -fsS http://localhost:5099/contact | grep -q '<title>About &amp; Contact'
           curl -fsS http://localhost:5099/site.webmanifest | grep -q 'Track My Ship'
           curl -fsSI "http://localhost:5099/?q=TMS100245781" | grep -i 'x-robots-tag: noindex'
           test "$(curl -s -o /dev/null -w '%{http_code}' http://localhost:5099/no-such-page)" = 404
           # Screenshots (downloadable from the run's Artifacts)
           mkdir -p shots
-          for u in "home|/" "dtdc|/dtdc-tracking" "result|/?q=TMS100245781"; do
+          for u in "home|/" "dtdc|/dtdc-tracking" "result|/?q=TMS100245781" "privacy|/privacy-policy" "contact|/contact"; do
             google-chrome --headless=new --no-sandbox --hide-scrollbars --window-size=1280,1600 \
               --virtual-time-budget=8000 --screenshot="shots/${u%%|*}.png" "http://localhost:5099${u#*|}" 2>/dev/null
           done

@@ -4,6 +4,15 @@
     "name": "Track My Ship",
     "image": "/og-image.png"
   },
+  "business": {
+    "_note": "Fill these in: Google Ads requires real contact details. Empty fields are hidden on the site.",
+    "name": "Track My Ship",
+    "email": "",
+    "phone": "",
+    "whatsapp": "",
+    "address": "",
+    "grievanceOfficer": ""
+  },
   "home": {
     "path": "/",
     "title": "Track My Ship – Courier & Parcel Tracking with Live Map | AWB, LR, Mobile",
@@ -12,16 +21,66 @@
     "sub": "Live courier tracking on a map — enter your consignment / AWB number, LR number, order ID, mobile number or email."
   },
   "couriers": [
-    { "slug": "dtdc", "name": "DTDC", "path": "/dtdc-tracking", "example": "e.g. C1002935719" },
-    { "slug": "bluedart", "name": "Blue Dart", "path": "/bluedart-tracking", "example": "11-digit AWB number" },
-    { "slug": "delhivery", "name": "Delhivery", "path": "/delhivery-tracking", "example": "13–14 digit waybill number" },
-    { "slug": "speedpost", "name": "Speed Post (India Post)", "path": "/speed-post-tracking", "example": "e.g. EE123456789IN" },
-    { "slug": "trackon", "name": "Trackon Couriers", "path": "/trackon-tracking", "example": "Trackon AWB number" },
-    { "slug": "professional", "name": "The Professional Couriers", "path": "/professional-courier-tracking", "example": "Professional consignment number" },
-    { "slug": "stcourier", "name": "ST Courier", "path": "/st-courier-tracking", "example": "ST Courier AWB number" },
-    { "slug": "shreemaruti", "name": "Shree Maruti Courier", "path": "/shree-maruti-courier-tracking", "example": "Shree Maruti tracking number" },
-    { "slug": "shreeanjani", "name": "Shree Anjani Courier", "path": "/shree-anjani-courier-tracking", "example": "Shree Anjani tracking number" },
-    { "slug": "shreetirupati", "name": "Shree Tirupati Courier", "path": "/shree-tirupati-courier-tracking", "example": "Shree Tirupati tracking number" }
+    {
+      "slug": "dtdc",
+      "name": "DTDC",
+      "path": "/dtdc-tracking",
+      "example": "e.g. C1002935719"
+    },
+    {
+      "slug": "bluedart",
+      "name": "Blue Dart",
+      "path": "/bluedart-tracking",
+      "example": "11-digit AWB number"
+    },
+    {
+      "slug": "delhivery",
+      "name": "Delhivery",
+      "path": "/delhivery-tracking",
+      "example": "13–14 digit waybill number"
+    },
+    {
+      "slug": "speedpost",
+      "name": "Speed Post (India Post)",
+      "path": "/speed-post-tracking",
+      "example": "e.g. EE123456789IN"
+    },
+    {
+      "slug": "trackon",
+      "name": "Trackon Couriers",
+      "path": "/trackon-tracking",
+      "example": "Trackon AWB number"
+    },
+    {
+      "slug": "professional",
+      "name": "The Professional Couriers",
+      "path": "/professional-courier-tracking",
+      "example": "Professional consignment number"
+    },
+    {
+      "slug": "stcourier",
+      "name": "ST Courier",
+      "path": "/st-courier-tracking",
+      "example": "ST Courier AWB number"
+    },
+    {
+      "slug": "shreemaruti",
+      "name": "Shree Maruti Courier",
+      "path": "/shree-maruti-courier-tracking",
+      "example": "Shree Maruti tracking number"
+    },
+    {
+      "slug": "shreeanjani",
+      "name": "Shree Anjani Courier",
+      "path": "/shree-anjani-courier-tracking",
+      "example": "Shree Anjani tracking number"
+    },
+    {
+      "slug": "shreetirupati",
+      "name": "Shree Tirupati Courier",
+      "path": "/shree-tirupati-courier-tracking",
+      "example": "Shree Tirupati tracking number"
+    }
   ],
   "faq": [
     {
@@ -43,6 +102,29 @@
     {
       "q": "Why is my tracking not updating?",
       "a": "Couriers update scans when a parcel is handled at a hub or branch, so there can be gaps of several hours while it is on a vehicle. If nothing changes for 48 hours, contact the sender or courier with your tracking number."
+    }
+  ],
+  "pages": [
+    {
+      "path": "/contact",
+      "title": "About & Contact – Track My Ship",
+      "description": "About Track My Ship, the free parcel and courier tracking service, and how to contact us for help with tracking, corrections or business enquiries.",
+      "h1": "About & Contact",
+      "sub": "Who we are and how to reach us."
+    },
+    {
+      "path": "/privacy-policy",
+      "title": "Privacy Policy – Track My Ship",
+      "description": "How Track My Ship handles tracking numbers, mobile numbers and emails you search with, cookies and Google Analytics, and your rights.",
+      "h1": "Privacy Policy",
+      "sub": "How we handle your information."
+    },
+    {
+      "path": "/terms",
+      "title": "Terms of Use – Track My Ship",
+      "description": "Terms for using the Track My Ship parcel and courier tracking website.",
+      "h1": "Terms of Use",
+      "sub": "The rules for using this website."
     }
   ]
 }

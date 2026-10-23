@@ -17,6 +17,8 @@ export function courierPageFor(path) {
 
 export function pageFor(path) {
   if (path === '/' || path === '') return { ...SEO.home, canonical: `${SITE}/` };
+  const info = SEO.pages.find((p) => p.path === path.replace(/\/$/, ''));
+  if (info) return { ...info, canonical: `${SITE}${info.path}`, info: true };
   const c = courierPageFor(path);
   if (!c) return null;
   return {
@@ -31,6 +33,7 @@ export function pageFor(path) {
 }
 
 function jsonLd(page) {
+  if (page.info) return '';
   const graph = [
     {
       '@type': 'FAQPage',
@@ -55,7 +58,8 @@ function prerender(page) {
   const faq = SEO.faq.map((f) => `<h3>${esc(f.q)}</h3><p>${esc(f.a)}</p>`).join('');
   return `<main class="prerender"><h1>${esc(page.h1)}</h1><p>${esc(page.sub)}</p>`
     + `<h2>Track parcels from popular couriers</h2><ul>${links}</ul>`
-    + `<h2>Frequently asked questions</h2>${faq}</main>`;
+    + `<h2>Frequently asked questions</h2>${faq}`
+    + `<p><a href="/contact">About &amp; Contact</a> · <a href="/privacy-policy">Privacy Policy</a> · <a href="/terms">Terms of Use</a></p></main>`;
 }
 
 export function renderPage(template, path, { noindex = false } = {}) {
@@ -81,7 +85,11 @@ export function renderPage(template, path, { noindex = false } = {}) {
 
 export function sitemapXml() {
   const today = new Date().toISOString().slice(0, 10);
-  const urls = [{ loc: `${SITE}/`, priority: '1.0' }, ...SEO.couriers.map((c) => ({ loc: `${SITE}${c.path}`, priority: '0.8' }))];
+  const urls = [
+    { loc: `${SITE}/`, priority: '1.0' },
+    ...SEO.couriers.map((c) => ({ loc: `${SITE}${c.path}`, priority: '0.8' })),
+    ...SEO.pages.map((p) => ({ loc: `${SITE}${p.path}`, priority: '0.3' })),
+  ];
   return `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n`
     + urls.map((u) => `  <url><loc>${u.loc}</loc><lastmod>${today}</lastmod><changefreq>weekly</changefreq><priority>${u.priority}</priority></url>`).join('\n')
     + `\n</urlset>\n`;
