@@ -43,6 +43,7 @@ jobs:
           curl -fsS http://localhost:5099/api/health
           curl -fsS "http://localhost:5099/api/track?q=TMS100245781" | head -c 200
           curl -fsS http://localhost:5099/ | grep -q '<div id="root">'
+          curl -fsSI http://localhost:5099/ | grep -i 'referrer-policy: strict-origin-when-cross-origin'
           rm -f start.log
       - name: Commit lock files
         run: |

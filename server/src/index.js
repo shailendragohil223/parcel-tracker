@@ -12,7 +12,9 @@ const app = express();
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
 app.set('trust proxy', 1);
-app.use(helmet({ contentSecurityPolicy: false }));
+// OpenStreetMap map tiles require the site address (Referer) on each request, and
+// helmet's default "no-referrer" makes OSM answer 403 "Access blocked".
+app.use(helmet({ contentSecurityPolicy: false, referrerPolicy: { policy: 'strict-origin-when-cross-origin' } }));
 app.use(cors({ origin: process.env.CLIENT_ORIGIN?.split(',') || true }));
 app.use(express.json());
 

@@ -51,6 +51,9 @@ async function refreshFromTrackCourier(s) {
   return s;
 }
 
+const placeFrom = (e) =>
+  e?.location ? { city: String(e.location).split(/\s+to\s+/i).pop(), lat: e.lat, lng: e.lng } : null;
+
 // What the public API is allowed to return (no full phone/email).
 function toPublic(s) {
   const events = [...(s.events || [])].sort((a, b) => new Date(a.time) - new Date(b.time));
@@ -69,8 +72,10 @@ function toPublic(s) {
     receiver: s.customerName ? s.customerName.split(' ')[0] : null,
     phone: maskPhone(s.phone),
     email: maskEmail(s.email),
-    origin: s.origin || null,
-    destination: s.destination || null,
+    // Courier APIs often don't give origin/destination: fall back to the first scan,
+    // and to the last scan once delivered.
+    origin: s.origin?.city ? s.origin : placeFrom(events[0]),
+    destination: s.destination?.city ? s.destination : s.status === 'DELIVERED' ? placeFrom(last) : null,
     currentLocation: last ? { location: last.location, lat: last.lat, lng: last.lng, time: last.time } : null,
     events,
   };

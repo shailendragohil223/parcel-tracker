@@ -4,7 +4,7 @@ import L from 'leaflet';
 
 // Free OpenStreetMap tiles by default. To use another provider (Mapbox, MapTiler,
 // Google via a plugin), set VITE_MAP_TILE_URL in client/.env.
-const TILE_URL = import.meta.env.VITE_MAP_TILE_URL || 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
+const TILE_URL = import.meta.env.VITE_MAP_TILE_URL || 'https://tile.openstreetmap.org/{z}/{x}/{y}.png';
 const TILE_ATTR = import.meta.env.VITE_MAP_TILE_ATTR || '&copy; OpenStreetMap contributors';
 
 const pin = (cls, label) =>
