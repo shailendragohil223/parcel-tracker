@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { trackParcel } from './api.js';
 import SEO from './seo-pages.json';
 import Logo from './components/Logo.jsx';
@@ -8,25 +8,31 @@ import ShipmentDetail from './components/ShipmentDetail.jsx';
 import HomeContent from './components/HomeContent.jsx';
 import InfoPage, { infoPageFor } from './components/InfoPage.jsx';
 
-// Courier landing page (e.g. /dtdc-tracking) — the server sends its title/meta; here we set the heading.
-const courierPage = SEO.couriers.find((c) => c.path === window.location.pathname.replace(/\/$/, '')) || null;
-const PAGE = courierPage
-  ? { h1: `${courierPage.name} Tracking`, sub: `Enter your ${courierPage.name} consignment / AWB number (${courierPage.example}) to track it live on a map.` }
-  : { h1: SEO.home.h1, sub: SEO.home.sub };
-const BASE_TITLE = document.title;
-// About & Contact, Privacy Policy, Terms of Use
-const infoPage = infoPageFor(window.location.pathname);
+const clean = (p) => (p.length > 1 ? p.replace(/\/$/, '') : p);
 
 function setNoindex(on) {
   const m = document.querySelector('meta[name="robots"]');
   if (m) m.setAttribute('content', on ? 'noindex, follow' : 'index, follow, max-image-preview:large');
 }
 
-export default function App() {
+// `path` is passed in so the same app renders on the server (server/src/seo.js) and in the browser.
+export default function App({ path }) {
+  const pathname = clean(path);
+  // Courier landing page (e.g. /dtdc-tracking); guide / About / Privacy / Terms pages
+  const courierPage = SEO.couriers.find((c) => c.path === pathname) || null;
+  const infoPage = infoPageFor(pathname);
+  const notFound = pathname !== '/' && !courierPage && !infoPage;
+  const PAGE = notFound
+    ? { h1: 'Page not found', sub: 'This page does not exist. You can still track your parcel below.' }
+    : courierPage
+      ? { h1: `${courierPage.name} Tracking`, sub: `Enter your ${courierPage.name} ${courierPage.numberName} (${courierPage.example}) to track it live on a map.` }
+      : { h1: SEO.home.h1, sub: SEO.home.sub };
+
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [result, setResult] = useState(null); // { type, shipments }
   const [selected, setSelected] = useState(null);
+  const baseTitle = useRef(null);
 
   async function search(q, type, courier = '') {
     setLoading(true);
@@ -58,6 +64,7 @@ export default function App() {
 
   // Support links like /?q=TMS100245781 (e.g. sent in SMS / WhatsApp to customers)
   useEffect(() => {
+    if (infoPage) return;
     const params = new URLSearchParams(window.location.search);
     const q = params.get('q');
     if (q) search(q, 'auto', params.get('courier') || courierPage?.slug || '');
@@ -65,10 +72,11 @@ export default function App() {
 
   // Tab title shows the parcel being tracked; result pages are kept out of search engines.
   useEffect(() => {
+    if (baseTitle.current === null) baseTitle.current = document.title;
     if (selected) document.title = `${selected.awb} – ${selected.statusText} | Track My Ship`;
     else if (result) document.title = `${result.shipments.length} shipments | Track My Ship`;
-    else document.title = BASE_TITLE;
-    setNoindex(!!result);
+    else document.title = baseTitle.current;
+    if (result) setNoindex(true);
   }, [result, selected]);
 
   const many = result && result.shipments.length > 1;
@@ -92,33 +100,34 @@ export default function App() {
           <InfoPage page={infoPage} />
         </main>
       ) : (
-      <main>
-        <section className={`hero ${result ? 'hero--compact' : ''}`}>
-          {!result && <h1>{PAGE.h1}</h1>}
-          {!result && <p className="sub">{PAGE.sub}</p>}
-          <SearchBar onSearch={search} loading={loading} defaultCourier={courierPage?.slug || ''} />
-          {error && <div className="alert" role="alert">{error}</div>}
-        </section>
+        <main>
+          <section className={`hero ${result ? 'hero--compact' : ''}`}>
+            {!result && <h1>{PAGE.h1}</h1>}
+            {!result && <p className="sub">{PAGE.sub}</p>}
+            <SearchBar onSearch={search} loading={loading} defaultCourier={courierPage?.slug || ''} />
+            {error && <div className="alert" role="alert">{error}</div>}
+          </section>
 
-        {many && !selected && (
-          <ShipmentList shipments={result.shipments} type={result.type} onSelect={setSelected} />
-        )}
+          {many && !selected && (
+            <ShipmentList shipments={result.shipments} type={result.type} onSelect={setSelected} />
+          )}
 
-        {selected && (
-          <ShipmentDetail
-            shipment={selected}
-            onBack={many ? () => setSelected(null) : null}
-          />
-        )}
+          {selected && (
+            <ShipmentDetail
+              shipment={selected}
+              onBack={many ? () => setSelected(null) : null}
+            />
+          )}
 
-        {!result && <HomeContent courier={courierPage} />}
-      </main>
+          {!result && <HomeContent courier={courierPage} />}
+        </main>
       )}
 
       <footer className="foot">
         <div className="foot-brand"><Logo size={20} /> Track My Ship</div>
         <nav className="foot-links" aria-label="Footer">
           <a href="/">Track a parcel</a>
+          <a href="/parcel-tracking-guide">Tracking guide</a>
           <a href="/contact">About &amp; Contact</a>
           <a href="/privacy-policy">Privacy Policy</a>
           <a href="/terms">Terms of Use</a>

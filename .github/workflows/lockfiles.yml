@@ -41,30 +41,23 @@ jobs:
           (cd client && npm ci --no-audit --no-fund && npm run build)
       - name: Simulate the host (root install + build, like GoDaddy)
         run: |
-          rm -rf server/node_modules client/node_modules client/dist
+          rm -rf server/node_modules client/node_modules client/dist client/dist-ssr
           NODE_ENV=production npm ci --no-audit --no-fund
           NODE_ENV=production npm run build
           test -f client/dist/index.html
+          test -f client/dist-ssr/entry-server.js
           test -d server/node_modules/express
-          (PORT=5099 timeout 120 npm start > start.log 2>&1 &) ; sleep 8
+          (PORT=5099 timeout 240 npm start > start.log 2>&1 &) ; sleep 8
           curl -fsS http://localhost:5099/api/health
           curl -fsS "http://localhost:5099/api/track?q=TMS100245781" | head -c 200
-          curl -fsS http://localhost:5099/ | grep -q '<div id="root">'
+          curl -fsS http://localhost:5099/ | grep -q '<div id="root" data-ssr="1">'
           curl -fsSI http://localhost:5099/ | grep -i 'referrer-policy: strict-origin-when-cross-origin'
-          # SEO checks
-          curl -fsS http://localhost:5099/dtdc-tracking | grep -q '<title>DTDC Tracking'
-          curl -fsS http://localhost:5099/ | grep -q 'googletagmanager.com/gtag/js?id=G-9SSY3WPVGQ'
-          curl -fsS http://localhost:5099/sitemap.xml | grep -q '/speed-post-tracking'
-          curl -fsS http://localhost:5099/robots.txt | grep -q 'Sitemap:'
-          curl -fsS http://localhost:5099/privacy-policy | grep -q '<title>Privacy Policy'
-          curl -fsS http://localhost:5099/terms | grep -q '<title>Terms of Use'
-          curl -fsS http://localhost:5099/contact | grep -q '<title>About &amp; Contact'
-          curl -fsS http://localhost:5099/site.webmanifest | grep -q 'Track My Ship'
-          curl -fsSI "http://localhost:5099/?q=TMS100245781" | grep -i 'x-robots-tag: noindex'
-          test "$(curl -s -o /dev/null -w '%{http_code}' http://localhost:5099/no-such-page)" = 404
+          # Crawler / SEO / browser checks (see scripts/check_site.py)
+          pip install --quiet playwright==1.47.0
+          python3 scripts/check_site.py http://localhost:5099 --browser || (cat start.log; exit 1)
           # Screenshots (downloadable from the run's Artifacts)
           mkdir -p shots
-          for u in "home|/" "dtdc|/dtdc-tracking" "result|/?q=TMS100245781" "privacy|/privacy-policy" "contact|/contact"; do
+          for u in "home|/" "dtdc|/dtdc-tracking" "result|/?q=TMS100245781" "privacy|/privacy-policy" "guide|/parcel-tracking-guide" "courier|/delhivery-tracking"; do
             google-chrome --headless=new --no-sandbox --hide-scrollbars --window-size=1280,1600 \
               --virtual-time-budget=8000 --screenshot="shots/${u%%|*}.png" "http://localhost:5099${u#*|}" 2>/dev/null
           done

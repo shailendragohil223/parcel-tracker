@@ -145,6 +145,19 @@ button { font: inherit; cursor: pointer; }
 .info-page a { color: var(--brand); }
 .contact-list { list-style: none; padding: 0 !important; }
 
+/* Direct answers, tables and Q&A on courier and guide pages */
+.answer { font-size: 16px; color: var(--ink); line-height: 1.6; margin: 0 0 14px; }
+.small { font-size: 13px; }
+.faq-list { margin: 0 0 12px; display: grid; gap: 12px; }
+.faq-list dt { font-weight: 600; color: var(--ink); font-size: 15px; }
+.faq-list dd { margin: 4px 0 0; color: #475569; font-size: 14px; line-height: 1.6; }
+.faq-list a, .home-content .muted a { color: var(--brand); }
+.table-wrap { overflow-x: auto; margin: 0 0 16px; }
+.info-page table { width: 100%; border-collapse: collapse; font-size: 14px; min-width: 520px; }
+.info-page th, .info-page td { text-align: left; vertical-align: top; padding: 10px 12px; border-bottom: 1px solid var(--line); }
+.info-page th { background: #f8fafc; color: var(--ink); font-weight: 600; }
+.info-page .courier-links { padding: 0; }
+
 /* Text sent by the server for search engines; replaced by the app on load */
 .prerender { max-width: 1120px; margin: 0 auto; padding: 24px 16px; color: var(--ink); }
 

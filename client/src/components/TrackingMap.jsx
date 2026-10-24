@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { MapContainer, TileLayer, Marker, Polyline, Popup, CircleMarker, useMap } from 'react-leaflet';
 import L from 'leaflet';
+import 'leaflet/dist/leaflet.css';
 
 // Free OpenStreetMap tiles by default. To use another provider (Mapbox, MapTiler,
 // Google via a plugin), set VITE_MAP_TILE_URL in client/.env.

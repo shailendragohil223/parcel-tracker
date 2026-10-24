@@ -2,7 +2,8 @@
   "site": {
     "url": "https://trackmyship.co",
     "name": "Track My Ship",
-    "image": "/og-image.png"
+    "image": "/og-image.png",
+    "updated": "2026-10-24"
   },
   "business": {
     "_note": "Fill these in: Google Ads requires real contact details. Empty fields are hidden on the site.",
@@ -11,7 +12,8 @@
     "phone": "",
     "whatsapp": "",
     "address": "Vadodara, Gujarat, India",
-    "grievanceOfficer": ""
+    "grievanceOfficer": "",
+    "adsensePublisherId": "pub-8533675750419666"
   },
   "home": {
     "path": "/",
@@ -25,61 +27,91 @@
       "slug": "dtdc",
       "name": "DTDC",
       "path": "/dtdc-tracking",
-      "example": "e.g. C1002935719"
+      "example": "e.g. C1002935719",
+      "numberName": "consignment number",
+      "format": "usually one letter followed by 8–10 digits, for example C1002935719",
+      "officialUrl": "https://www.dtdc.in/"
     },
     {
       "slug": "bluedart",
       "name": "Blue Dart",
       "path": "/bluedart-tracking",
-      "example": "11-digit AWB number"
+      "example": "11-digit AWB number",
+      "numberName": "AWB (waybill) number",
+      "format": "usually an 11-digit number",
+      "officialUrl": "https://www.bluedart.com/"
     },
     {
       "slug": "delhivery",
       "name": "Delhivery",
       "path": "/delhivery-tracking",
-      "example": "13–14 digit waybill number"
+      "example": "13–14 digit waybill number",
+      "numberName": "waybill (AWB) number",
+      "format": "usually a 13- or 14-digit number",
+      "officialUrl": "https://www.delhivery.com/"
     },
     {
       "slug": "speedpost",
       "name": "Speed Post (India Post)",
       "path": "/speed-post-tracking",
-      "example": "e.g. EE123456789IN"
+      "example": "e.g. EE123456789IN",
+      "numberName": "article (consignment) number",
+      "format": "13 characters: 2 letters, 9 digits and 2 letters ending in IN, for example EE123456789IN",
+      "officialUrl": "https://www.indiapost.gov.in/"
     },
     {
       "slug": "trackon",
       "name": "Trackon Couriers",
       "path": "/trackon-tracking",
-      "example": "Trackon AWB number"
+      "example": "Trackon AWB number",
+      "numberName": "AWB / consignment number",
+      "format": "printed on your Trackon booking receipt",
+      "officialUrl": "https://trackon.in/"
     },
     {
       "slug": "professional",
       "name": "The Professional Couriers",
       "path": "/professional-courier-tracking",
-      "example": "Professional consignment number"
+      "example": "Professional consignment number",
+      "numberName": "consignment number",
+      "format": "printed on your booking receipt",
+      "officialUrl": ""
     },
     {
       "slug": "stcourier",
       "name": "ST Courier",
       "path": "/st-courier-tracking",
-      "example": "ST Courier AWB number"
+      "example": "ST Courier AWB number",
+      "numberName": "AWB / consignment number",
+      "format": "printed on your ST Courier booking receipt",
+      "officialUrl": "https://stcourier.com/"
     },
     {
       "slug": "shreemaruti",
       "name": "Shree Maruti Courier",
       "path": "/shree-maruti-courier-tracking",
-      "example": "Shree Maruti tracking number"
+      "example": "Shree Maruti tracking number",
+      "numberName": "tracking (docket) number",
+      "format": "printed on your Shree Maruti booking receipt",
+      "officialUrl": "https://www.shreemaruti.com/"
     },
     {
       "slug": "shreeanjani",
       "name": "Shree Anjani Courier",
       "path": "/shree-anjani-courier-tracking",
-      "example": "Shree Anjani tracking number"
+      "example": "Shree Anjani tracking number",
+      "numberName": "tracking (docket) number",
+      "format": "printed on your booking receipt",
+      "officialUrl": ""
     },
     {
       "slug": "shreetirupati",
       "name": "Shree Tirupati Courier",
       "path": "/shree-tirupati-courier-tracking",
-      "example": "Shree Tirupati tracking number"
+      "example": "Shree Tirupati tracking number",
+      "numberName": "tracking (docket) number",
+      "format": "printed on your booking receipt",
+      "officialUrl": ""
     }
   ],
   "faq": [
@@ -106,25 +138,38 @@
   ],
   "pages": [
     {
+      "path": "/parcel-tracking-guide",
+      "type": "article",
+      "title": "Parcel Tracking Guide: AWB, Consignment & LR Numbers and Tracking Statuses Explained | Track My Ship",
+      "description": "What AWB, consignment, waybill, docket and LR numbers are, where to find yours, what each tracking status means (in transit, out for delivery, RTO) and what to do when tracking stops updating.",
+      "h1": "Parcel tracking guide",
+      "sub": "Tracking numbers and tracking statuses, explained in plain language.",
+      "published": "2026-10-24",
+      "updated": "2026-10-24"
+    },
+    {
       "path": "/contact",
       "title": "About & Contact – Track My Ship",
       "description": "About Track My Ship, the free parcel and courier tracking service, and how to contact us for help with tracking, corrections or business enquiries.",
       "h1": "About & Contact",
-      "sub": "Who we are and how to reach us."
+      "sub": "Who we are and how to reach us.",
+      "updated": "2026-10-23"
     },
     {
       "path": "/privacy-policy",
       "title": "Privacy Policy – Track My Ship",
-      "description": "How Track My Ship handles tracking numbers, mobile numbers and emails you search with, cookies and Google Analytics, and your rights.",
+      "description": "How Track My Ship handles tracking numbers, mobile numbers and emails you search with, cookies, Google Analytics and advertising, and your rights.",
       "h1": "Privacy Policy",
-      "sub": "How we handle your information."
+      "sub": "How we handle your information.",
+      "updated": "2026-10-24"
     },
     {
       "path": "/terms",
       "title": "Terms of Use – Track My Ship",
       "description": "Terms for using the Track My Ship parcel and courier tracking website.",
       "h1": "Terms of Use",
-      "sub": "The rules for using this website."
+      "sub": "The rules for using this website.",
+      "updated": "2026-10-23"
     }
   ]
 }

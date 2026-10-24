@@ -1,6 +1,9 @@
 import { fmtDate, fmtDateTime } from '../api.js';
 import StatusBadge from './StatusBadge.jsx';
-import TrackingMap from './TrackingMap.jsx';
+import { lazy, Suspense } from 'react';
+
+// The map library (Leaflet) is only downloaded when a parcel is shown, keeping other pages fast.
+const TrackingMap = lazy(() => import('./TrackingMap.jsx'));
 
 const STEPS = [
   ['BOOKED', 'Booked'],
@@ -66,7 +69,7 @@ export default function ShipmentDetail({ shipment: s, onBack }) {
 
       <div className="grid">
         <div className="panel map-panel">
-          <TrackingMap shipment={s} />
+          <Suspense fallback={<div className="map-empty">Loading map…</div>}><TrackingMap shipment={s} /></Suspense>
         </div>
 
         <div className="panel">

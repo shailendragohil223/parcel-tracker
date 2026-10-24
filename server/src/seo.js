@@ -1,69 +1,121 @@
-// Server-side SEO for the single-page app: each public page (home + courier pages)
-// is sent with its own <title>, description, canonical URL, social tags, JSON-LD
-// and a short text block search engines can read before JavaScript runs.
-import { readFileSync } from 'node:fs';
-import { fileURLToPath } from 'node:url';
+// Server-side SEO for the React app. For each public page the server sends:
+// - fully rendered page content (React SSR from client/dist-ssr) so crawlers that don't run
+//   JavaScript — including AI search bots such as OAI-SearchBot — can read everything;
+// - its own <title>, description, canonical URL, social tags and JSON-LD that matches the page.
+// Also generates robots.txt, sitemap.xml, llms.txt and ads.txt from client/src/seo-pages.json.
+import { existsSync, readFileSync } from 'node:fs';
+import { fileURLToPath, pathToFileURL } from 'node:url';
 import { dirname, join } from 'node:path';
+import { courierFaq } from '../../client/src/courier-faq.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const SEO = JSON.parse(readFileSync(join(__dirname, '../../client/src/seo-pages.json'), 'utf8'));
 const SITE = (process.env.SITE_URL || SEO.site.url).replace(/\/$/, '');
+const B = SEO.business;
+
+// React server renderer, built by `npm run build` (client/dist-ssr). Falls back to a text summary if missing.
+let ssrRender = null;
+const ssrEntry = join(__dirname, '../../client/dist-ssr/entry-server.js');
+if (existsSync(ssrEntry)) {
+  try {
+    ssrRender = (await import(pathToFileURL(ssrEntry).href)).render;
+  } catch (e) {
+    console.warn('[seo] Server-side rendering unavailable:', e.message);
+  }
+} else {
+  console.warn('[seo] client/dist-ssr not built — pages will use the text fallback. Run npm run build.');
+}
 
 const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+const clean = (p) => (p.length > 1 ? p.replace(/\/$/, '') : p);
 
 export function courierPageFor(path) {
-  return SEO.couriers.find((c) => c.path === path.replace(/\/$/, '')) || null;
+  return SEO.couriers.find((c) => c.path === clean(path)) || null;
 }
 
 export function pageFor(path) {
-  if (path === '/' || path === '') return { ...SEO.home, canonical: `${SITE}/` };
-  const info = SEO.pages.find((p) => p.path === path.replace(/\/$/, ''));
+  path = clean(path);
+  if (path === '/' || path === '') return { ...SEO.home, path: '/', canonical: `${SITE}/`, updated: SEO.site.updated };
+  const info = SEO.pages.find((p) => p.path === path);
   if (info) return { ...info, canonical: `${SITE}${info.path}`, info: true };
   const c = courierPageFor(path);
   if (!c) return null;
   return {
     path: c.path,
     canonical: `${SITE}${c.path}`,
+    updated: SEO.site.updated,
     title: `${c.name} Tracking – Track ${c.name} Courier & Consignment Live | Track My Ship`,
-    description: `${c.name} tracking: enter your ${c.name} AWB / consignment number to see live status, delivery updates and the parcel's route on a map. Free and fast.`,
+    description: `${c.name} tracking: enter your ${c.name} ${c.numberName} to see live status, every scan and the parcel's route on a map. How to find your number and who to contact.`,
     h1: `${c.name} Tracking`,
-    sub: `Enter your ${c.name} consignment / AWB number (${c.example}) to track it live on a map.`,
+    sub: `Enter your ${c.name} ${c.numberName} (${c.example}) to track it live on a map.`,
     courier: c,
   };
 }
 
+// ---------- Structured data: only what is visible on the page ----------
+const ORG = { '@id': `${SITE}/#org` };
+const WEBSITE = { '@id': `${SITE}/#website` };
+const qa = (list) => list.map((f) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } }));
+
 function jsonLd(page) {
-  if (page.info) return '';
-  const graph = [
-    {
-      '@type': 'FAQPage',
-      mainEntity: SEO.faq.map((f) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })),
-    },
-  ];
-  if (page.courier) {
+  const crumbs = page.path === '/' ? null : {
+    '@type': 'BreadcrumbList',
+    '@id': `${page.canonical}#breadcrumb`,
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Track My Ship', item: `${SITE}/` },
+      { '@type': 'ListItem', position: 2, name: page.h1, item: page.canonical },
+    ],
+  };
+  const webPage = {
+    '@type': page.path === '/contact' ? ['WebPage', 'ContactPage', 'AboutPage'] : 'WebPage',
+    '@id': `${page.canonical}#webpage`,
+    url: page.canonical,
+    name: page.title,
+    description: page.description,
+    isPartOf: WEBSITE,
+    publisher: ORG,
+    inLanguage: 'en-IN',
+    ...(page.updated ? { dateModified: page.updated } : {}),
+    ...(crumbs ? { breadcrumb: { '@id': crumbs['@id'] } } : {}),
+  };
+  const graph = [webPage];
+  if (crumbs) graph.push(crumbs);
+
+  if (page.type === 'article') {
     graph.push({
-      '@type': 'BreadcrumbList',
-      itemListElement: [
-        { '@type': 'ListItem', position: 1, name: 'Track My Ship', item: `${SITE}/` },
-        { '@type': 'ListItem', position: 2, name: page.h1, item: page.canonical },
-      ],
+      '@type': 'Article',
+      '@id': `${page.canonical}#article`,
+      headline: page.h1.charAt(0).toUpperCase() + page.h1.slice(1) + ': tracking numbers and statuses explained',
+      description: page.description,
+      mainEntityOfPage: { '@id': webPage['@id'] },
+      datePublished: page.published,
+      dateModified: page.updated,
+      author: ORG,
+      publisher: ORG,
+      image: `${SITE}/og-image.png`,
+      inLanguage: 'en-IN',
     });
+  } else if (!page.info) {
+    // Home and courier pages show the general FAQ; courier pages also show their own Q&A.
+    const list = [...(page.courier ? courierFaq(page.courier).slice(1) : []), ...SEO.faq];
+    graph.push({ '@type': 'FAQPage', '@id': `${page.canonical}#faq`, mainEntity: qa(list) });
   }
-  return `<script type="application/ld+json">${JSON.stringify({ '@context': 'https://schema.org', '@graph': graph })}</script>`;
+  return `<script type="application/ld+json">${JSON.stringify({ '@context': 'https://schema.org', '@graph': graph }).replace(/</g, '\\u003c')}</script>`;
 }
 
-// Crawlable fallback content; React replaces it as soon as the app loads.
-function prerender(page) {
+// Text-only fallback when the SSR bundle isn't available.
+function fallbackContent(page) {
   const links = SEO.couriers.map((c) => `<li><a href="${c.path}">${esc(c.name)} tracking</a></li>`).join('');
   const faq = SEO.faq.map((f) => `<h3>${esc(f.q)}</h3><p>${esc(f.a)}</p>`).join('');
   return `<main class="prerender"><h1>${esc(page.h1)}</h1><p>${esc(page.sub)}</p>`
     + `<h2>Track parcels from popular couriers</h2><ul>${links}</ul>`
     + `<h2>Frequently asked questions</h2>${faq}`
-    + `<p><a href="/contact">About &amp; Contact</a> · <a href="/privacy-policy">Privacy Policy</a> · <a href="/terms">Terms of Use</a></p></main>`;
+    + `<p><a href="/parcel-tracking-guide">Parcel tracking guide</a> · <a href="/contact">About &amp; Contact</a> · <a href="/privacy-policy">Privacy Policy</a> · <a href="/terms">Terms of Use</a></p></main>`;
 }
 
 export function renderPage(template, path, { noindex = false } = {}) {
-  const page = pageFor(path) || { ...SEO.home, canonical: `${SITE}/` };
+  const known = pageFor(path);
+  const page = known || { ...SEO.home, path: '/', canonical: `${SITE}/`, title: 'Page not found | Track My Ship' };
   const setMeta = (html, attr, key, value) =>
     html.replace(new RegExp(`(<meta ${attr}="${key}" content=")[^"]*(")`), `$1${esc(value)}$2`);
 
@@ -78,23 +130,93 @@ export function renderPage(template, path, { noindex = false } = {}) {
   html = setMeta(html, 'name', 'twitter:title', page.title);
   html = setMeta(html, 'name', 'twitter:description', page.description);
   if (noindex) html = setMeta(html, 'name', 'robots', 'noindex, follow');
+  if (page.type === 'article') html = html.replace('<meta property="og:type" content="website" />', '<meta property="og:type" content="article" />');
+
+  let body;
+  try {
+    body = ssrRender ? `<div id="root" data-ssr="1">${ssrRender(known ? page.path : path)}</div>` : null;
+  } catch (e) {
+    console.warn('[seo] SSR failed for', path, e.message);
+  }
+  body = body || `<div id="root">${fallbackContent(page)}</div>`;
   return html
-    .replace('</head>', `${jsonLd(page)}</head>`)
-    .replace('<div id="root"></div>', `<div id="root">${prerender(page)}</div>`);
+    .replace('</head>', `${known ? jsonLd(page) : ''}</head>`)
+    .replace('<div id="root"></div>', body);
 }
 
+// ---------- sitemap.xml: canonical, indexable pages only ----------
 export function sitemapXml() {
-  const today = new Date().toISOString().slice(0, 10);
   const urls = [
-    { loc: `${SITE}/`, priority: '1.0' },
-    ...SEO.couriers.map((c) => ({ loc: `${SITE}${c.path}`, priority: '0.8' })),
-    ...SEO.pages.map((p) => ({ loc: `${SITE}${p.path}`, priority: '0.3' })),
+    { loc: `${SITE}/`, lastmod: SEO.site.updated, priority: '1.0' },
+    ...SEO.couriers.map((c) => ({ loc: `${SITE}${c.path}`, lastmod: SEO.site.updated, priority: '0.8' })),
+    ...SEO.pages.map((p) => ({ loc: `${SITE}${p.path}`, lastmod: p.updated, priority: p.type === 'article' ? '0.7' : '0.3' })),
   ];
   return `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n`
-    + urls.map((u) => `  <url><loc>${u.loc}</loc><lastmod>${today}</lastmod><changefreq>weekly</changefreq><priority>${u.priority}</priority></url>`).join('\n')
+    + urls.map((u) => `  <url><loc>${u.loc}</loc><lastmod>${u.lastmod}</lastmod><priority>${u.priority}</priority></url>`).join('\n')
     + `\n</urlset>\n`;
 }
 
+// ---------- robots.txt ----------
+// A crawler follows only the most specific group that names it, so every named group
+// repeats the /api/ rule. AI *training* crawlers are only blocked if AI_TRAINING_CRAWLERS=block.
+const TRAINING_BOTS = ['GPTBot', 'Google-Extended', 'CCBot', 'ClaudeBot'];
 export function robotsTxt() {
-  return `User-agent: *\nAllow: /\nDisallow: /api/\n\nSitemap: ${SITE}/sitemap.xml\n`;
+  const lines = [
+    '# Track My Ship robots.txt',
+    '# Public pages are open to search engines and AI search crawlers.',
+    '# /api/ returns live shipment data and is not for crawling.',
+    '',
+    'User-agent: *',
+    'Allow: /',
+    'Disallow: /api/',
+    '',
+    '# OpenAI search crawler (ChatGPT search): https://developers.openai.com/api/docs/bots',
+    'User-agent: OAI-SearchBot',
+    'Allow: /',
+    'Disallow: /api/',
+  ];
+  if ((process.env.AI_TRAINING_CRAWLERS || '').toLowerCase() === 'block') {
+    lines.push('', '# AI model-training crawlers: not allowed (search crawlers above are unaffected)');
+    for (const bot of TRAINING_BOTS) lines.push(`User-agent: ${bot}`);
+    lines.push('Disallow: /');
+  }
+  lines.push('', `Sitemap: ${SITE}/sitemap.xml`, '');
+  return lines.join('\n');
+}
+
+// ---------- llms.txt: plain-text summary of the site for AI assistants ----------
+export function llmsTxt() {
+  const link = (path, name, note) => `- [${name}](${SITE}${path})${note ? `: ${note}` : ''}`;
+  const guide = SEO.pages.find((p) => p.type === 'article');
+  return [
+    '# Track My Ship',
+    '',
+    '> Free parcel and courier tracking website for India. Track a shipment by AWB / consignment number, LR (lorry receipt) number, order ID, mobile number or email and see its status, scan history and route on a map.',
+    '',
+    `Track My Ship is based in ${B.address || 'India'}${B.email ? ` (contact: ${B.email})` : ''}. It shows tracking for shipments booked with Track My Ship and the tracking information published by other couriers, including DTDC, Blue Dart, Delhivery, Speed Post (India Post) and Trackon. It is an independent service, not affiliated with those couriers.`,
+    '',
+    '## Main pages',
+    link('/', 'Track a parcel', 'search box for any tracking number; results show status, scan history and map'),
+    guide ? link(guide.path, 'Parcel tracking guide', 'what AWB, consignment, waybill, docket and LR numbers are, where to find them, and what each tracking status means') : null,
+    '',
+    '## Courier tracking pages',
+    ...SEO.couriers.map((c) => link(c.path, `${c.name} tracking`, `how to track a ${c.name} parcel; the ${c.numberName} is ${c.format}`)),
+    '',
+    '## About',
+    link('/contact', 'About & Contact'),
+    link('/privacy-policy', 'Privacy Policy'),
+    link('/terms', 'Terms of Use'),
+    '',
+    '## Notes for AI assistants',
+    '- Tracking results (links like /?q=NUMBER) contain individual shipment data, are marked noindex and should not be quoted or stored.',
+    '- /api/ endpoints are not for crawling.',
+    '- Delivery dates are estimates from the courier; for problems with a parcel, users should contact the courier or the sender.',
+    '',
+  ].filter((l) => l !== null).join('\n');
+}
+
+// ---------- ads.txt (Google AdSense) ----------
+export function adsTxt() {
+  const pub = (process.env.ADSENSE_PUBLISHER_ID || B.adsensePublisherId || '').trim();
+  return pub ? `google.com, ${pub}, DIRECT, f08c47fec0942fa0\n` : null;
 }

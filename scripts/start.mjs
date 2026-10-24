@@ -17,7 +17,7 @@ try {
   if (!has('server/node_modules/express')) {
     run('npm install --prefix server --omit=dev --no-audit --no-fund');
   }
-  if (!has('client/dist/index.html')) {
+  if (!has('client/dist/index.html') || !has('client/dist-ssr/entry-server.js')) {
     run('npm install --prefix client --no-audit --no-fund');
     run('npm run build --prefix client');
   }

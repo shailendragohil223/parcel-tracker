@@ -1,10 +1,12 @@
 import SEO from '../seo-pages.json';
+import GuidePage from './GuidePage.jsx';
 
 // About & Contact, Privacy Policy and Terms of Use.
 // Google Ads (and Google Analytics' terms) require a privacy policy and real
 // contact details on the site. Business details come from seo-pages.json → "business".
 const B = SEO.business;
-const UPDATED = '23 October 2026';
+const fmtDay = (d) => new Date(`${d}T00:00:00+05:30`).toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'Asia/Kolkata' });
+const updatedOn = (path) => fmtDay(SEO.pages.find((p) => p.path === path).updated);
 
 function ContactDetails() {
   const wa = (B.whatsapp || '').replace(/\D/g, '');
@@ -32,6 +34,10 @@ function Contact() {
         Blue Dart, Delhivery and Speed Post), we show the latest scans published by that courier. Track My Ship is an
         independent service and is not affiliated with or endorsed by these couriers.
       </p>
+      <p>
+        New to tracking numbers? Read our <a href="/parcel-tracking-guide">parcel tracking guide</a> for what AWB,
+        consignment and LR numbers are and what each tracking status means.
+      </p>
       <h2>Contact us</h2>
       <p>For help with tracking, corrections or business enquiries:</p>
       <ContactDetails />
@@ -46,7 +52,7 @@ function Contact() {
 function Privacy() {
   return (
     <>
-      <p className="muted">Last updated: {UPDATED}</p>
+      <p className="muted">Last updated: {updatedOn('/privacy-policy')}</p>
       <p>
         This policy explains what information {B.name} ("we") handles when you use trackmyship.co, and why. We follow the
         Digital Personal Data Protection Act, 2023 and other applicable Indian law.
@@ -75,16 +81,25 @@ function Privacy() {
         <li><b>Courier data providers:</b> when you track another courier's shipment, the tracking number (not your phone or email) is sent to a tracking data provider (TrackCourier.io) or to the courier to fetch its status. Results are kept in temporary memory for up to 30 minutes so repeat searches are faster.</li>
         <li><b>Google Analytics:</b> collects usage statistics with cookies. Tracking numbers are removed from page addresses before they are sent. See <a href="https://policies.google.com/technologies/partner-sites" target="_blank" rel="noopener noreferrer">how Google uses data from sites that use its services</a>; you can opt out with the <a href="https://tools.google.com/dlpage/gaoptout" target="_blank" rel="noopener noreferrer">Google Analytics opt-out add-on</a>.</li>
         <li><b>Map and font services:</b> map images are loaded from OpenStreetMap and fonts from Google Fonts, which receive your IP address when your browser requests them.</li>
-        <li><b>Advertising:</b> we may use Google Ads to show ads for our service and measure how ads perform, using the cookies described above.</li>
+        <li><b>Advertising:</b> we may use Google Ads to advertise our service and measure how ads perform, and Google AdSense to show ads on this site (see below).</li>
         <li>Authorities, when required by law.</li>
       </ul>
       <p>We do not sell your personal information.</p>
 
-      <h2>Cookies</h2>
+      <h2>Advertising and cookies</h2>
       <p>
         The site itself does not need cookies to work. Google Analytics and Google Ads set cookies to measure visits and ad
-        performance. You can block or delete cookies in your browser settings at any time.
+        performance.
       </p>
+      <p>
+        We may show ads from Google AdSense. Third-party vendors, including Google, use cookies to serve ads based on your
+        previous visits to this and other websites. Google's use of advertising cookies enables it and its partners to serve
+        ads based on your visits to this site and/or other sites on the internet. You can opt out of personalised advertising
+        in <a href="https://adssettings.google.com" target="_blank" rel="noopener noreferrer">Google Ads Settings</a>, or opt
+        out of some third-party vendors' cookies at <a href="https://www.aboutads.info/choices/" target="_blank" rel="noopener noreferrer">aboutads.info</a>.
+        Learn more about <a href="https://policies.google.com/technologies/ads" target="_blank" rel="noopener noreferrer">how Google uses cookies in advertising</a>.
+      </p>
+      <p>You can block or delete cookies in your browser settings at any time.</p>
 
       <h2>How long we keep it</h2>
       <p>
@@ -109,7 +124,7 @@ function Privacy() {
 function Terms() {
   return (
     <>
-      <p className="muted">Last updated: {UPDATED}</p>
+      <p className="muted">Last updated: {updatedOn('/terms')}</p>
       <p>By using trackmyship.co you agree to these terms.</p>
 
       <h2>The service</h2>
@@ -148,14 +163,14 @@ function Terms() {
   );
 }
 
-const BODIES = { '/contact': Contact, '/privacy-policy': Privacy, '/terms': Terms };
+const BODIES = { '/parcel-tracking-guide': GuidePage, '/contact': Contact, '/privacy-policy': Privacy, '/terms': Terms };
 
 export const infoPageFor = (path) => SEO.pages.find((p) => p.path === path.replace(/\/$/, '')) || null;
 
 export default function InfoPage({ page }) {
   const Body = BODIES[page.path];
   return (
-    <article className="panel info-page">
+    <article className={`panel info-page ${page.type === 'article' ? 'info-page--article' : ''}`}>
       <Body />
     </article>
   );
