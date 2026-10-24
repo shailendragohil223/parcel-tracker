@@ -84,6 +84,7 @@ all_links, titles, descs = set(), {}, {}
 for url in urls:
     path = url[len(SITE):] or '/'
     s, h, html = get(path)
+    html = html.replace('<!-- -->', '')  # React SSR text separators
     p = Page(); p.feed(html)
     canon = re.search(r'<link rel="canonical" href="([^"]+)"', html)
     robots_meta = re.search(r'<meta name="robots" content="([^"]+)"', html)
@@ -98,7 +99,8 @@ for url in urls:
     ok = (s == 200 and canon and canon.group(1) == url and robots_meta and 'noindex' not in robots_meta.group(1)
           and 'data-ssr="1"' in html and len(p.h1) == 1 and ld_ok and p.ld and p.imgs_no_alt == 0
           and (path not in expect_text or expect_text[path] in html))
-    check(bool(ok), f'{path}: 200, canonical, indexable, server-rendered, one H1 ({p.h1[0] if p.h1 else "-"}), JSON-LD valid ({len(p.ld)})')
+    detail = f'status={s} canonical={bool(canon and canon.group(1) == url)} ssr={"data-ssr" in html} h1={p.h1} ld={len(p.ld)}/{ld_ok} text={path not in expect_text or expect_text[path] in html}'
+    check(bool(ok), f'{path}: 200, canonical, indexable, server-rendered, one H1, JSON-LD valid ({detail})')
     all_links.update(l.split('#')[0] for l in p.links)
 
 check(len(set(titles.values())) == len(titles), 'page titles are unique')
