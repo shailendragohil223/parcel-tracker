@@ -6,7 +6,7 @@ Usage:  python3 scripts/check_site.py http://localhost:5099 [--browser]
 
 Without JavaScript (like OAI-SearchBot and most AI crawlers) it checks: status codes,
 robots.txt, sitemap.xml, llms.txt, ads.txt, canonical/robots tags, JSON-LD, page content,
-redirects and internal links. With --browser it also loads pages in Chrome (Playwright,
+redirects and internal links. Pass --demo when the server runs with DEMO_SHIPMENTS=true. With --browser it also loads pages in Chrome (Playwright,
 channel="chrome") to catch JavaScript/hydration errors and to run a test search.
 """
 import json, re, sys, urllib.request, urllib.error
@@ -125,8 +125,9 @@ s, h, html = get('/no-such-page')
 check(s == 404 and 'Page not found' in html and 'noindex' in h.get('X-Robots-Tag', ''), 'unknown page returns 404 + noindex')
 s, h, _ = get('/')
 check('strict-origin-when-cross-origin' in h.get('Referrer-Policy', ''), 'Referrer-Policy allows map tiles')
-s, h, body = get('/api/track?q=9876543210')
-check(s == 400 and 'mobile number' in body, 'mobile-number search explains it is not available (400)')
+if '--demo' not in sys.argv:  # with DEMO_SHIPMENTS=true the demo database answers mobile searches
+    s, h, body = get('/api/track?q=9876543210')
+    check(s == 400 and 'mobile number' in body, 'mobile-number search explains it is not available (400)')
 for path in urls:
     s, _, html = get(path[len(SITE):] or '/')
     check(not re.search(r'Rahul|Priya|98\*{6}|TMS1002', html), f'{path[len(SITE):] or "/"}: no shipment or personal data in public HTML')

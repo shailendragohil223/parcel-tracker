@@ -57,10 +57,11 @@ jobs:
           curl -fsSI http://localhost:5099/ | grep -i 'referrer-policy: strict-origin-when-cross-origin'
           # Crawler / SEO / browser checks (see scripts/check_site.py)
           pip install --quiet playwright==1.47.0
-          python3 scripts/check_site.py http://localhost:5099 --browser > check.log 2>&1 || { cat check.log; false; }
+          python3 scripts/check_site.py http://localhost:5099 --browser --demo > check.log 2>&1 || { cat check.log; false; }
           cat check.log
           # Live-site defaults: demo shipments must not be searchable
           test "$(curl -s -o /dev/null -w '%{http_code}' 'http://localhost:5098/api/track?q=TMS100245781')" != 200
+          curl -s 'http://localhost:5098/api/track?q=9876543210' | grep -q 'mobile number isn'
           # Crawler visits are logged and fake ones (from localhost) are not verified
           grep -q '\[crawler\] {"bot":"OAI-SearchBot","verified":false' start.log
           mkdir -p shots && cp check.log shots/check.log
