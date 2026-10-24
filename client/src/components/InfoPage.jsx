@@ -25,25 +25,28 @@ function Contact() {
     <>
       <h2>About Track My Ship</h2>
       <p>
-        Track My Ship is a free online service for tracking parcels and courier shipments in India. Enter an AWB /
-        consignment number, LR number, order ID, mobile number or email to see the latest status, the full tracking
-        history and the parcel's route on a map.
+        Track My Ship is a free website for tracking parcels sent with courier companies in India. Enter the courier's
+        tracking (AWB / consignment) number to see the latest status, the full scan history and the parcel's route on a
+        map — for DTDC, Blue Dart, Delhivery, Speed Post (India Post), Trackon and other couriers in one place.
       </p>
-      <p>
-        For shipments booked with Track My Ship, tracking comes from our own records. For other couriers (such as DTDC,
-        Blue Dart, Delhivery and Speed Post), we show the latest scans published by that courier. Track My Ship is an
-        independent service and is not affiliated with or endorsed by these couriers.
-      </p>
+      <h2>What Track My Ship is — and isn't</h2>
+      <ul>
+        <li><b>It is</b> an independent tracking website, run from Vadodara, Gujarat. It is free and needs no account.</li>
+        <li><b>It is not</b> a courier company. We do not book, carry or deliver parcels, and we are not affiliated with or endorsed by the couriers listed.</li>
+        <li><b>Where the information comes from:</b> the scans each courier publishes, fetched through a tracking data provider (TrackCourier.io). We show them as they are and cannot change a delivery.</li>
+        <li><b>Who it's for:</b> anyone in India waiting for a parcel or checking one they sent, especially when several couriers are involved.</li>
+      </ul>
       <p>
         New to tracking numbers? Read our <a href="/parcel-tracking-guide">parcel tracking guide</a> for what AWB,
         consignment and LR numbers are and what each tracking status means.
       </p>
       <h2>Contact us</h2>
-      <p>For help with tracking, corrections or business enquiries:</p>
+      <p>For questions about this website, corrections or business enquiries:</p>
       <ContactDetails />
       <p className="muted">
-        For delivery problems with another courier's parcel (delay, damage, address change), please contact that courier or
-        the sender directly — they hold your shipment and can act on it.
+        For delivery problems (delay, damage, address change, failed delivery), please contact the courier or the sender
+        directly — they hold your parcel and can act on it. The <a href="/parcel-tracking-guide#delayed">tracking guide</a> explains
+        what to do.
       </p>
     </>
   );
@@ -60,8 +63,8 @@ function Privacy() {
 
       <h2>What we collect</h2>
       <ul>
-        <li><b>What you search for:</b> the tracking number, LR number, order ID, mobile number or email you enter. We use it only to look up your shipment.</li>
-        <li><b>Shipment details:</b> for shipments booked with us — sender/receiver name, contact number, email, addresses and delivery scans, provided when the shipment was booked.</li>
+        <li><b>What you search for:</b> the tracking number you enter, and the courier you choose. We use it only to look up that shipment. We don't ask for your name, phone number, email or address.</li>
+        <li><b>Tracking results:</b> the status and scans published by the courier for that number, shown to you and not stored in a database.</li>
         <li><b>Technical data:</b> IP address, browser type and pages visited, recorded in server logs and by Google Analytics.</li>
       </ul>
 
@@ -72,13 +75,13 @@ function Privacy() {
         <li>To understand how the site is used and improve it (Google Analytics).</li>
       </ul>
       <p>
-        Results never show full phone numbers or email addresses — they are partly hidden — and only the receiver's first
-        name is displayed. Links shared for tracking contain only the tracking number, never a phone number or email.
+        Tracking links you share (for example trackmyship.co/?q=NUMBER) contain only the tracking number. These result
+        pages are marked so search engines don't index them.
       </p>
 
       <h2>Who we share it with</h2>
       <ul>
-        <li><b>Courier data providers:</b> when you track another courier's shipment, the tracking number (not your phone or email) is sent to a tracking data provider (TrackCourier.io) or to the courier to fetch its status. Results are kept in temporary memory for up to 30 minutes so repeat searches are faster.</li>
+        <li><b>Tracking data provider:</b> the tracking number and courier are sent to our tracking data provider (TrackCourier.io), which fetches the status from the courier. Results are kept in temporary memory for up to 30 minutes so repeat searches are faster.</li>
         <li><b>Google Analytics:</b> collects usage statistics with cookies. Tracking numbers are removed from page addresses before they are sent. See <a href="https://policies.google.com/technologies/partner-sites" target="_blank" rel="noopener noreferrer">how Google uses data from sites that use its services</a>; you can opt out with the <a href="https://tools.google.com/dlpage/gaoptout" target="_blank" rel="noopener noreferrer">Google Analytics opt-out add-on</a>.</li>
         <li><b>Map and font services:</b> map images are loaded from OpenStreetMap and fonts from Google Fonts, which receive your IP address when your browser requests them.</li>
         <li><b>Advertising:</b> we may use Google Ads to advertise our service and measure how ads perform, and Google AdSense to show ads on this site (see below).</li>
@@ -103,8 +106,8 @@ function Privacy() {
 
       <h2>How long we keep it</h2>
       <p>
-        Searches are not stored in a database. Server logs are kept for a limited period for security. Records of shipments
-        booked with us are kept as required for business and legal purposes.
+        Searches are not stored in a database; cached results are deleted after 30 minutes. Server logs, which can include
+        IP addresses, are kept for a limited period for security.
       </p>
 
       <h2>Your rights</h2>
@@ -129,9 +132,10 @@ function Terms() {
 
       <h2>The service</h2>
       <p>
-        Track My Ship shows tracking information for parcels and courier shipments. Information for other couriers' shipments
-        comes from those couriers or their data providers; we do not control it and cannot guarantee it is complete, accurate
-        or up to date. Delivery dates are estimates. For decisions that matter, confirm with the courier.
+        Track My Ship is a free website that shows tracking information for courier shipments. It is not a courier: we do
+        not book, carry or deliver parcels. Tracking information comes from the couriers through a tracking data provider;
+        we do not control it and cannot guarantee it is complete, accurate or up to date. Delivery dates are estimates. For
+        decisions that matter, confirm with the courier.
       </p>
 
       <h2>Not affiliated with couriers</h2>

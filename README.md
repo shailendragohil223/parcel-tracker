@@ -1,7 +1,9 @@
 # Track My Ship (React + Node.js)
 
 Customer-facing order / parcel tracking with a live map.
-Search by **consignment / AWB number, LR number, order ID, mobile number or email** — the type is detected automatically, or the customer can pick it.
+**Live site (trackmyship.co): a tracking-only website.** Visitors enter a courier tracking (AWB / consignment) number; the courier is detected from the number or picked from a list, and live scans come from TrackCourier.io. Track My Ship does not book or deliver parcels.
+
+The code also contains an optional "own shipments" database (`server/src/providers/local.js`) that supports search by LR number, order ID, mobile or email. It is **off unless `DEMO_SHIPMENTS=true`** and currently only holds demo data for local testing — never enable it on the live site with demo data.
 
 ```
 parcel-tracker/
@@ -29,7 +31,7 @@ npm run dev:server      # API on http://localhost:5000
 npm run dev:client      # app on http://localhost:5173 (in a second terminal)
 ```
 
-Try these demo values:
+Try these demo values (needs `DEMO_SHIPMENTS=true` in `server/.env`):
 
 | Search | Result |
 |---|---|
@@ -98,6 +100,7 @@ Courier APIs change their response fields from time to time — check each adapt
 - After going live: add the site in Google Search Console and submit `https://trackmyship.co/sitemap.xml`.
 - **Server-side rendering:** `npm run build` also builds `client/dist-ssr`; the server renders every page's full HTML so crawlers that don't run JavaScript (incl. AI search bots) see all content, and the browser hydrates it.
 - **Crawler files** (generated from `seo-pages.json`): `/robots.txt` (OAI-SearchBot allowed, `/api/` blocked; set `AI_TRAINING_CRAWLERS=block` to disallow GPTBot, Google-Extended, CCBot and ClaudeBot), `/sitemap.xml` (uses each page's `updated` date — change it when you edit a page), `/llms.txt`, `/ads.txt` (AdSense).
+- **Crawler logging:** visits from Googlebot, bingbot, OAI-SearchBot, GPTBot, ChatGPT-User, Claude-SearchBot, ClaudeBot, Claude-User, PerplexityBot and Perplexity-User are logged as `[crawler] {...,"verified":true|false|null}` — verified against each operator's published IP list (Google/Bing: reverse DNS). User-agent alone is never trusted. `CRAWLER_LOG=off` disables it.
 - **Check the site:** `python3 scripts/check_site.py https://trackmyship.co` tests robots/sitemap/status codes/canonicals/JSON-LD/links like a crawler; GitHub runs it with `--browser` on every change.
 
 ## Security built in

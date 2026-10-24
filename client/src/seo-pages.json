@@ -6,7 +6,7 @@
     "updated": "2026-10-24"
   },
   "business": {
-    "_note": "Fill these in: Google Ads requires real contact details. Empty fields are hidden on the site.",
+    "_note": "Real contact details shown on the site. Empty fields are hidden.",
     "name": "Track My Ship",
     "email": "info@trackmyship.co",
     "phone": "",
@@ -17,10 +17,10 @@
   },
   "home": {
     "path": "/",
-    "title": "Track My Ship – Courier & Parcel Tracking with Live Map | AWB, LR, Mobile",
-    "description": "Track your parcel or courier shipment live on a map. Enter an AWB / consignment number, LR number, order ID, mobile number or email. Works for DTDC, Blue Dart, Delhivery, Speed Post, Trackon and more.",
+    "title": "Track My Ship – Courier Tracking for DTDC, Blue Dart, Delhivery & Speed Post | Live Map",
+    "description": "Free courier and parcel tracking for India. Enter your AWB or consignment number to see the latest status, scan history and route on a map for DTDC, Blue Dart, Delhivery, Speed Post, Trackon and more.",
     "h1": "Track your parcel",
-    "sub": "Live courier tracking on a map — enter your consignment / AWB number, LR number, order ID, mobile number or email."
+    "sub": "Enter the courier tracking (AWB / consignment) number to see the latest status, every scan and the route on a map."
   },
   "couriers": [
     {
@@ -116,49 +116,61 @@
   ],
   "faq": [
     {
+      "q": "What is Track My Ship?",
+      "a": "Track My Ship is a free website for checking the status of parcels sent with Indian courier companies. Enter the tracking (AWB / consignment) number and it shows the latest status, the scan history and the parcel's route on a map, in one place for several couriers."
+    },
+    {
+      "q": "Is Track My Ship a courier company?",
+      "a": "No. Track My Ship is an independent tracking website. It does not book, carry or deliver parcels and is not affiliated with the couriers listed. The courier that carries your parcel is responsible for delivering it."
+    },
+    {
       "q": "How do I track my parcel?",
-      "a": "Enter your consignment / AWB number, LR number, order ID, registered mobile number or email in the search box and press Track. You'll see the current status, the full tracking history and the parcel's route on a map."
+      "a": "Type the tracking number into the box at the top of the page and press Track. The courier is detected from the number when possible; if not, choose it from the courier list and try again."
     },
     {
       "q": "Which couriers can I track here?",
-      "a": "Track My Ship shipments, plus DTDC, Blue Dart, Delhivery, Speed Post (India Post), Trackon, The Professional Couriers, ST Courier, Shree Maruti, Shree Anjani, Shree Tirupati and more. Many courier numbers are recognised automatically; for others, choose the courier from the list."
+      "a": "DTDC, Blue Dart, Delhivery, Speed Post (India Post), Trackon, The Professional Couriers, ST Courier, Shree Maruti, Shree Anjani, Shree Tirupati and other couriers shown in the courier list."
     },
     {
-      "q": "Can I track a parcel with my mobile number?",
-      "a": "Yes. For parcels booked with Track My Ship, enter the 10-digit mobile number or email used at booking to see all your shipments. Courier numbers from other companies need the AWB / tracking number."
+      "q": "Do I need an account to track a parcel?",
+      "a": "No. Tracking is free and needs no sign-up or login. Only the tracking number is required."
     },
     {
-      "q": "What is an LR number?",
-      "a": "An LR (Lorry Receipt) number is the receipt number given when goods are booked for road transport. You can enter it directly, for example LR-458921, to track the consignment."
+      "q": "Can I track a parcel without a tracking number?",
+      "a": "Not on Track My Ship — the courier's tracking number is needed. If you don't have it, check the seller's shipping SMS or email or your order page, or ask the person who sent the parcel."
+    },
+    {
+      "q": "Where does the tracking information come from?",
+      "a": "From the courier. Track My Ship fetches the scans the courier publishes, through a tracking data provider, and shows them as they are. It cannot change a delivery or the information the courier provides."
     },
     {
       "q": "Why is my tracking not updating?",
-      "a": "Couriers update scans when a parcel is handled at a hub or branch, so there can be gaps of several hours while it is on a vehicle. If nothing changes for 48 hours, contact the sender or courier with your tracking number."
+      "a": "Couriers add a scan when a parcel is handled at a hub or branch, so there can be gaps of several hours, or longer on long road journeys. If nothing changes for 48 hours, contact the courier or the sender with your tracking number."
     }
   ],
   "pages": [
     {
       "path": "/parcel-tracking-guide",
       "type": "article",
-      "title": "Parcel Tracking Guide: AWB, Consignment & LR Numbers and Tracking Statuses Explained | Track My Ship",
-      "description": "What AWB, consignment, waybill, docket and LR numbers are, where to find yours, what each tracking status means (in transit, out for delivery, RTO) and what to do when tracking stops updating.",
+      "title": "Parcel Tracking Guide: Find Your AWB Number, Tracking Status Meanings & Delays | Track My Ship",
+      "description": "How to find your AWB or consignment number, which courier has your parcel, what statuses like in transit, out for delivery and RTO mean, and what to do when tracking shows nothing or a parcel is delayed.",
       "h1": "Parcel tracking guide",
-      "sub": "Tracking numbers and tracking statuses, explained in plain language.",
+      "sub": "Tracking numbers, status meanings and what to do when tracking stops — in plain language.",
       "published": "2026-10-24",
       "updated": "2026-10-24"
     },
     {
       "path": "/contact",
       "title": "About & Contact – Track My Ship",
-      "description": "About Track My Ship, the free parcel and courier tracking service, and how to contact us for help with tracking, corrections or business enquiries.",
+      "description": "About Track My Ship, an independent courier tracking website based in Vadodara, Gujarat, and how to contact us.",
       "h1": "About & Contact",
       "sub": "Who we are and how to reach us.",
-      "updated": "2026-10-23"
+      "updated": "2026-10-24"
     },
     {
       "path": "/privacy-policy",
       "title": "Privacy Policy – Track My Ship",
-      "description": "How Track My Ship handles tracking numbers, mobile numbers and emails you search with, cookies, Google Analytics and advertising, and your rights.",
+      "description": "How Track My Ship handles the tracking numbers you enter, cookies, Google Analytics and advertising, and your rights.",
       "h1": "Privacy Policy",
       "sub": "How we handle your information.",
       "updated": "2026-10-24"
@@ -169,7 +181,7 @@
       "description": "Terms for using the Track My Ship parcel and courier tracking website.",
       "h1": "Terms of Use",
       "sub": "The rules for using this website.",
-      "updated": "2026-10-23"
+      "updated": "2026-10-24"
     }
   ]
 }

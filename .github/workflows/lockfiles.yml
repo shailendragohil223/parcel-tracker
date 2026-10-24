@@ -49,7 +49,8 @@ jobs:
           test -f client/dist/index.html
           test -f client/dist-ssr/entry-server.js
           test -d server/node_modules/express
-          (PORT=5099 timeout 240 npm start > start.log 2>&1 &) ; sleep 8
+          (PORT=5099 DEMO_SHIPMENTS=true timeout 240 npm start > start.log 2>&1 &) ; sleep 8
+          (PORT=5098 timeout 240 npm start > start-live.log 2>&1 &) ; sleep 4
           curl -fsS http://localhost:5099/api/health
           curl -fsS "http://localhost:5099/api/track?q=TMS100245781" | head -c 200
           curl -fsS http://localhost:5099/ | grep -q '<div id="root" data-ssr="1">'
@@ -58,6 +59,10 @@ jobs:
           pip install --quiet playwright==1.47.0
           python3 scripts/check_site.py http://localhost:5099 --browser > check.log 2>&1 || { cat check.log; false; }
           cat check.log
+          # Live-site defaults: demo shipments must not be searchable
+          test "$(curl -s -o /dev/null -w '%{http_code}' 'http://localhost:5098/api/track?q=TMS100245781')" != 200
+          # Crawler visits are logged and fake ones (from localhost) are not verified
+          grep -q '\[crawler\] {"bot":"OAI-SearchBot","verified":false' start.log
           mkdir -p shots && cp check.log shots/check.log
           # Screenshots (downloadable from the run's Artifacts)
           mkdir -p shots

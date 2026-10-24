@@ -56,6 +56,8 @@ check(s == 200 and 'text/plain' in h.get('Content-Type', ''), 'robots.txt return
 groups = re.split(r'\n\s*\n', robots)
 oai = next((g for g in groups if 'User-agent: OAI-SearchBot' in g), '')
 check('Allow: /' in oai and 'Disallow: /api/' in oai, 'robots.txt: OAI-SearchBot allowed, /api/ disallowed')
+check('User-agent: Claude-SearchBot' in oai and 'User-agent: PerplexityBot' in oai, 'robots.txt: Claude-SearchBot and PerplexityBot in the search-crawler group')
+check('GPTBot' not in robots or 'AI_TRAINING' in robots, 'robots.txt: GPTBot left to the default rule (unchanged)')
 check(re.search(r'User-agent: \*\nAllow: /\nDisallow: /api/', robots) is not None, 'robots.txt: default group keeps /api/ blocked')
 check(f'Sitemap: {SITE}/sitemap.xml' in robots, 'robots.txt: sitemap URL listed')
 
@@ -73,12 +75,12 @@ check(s == 200 and re.match(r'google\.com, pub-\d+, DIRECT, f08c47fec0942fa0', a
 
 # ---- every sitemap page, as a crawler without JavaScript ----
 expect_text = {
-    '/': 'How to track your parcel',
+    '/': 'Is Track My Ship a courier company?',
     '/dtdc-tracking': 'How to track a DTDC parcel',
-    '/parcel-tracking-guide': 'lorry receipt',
+    '/parcel-tracking-guide': 'How do I find my AWB number?',
     '/privacy-policy': 'Digital Personal Data Protection Act',
     '/terms': 'Governing law',
-    '/contact': 'info@trackmyship.co',
+    '/contact': 'We do not book, carry or deliver parcels',
 }
 all_links, titles, descs = set(), {}, {}
 for url in urls:
@@ -123,6 +125,11 @@ s, h, html = get('/no-such-page')
 check(s == 404 and 'Page not found' in html and 'noindex' in h.get('X-Robots-Tag', ''), 'unknown page returns 404 + noindex')
 s, h, _ = get('/')
 check('strict-origin-when-cross-origin' in h.get('Referrer-Policy', ''), 'Referrer-Policy allows map tiles')
+s, h, body = get('/api/track?q=9876543210')
+check(s == 400 and 'mobile number' in body, 'mobile-number search explains it is not available (400)')
+for path in urls:
+    s, _, html = get(path[len(SITE):] or '/')
+    check(not re.search(r'Rahul|Priya|98\*{6}|TMS1002', html), f'{path[len(SITE):] or "/"}: no shipment or personal data in public HTML')
 
 # ---- real browser (JavaScript, hydration, search) ----
 if '--browser' in sys.argv:

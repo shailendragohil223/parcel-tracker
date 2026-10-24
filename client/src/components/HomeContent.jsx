@@ -41,11 +41,11 @@ export default function HomeContent({ courier }) {
         <ol className="how">
           <li>
             <b>Enter your number</b>
-            <span>{courier ? `Your ${courier.name} ${courier.numberName}.` : 'AWB / consignment number, LR number, order ID, mobile number or email.'}</span>
+            <span>{courier ? `Your ${courier.name} ${courier.numberName}.` : 'The courier tracking (AWB / consignment) number from your receipt or the seller\'s SMS or email.'}</span>
           </li>
           <li>
             <b>Press Track</b>
-            <span>We fetch the latest scans{courier ? ` from ${courier.name}` : ' from the courier'} in seconds.</span>
+            <span>{courier ? `We fetch the latest scans published by ${courier.name}.` : 'The courier is detected from the number, or choose it from the list.'}</span>
           </li>
           <li>
             <b>See it on the map</b>

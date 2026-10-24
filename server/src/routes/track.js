@@ -5,7 +5,9 @@ import { detectType, validate, normalize, maskPhone, maskEmail } from '../lib/de
 import { enrichWithCoords } from '../lib/geocode.js';
 
 const ALL = {
-  local: { ...local, enabled: () => true, supports: ['awb', 'lr', 'order', 'phone', 'email'] },
+  // Demo shipments (data/shipments.json) for development and tests only — never on the live site
+  // unless DEMO_SHIPMENTS=true. Track My Ship itself does not book or carry parcels.
+  local: { ...local, enabled: () => process.env.DEMO_SHIPMENTS === 'true', supports: ['awb', 'lr', 'order', 'phone', 'email'] },
   shiprocket,
   delhivery,
   trackcourier,
@@ -105,6 +107,14 @@ const LIVE_ERRORS = {
   default: 'Courier tracking is unavailable right now. Please try again in a minute.',
 };
 
+const UNSUPPORTED = {
+  phone: 'Tracking by mobile number isn\'t available. Please enter the courier tracking (AWB / consignment) number from your receipt or the seller\'s SMS or email.',
+  email: 'Tracking by email isn\'t available. Please enter the courier tracking (AWB / consignment) number from your receipt or the seller\'s SMS or email.',
+  lr: 'LR (lorry receipt) numbers are tracked on the transporter\'s own website. Track My Ship tracks courier AWB / consignment numbers.',
+  order: 'Order IDs are tracked on the seller\'s website or app. It usually shows the courier name and tracking number, which you can enter here.',
+  default: 'Please enter a courier tracking (AWB / consignment) number.',
+};
+
 const router = Router();
 
 // GET /api/track?q=TMS100245781&type=auto[&courier=dtdc]
@@ -116,6 +126,11 @@ router.get('/track', async (req, res) => {
   const type = courier ? 'awb' : detectType(q, req.query.type);
   const err = validate(q, type);
   if (err) return res.status(400).json({ error: err });
+
+  // Mobile / email / LR / order-ID search needs a shipment database, which the live site doesn't have.
+  if (!activeProviders().some((n) => ALL[n].supports.includes(type))) {
+    return res.status(400).json({ type, error: UNSUPPORTED[type] || UNSUPPORTED.default });
+  }
 
   const providers = activeProviders().filter(
     (n) => ALL[n].supports.includes(type) && (!ALL[n].needsCourier || courier)

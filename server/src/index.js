@@ -8,11 +8,13 @@ import { pageFor, renderPage, sitemapXml, robotsTxt, llmsTxt, adsTxt } from './s
 import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
 import trackRoutes from './routes/track.js';
+import { crawlerLog } from './lib/crawlers.js';
 
 const app = express();
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
 app.set('trust proxy', 1);
+app.use(crawlerLog()); // logs search/AI crawler visits and whether they're genuine
 
 // One address per page: www -> main domain, http -> https (only when the host's proxy says the
 // request was plain http, so there is no redirect loop), and no trailing slash.
