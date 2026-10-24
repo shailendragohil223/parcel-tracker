@@ -42,7 +42,7 @@ jobs:
       - name: Simulate the host (root install + build, like GoDaddy)
         run: |
           # Report the failing command and server log as annotations (readable via the API)
-          trap 'echo "::error::Failed: $BASH_COMMAND"; test -f start.log && tail -25 start.log | sed "s/^/::error::server: /"; test -f check.log && echo "::error::$(grep "^FAIL" check.log | tr "\n" "|")"' ERR
+          trap 'test -f check.log && echo "::error::$(grep "^FAIL" check.log | tr "\n" "|")"; echo "::error::Failed: $BASH_COMMAND"; test -f start.log && tail -5 start.log | sed "s/^/::error::server: /"' ERR
           rm -rf server/node_modules client/node_modules client/dist client/dist-ssr
           NODE_ENV=production npm ci --no-audit --no-fund
           NODE_ENV=production npm run build
