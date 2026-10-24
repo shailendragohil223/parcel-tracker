@@ -96,6 +96,9 @@ Courier APIs change their response fields from time to time — check each adapt
 - Courier landing pages for search traffic: `/dtdc-tracking`, `/bluedart-tracking`, `/delhivery-tracking`, `/speed-post-tracking` and more.
 - Tracking result links (`/?q=…`) and the API are marked `noindex` so customers' parcels never appear in Google. Unknown pages return 404.
 - After going live: add the site in Google Search Console and submit `https://trackmyship.co/sitemap.xml`.
+- **Server-side rendering:** `npm run build` also builds `client/dist-ssr`; the server renders every page's full HTML so crawlers that don't run JavaScript (incl. AI search bots) see all content, and the browser hydrates it.
+- **Crawler files** (generated from `seo-pages.json`): `/robots.txt` (OAI-SearchBot allowed, `/api/` blocked; set `AI_TRAINING_CRAWLERS=block` to disallow GPTBot, Google-Extended, CCBot and ClaudeBot), `/sitemap.xml` (uses each page's `updated` date — change it when you edit a page), `/llms.txt`, `/ads.txt` (AdSense).
+- **Check the site:** `python3 scripts/check_site.py https://trackmyship.co` tests robots/sitemap/status codes/canonicals/JSON-LD/links like a crawler; GitHub runs it with `--browser` on every change.
 
 ## Security built in
 
