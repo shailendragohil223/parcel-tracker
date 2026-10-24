@@ -58,6 +58,7 @@ jobs:
           pip install --quiet playwright==1.47.0
           python3 scripts/check_site.py http://localhost:5099 --browser > check.log 2>&1 || { cat check.log; false; }
           cat check.log
+          cp check.log shots/check.log
           # Screenshots (downloadable from the run's Artifacts)
           mkdir -p shots
           for u in "home|/" "dtdc|/dtdc-tracking" "result|/?q=TMS100245781" "privacy|/privacy-policy" "guide|/parcel-tracking-guide" "courier|/delhivery-tracking"; do
@@ -81,7 +82,7 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git checkout --orphan ci-screenshots
           git rm -rq --cached . && git clean -fdq -e shots
-          cp /tmp/shots/*.png . && git add *.png
+          cp /tmp/shots/* . && git add *.png check.log
           git commit -qm "Screenshots of ${GITHUB_SHA::7}"
           git push -f origin ci-screenshots
           git checkout -f main
