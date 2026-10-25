@@ -3,7 +3,7 @@
     "url": "https://trackmyship.co",
     "name": "Track My Ship",
     "image": "/og-image.png",
-    "updated": "2026-10-24"
+    "updated": "2026-10-25"
   },
   "business": {
     "_note": "Real contact details shown on the site. Empty fields are hidden.",
@@ -18,7 +18,7 @@
   "home": {
     "path": "/",
     "title": "Track My Ship – Courier Tracking for DTDC, Blue Dart, Delhivery & Speed Post | Live Map",
-    "description": "Free courier and parcel tracking for India. Enter your AWB or consignment number to see the latest status, scan history and route on a map for DTDC, Blue Dart, Delhivery, Speed Post, Trackon and more.",
+    "description": "Track My Ship is a free courier and parcel tracking website for India. Enter your AWB or consignment number to see the latest status, scan history and route on a map for DTDC, Blue Dart, Delhivery, Speed Post and more.",
     "h1": "Track your parcel",
     "sub": "Enter the courier tracking (AWB / consignment) number to see the latest status, every scan and the route on a map."
   },
