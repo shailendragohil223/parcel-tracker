@@ -2,15 +2,21 @@
 <html lang="en-IN">
   <head>
     <meta charset="UTF-8" />
-    <!-- Google tag (gtag.js) – Google Analytics 4 -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-9SSY3WPVGQ"></script>
+    <!-- Google tag (gtag.js) – Google Analytics 4. Only loads on the live domain, so local
+         development and automated tests don't count as visitors. -->
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      // Tracking links (/?q=AWB) are reported without the tracking number, so customers'
-      // parcel numbers never reach Google Analytics.
-      gtag('config', 'G-9SSY3WPVGQ', { page_location: location.origin + location.pathname });
+      if (/(^|\.)trackmyship\.co$/.test(location.hostname)) {
+        var ga = document.createElement('script');
+        ga.async = true;
+        ga.src = 'https://www.googletagmanager.com/gtag/js?id=G-9SSY3WPVGQ';
+        document.head.appendChild(ga);
+        gtag('js', new Date());
+        // Tracking links (/?q=AWB) are reported without the tracking number, so customers'
+        // parcel numbers never reach Google Analytics.
+        gtag('config', 'G-9SSY3WPVGQ', { page_location: location.origin + location.pathname });
+      }
     </script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <!-- Map tiles from OpenStreetMap need the site address sent with each request -->
