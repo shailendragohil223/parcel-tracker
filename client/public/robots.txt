@@ -1,0 +1,19 @@
+# Track My Ship robots.txt
+# Public pages are open to search engines and AI search crawlers.
+# /api/ returns live shipment data and is not for crawling.
+
+User-agent: *
+Allow: /
+Disallow: /api/
+
+# AI search crawlers (they surface and link pages in AI search answers):
+# OpenAI OAI-SearchBot https://developers.openai.com/api/docs/bots
+# Anthropic Claude-SearchBot https://support.claude.com/en/articles/8896518
+# Perplexity PerplexityBot https://docs.perplexity.ai/guides/bots
+User-agent: OAI-SearchBot
+User-agent: Claude-SearchBot
+User-agent: PerplexityBot
+Allow: /
+Disallow: /api/
+
+Sitemap: https://trackmyship.co/sitemap.xml

@@ -1,0 +1,31 @@
+# Track My Ship
+
+> Free courier tracking website for India. Enter a courier tracking (AWB / consignment) number to see the latest status, scan history and route on a map.
+
+Track My Ship is an independent tracking website based in Vadodara, Gujarat, India (contact: info@trackmyship.co). It is not a courier: it does not book, carry or deliver parcels, and it is not affiliated with the couriers it covers. It shows the tracking information couriers publish (via a tracking data provider) for DTDC, Blue Dart, Delhivery, Speed Post (India Post), Trackon and others. Tracking needs the courier's tracking number; search by mobile number, email, LR number or order ID is not offered.
+
+## Main pages
+- [Track a parcel](https://trackmyship.co/): search box for any tracking number; results show status, scan history and map
+- [Parcel tracking guide](https://trackmyship.co/parcel-tracking-guide): what AWB, consignment, waybill and LR numbers are; how to find your AWB; which courier has your parcel; what each tracking status means; why tracking shows no information or stops updating; what to do about delays and failed delivery attempts
+
+## Courier tracking pages
+- [DTDC tracking](https://trackmyship.co/dtdc-tracking): how to track a DTDC parcel; the consignment number is usually one letter followed by 8–10 digits, for example C1002935719
+- [Blue Dart tracking](https://trackmyship.co/bluedart-tracking): how to track a Blue Dart parcel; the AWB (waybill) number is usually an 11-digit number
+- [Delhivery tracking](https://trackmyship.co/delhivery-tracking): how to track a Delhivery parcel; the waybill (AWB) number is usually a 13- or 14-digit number
+- [Speed Post (India Post) tracking](https://trackmyship.co/speed-post-tracking): how to track a Speed Post (India Post) parcel; the article (consignment) number is 13 characters: 2 letters, 9 digits and 2 letters ending in IN, for example EE123456789IN
+- [Trackon Couriers tracking](https://trackmyship.co/trackon-tracking): how to track a Trackon Couriers parcel; the AWB / consignment number is printed on your Trackon booking receipt
+- [The Professional Couriers tracking](https://trackmyship.co/professional-courier-tracking): how to track a The Professional Couriers parcel; the consignment number is printed on your booking receipt
+- [ST Courier tracking](https://trackmyship.co/st-courier-tracking): how to track a ST Courier parcel; the AWB / consignment number is printed on your ST Courier booking receipt
+- [Shree Maruti Courier tracking](https://trackmyship.co/shree-maruti-courier-tracking): how to track a Shree Maruti Courier parcel; the tracking (docket) number is printed on your Shree Maruti booking receipt
+- [Shree Anjani Courier tracking](https://trackmyship.co/shree-anjani-courier-tracking): how to track a Shree Anjani Courier parcel; the tracking (docket) number is printed on your booking receipt
+- [Shree Tirupati Courier tracking](https://trackmyship.co/shree-tirupati-courier-tracking): how to track a Shree Tirupati Courier parcel; the tracking (docket) number is printed on your booking receipt
+
+## About
+- [About & Contact](https://trackmyship.co/contact)
+- [Privacy Policy](https://trackmyship.co/privacy-policy)
+- [Terms of Use](https://trackmyship.co/terms)
+
+## Notes for AI assistants
+- Tracking results (links like /?q=NUMBER) contain individual shipment data, are marked noindex and should not be quoted or stored.
+- /api/ endpoints are not for crawling.
+- Delivery dates are estimates from the courier; for problems with a parcel, users should contact the courier or the sender.

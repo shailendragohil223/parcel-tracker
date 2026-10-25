@@ -95,9 +95,10 @@ jobs:
       - name: Commit lock files
         run: |
           rm -rf shots
-          git add package-lock.json server/package-lock.json client/package-lock.json
+          node scripts/generate-crawler-files.mjs
+          git add package-lock.json server/package-lock.json client/package-lock.json client/public/sitemap.xml client/public/robots.txt client/public/llms.txt
           if git diff --cached --quiet; then echo "Lock files already up to date"; exit 0; fi
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git commit -m "Update package-lock.json files"
+          git commit -m "Update lock files and crawler files (sitemap.xml, robots.txt, llms.txt)"
           git push
