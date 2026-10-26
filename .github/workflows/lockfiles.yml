@@ -41,8 +41,9 @@ jobs:
           (cd client && npm ci --no-audit --no-fund && npm run build)
       - name: Security audit of production dependencies (fails on high/critical)
         run: |
-          (cd server && npm audit --omit=dev --audit-level=high)
-          (cd client && npm audit --omit=dev --audit-level=high)
+          report() { npm audit --omit=dev --json | node -e 'let j="";process.stdin.on("data",d=>j+=d).on("end",()=>{const v=JSON.parse(j).vulnerabilities||{};for(const [n,x] of Object.entries(v)){const via=x.via.map(a=>typeof a==="string"?a:a.title+" "+(a.range||"")).join("; ");console.log(`::error::${process.argv[1]}: ${n} ${x.range} [${x.severity}] fix=${JSON.stringify(x.fixAvailable)} :: ${via}`)}})' "$1"; }
+          (cd server && (npm audit --omit=dev --audit-level=high || { report server; false; }))
+          (cd client && (npm audit --omit=dev --audit-level=high || { report client; false; }))
       - name: Simulate the host (root install + build, like GoDaddy)
         run: |
           # Report the failing command and server log as annotations (readable via the API)
