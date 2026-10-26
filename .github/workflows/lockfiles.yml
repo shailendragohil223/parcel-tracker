@@ -96,7 +96,6 @@ jobs:
           retention-days: 3
       - name: Commit lock files
         run: |
-          rm -rf shots
           node scripts/generate-crawler-files.mjs
           git add client/package.json package-lock.json server/package-lock.json client/package-lock.json client/public/sitemap.xml client/public/robots.txt client/public/llms.txt
           if git diff --cached --quiet; then echo "Lock files already up to date"; exit 0; fi
