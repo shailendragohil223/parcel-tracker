@@ -1,7 +1,6 @@
 import './env.js';
 import express from 'express';
 import cors from 'cors';
-import helmet from 'helmet';
 import rateLimit from 'express-rate-limit';
 import { existsSync, readFileSync } from 'node:fs';
 import { pageFor, renderPage, sitemapXml, robotsTxt, llmsTxt, adsTxt } from './seo.js';
@@ -9,12 +8,17 @@ import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
 import trackRoutes from './routes/track.js';
 import { crawlerLog } from './lib/crawlers.js';
+import { securityHeaders, inlineScriptHashes, generalLimiter, errorHandler, securityTxt } from './lib/security.js';
 
 const app = express();
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
-app.set('trust proxy', 1);
-app.use(crawlerLog()); // logs search/AI crawler visits and whether they're genuine
+// Number of proxies in front of the app (GoDaddy's load balancer = 1). Needed so rate limits
+// see each visitor's real IP. Check: /api/health shows the IP the server sees for you.
+app.set('trust proxy', Number(process.env.TRUST_PROXY ?? 1));
+app.disable('x-powered-by');
+app.use(crawlerLog());
+app.use(generalLimiter); // logs search/AI crawler visits and whether they're genuine
 
 // One address per page: www -> main domain, http -> https (only when the host's proxy says the
 // request was plain http, so there is no redirect loop), and no trailing slash.
@@ -32,11 +36,16 @@ app.use((req, res, next) => {
   }
   next();
 });
-// OpenStreetMap map tiles require the site address (Referer) on each request, and
-// helmet's default "no-referrer" makes OSM answer 403 "Access blocked".
-app.use(helmet({ contentSecurityPolicy: false, referrerPolicy: { policy: 'strict-origin-when-cross-origin' } }));
-app.use(cors({ origin: process.env.CLIENT_ORIGIN?.split(',') || true }));
-app.use(express.json());
+// Built page template (also used to allow its inline Google-tag script in the CSP)
+const clientDist = join(__dirname, '../../client/dist');
+const template = existsSync(clientDist) ? readFileSync(join(clientDist, 'index.html'), 'utf8') : null;
+
+app.use(securityHeaders({ scriptHashes: template ? inlineScriptHashes(template) : [] }));
+// Only our own site may call the API from a browser (CLIENT_ORIGIN adds others, e.g. local dev).
+const allowedOrigins = [`https://${SITE_HOST}`, ...(process.env.CLIENT_ORIGIN || '').split(',').map((o) => o.trim()).filter(Boolean)];
+app.use('/api', cors({ origin: allowedOrigins, methods: ['GET'] }));
+// The site never accepts request bodies; refuse anything other than GET/HEAD (and CORS preflight).
+app.use((req, res, next) => (['GET', 'HEAD', 'OPTIONS'].includes(req.method) ? next() : res.status(405).set('Allow', 'GET, HEAD').send('Method not allowed')));
 
 // Stops people from guessing phone numbers / AWBs in bulk.
 app.use('/api/track', rateLimit({ windowMs: 60_000, limit: 20, standardHeaders: true, legacyHeaders: false,
@@ -54,11 +63,11 @@ app.get('/robots.txt', crawlerFile('text/plain', robotsTxt));
 app.get('/sitemap.xml', crawlerFile('application/xml', sitemapXml));
 app.get('/llms.txt', crawlerFile('text/plain', llmsTxt));
 app.get('/ads.txt', crawlerFile('text/plain', adsTxt));
+app.get('/.well-known/security.txt', (_req, res) =>
+  res.type('text/plain').send(securityTxt(process.env.SECURITY_CONTACT || 'info@trackmyship.co', `https://${SITE_HOST}`)));
 
 // In production, serve the built React app from the same server (handy for GoDaddy / single Node host).
-const clientDist = join(__dirname, '../../client/dist');
-if (existsSync(clientDist)) {
-  const template = readFileSync(join(clientDist, 'index.html'), 'utf8');
+if (template) {
   // Hashed build files never change -> cache for a year; everything else for a day.
   app.use('/assets', express.static(join(clientDist, 'assets'), { immutable: true, maxAge: '365d' }));
   app.use(express.static(clientDist, { index: false, maxAge: '1d' }));
@@ -71,6 +80,12 @@ if (existsSync(clientDist)) {
     res.status(known ? 200 : 404).type('html').send(renderPage(template, req.path, { noindex }));
   });
 }
+
+app.use('/api', (_req, res) => res.status(404).json({ error: 'Not found' }));
+app.use(errorHandler);
+
+// Log unexpected errors instead of letting one bad request stop the server.
+process.on('unhandledRejection', (e) => console.error('[unhandledRejection]', e));
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {

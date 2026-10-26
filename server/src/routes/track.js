@@ -3,6 +3,7 @@ import * as local from '../providers/local.js';
 import { shiprocket, delhivery, trackcourier } from '../providers/carriers.js';
 import { detectType, validate, normalize, maskPhone, maskEmail } from '../lib/detect.js';
 import { enrichWithCoords } from '../lib/geocode.js';
+import { safe } from '../lib/security.js';
 
 const ALL = {
   // Demo shipments (data/shipments.json) for development and tests only — never on the live site
@@ -120,7 +121,7 @@ const router = Router();
 // GET /api/track?q=TMS100245781&type=auto[&courier=dtdc]
 // type: auto | awb | lr | order | phone | email
 // courier: TrackCourier.io slug — only needed for parcels that are NOT in your own database.
-router.get('/track', async (req, res) => {
+router.get('/track', safe(async (req, res) => {
   const q = normalize(req.query.q);
   const courier = String(req.query.courier || '').toLowerCase().replace(/[^a-z0-9_-]/g, '').slice(0, 40);
   const type = courier ? 'awb' : detectType(q, req.query.type);
@@ -179,10 +180,10 @@ router.get('/track', async (req, res) => {
     return res.status(404).json({ type, error: `No shipment found. Please check the number and try again.${hint}` });
   }
   res.json({ type, count: shipments.length, shipments: shipments.map(toPublic) });
-});
+}));
 
 // GET /api/couriers -> [{ slug, name }] for the courier picker (empty if TrackCourier.io is off)
-router.get('/couriers', async (_req, res) => {
+router.get('/couriers', safe(async (_req, res) => {
   if (!activeProviders().includes('trackcourier')) return res.json({ couriers: [] });
   try {
     res.json({ couriers: await trackcourier.listCouriers() });
@@ -190,8 +191,8 @@ router.get('/couriers', async (_req, res) => {
     console.warn('[trackcourier]', e.message);
     res.json({ couriers: [] });
   }
-});
+}));
 
-router.get('/health', (_req, res) => res.json({ ok: true, providers: activeProviders() }));
+router.get('/health', (req, res) => res.json({ ok: true, providers: activeProviders(), yourIp: req.ip }));
 
 export default router;

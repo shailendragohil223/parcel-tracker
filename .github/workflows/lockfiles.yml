@@ -39,6 +39,10 @@ jobs:
         run: |
           (cd server && npm ci --omit=dev --no-audit --no-fund)
           (cd client && npm ci --no-audit --no-fund && npm run build)
+      - name: Security audit of production dependencies (fails on high/critical)
+        run: |
+          (cd server && npm audit --omit=dev --audit-level=high)
+          (cd client && npm audit --omit=dev --audit-level=high)
       - name: Simulate the host (root install + build, like GoDaddy)
         run: |
           # Report the failing command and server log as annotations (readable via the API)

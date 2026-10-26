@@ -132,6 +132,50 @@ for path in urls:
     s, _, html = get(path[len(SITE):] or '/')
     check(not re.search(r'Rahul|Priya|98\*{6}|TMS1002', html), f'{path[len(SITE):] or "/"}: no shipment or personal data in public HTML')
 
+# ---- security: headers and attack probes ----
+s, h, _ = get('/')
+csp = h.get('Content-Security-Policy', '')
+check("default-src 'self'" in csp and "object-src 'none'" in csp and "frame-ancestors 'none'" in csp and "'unsafe-inline'" not in csp.split('script-src')[1].split(';')[0],
+      'Content-Security-Policy set (no inline scripts except hashed Google tag)')
+check('max-age=' in h.get('Strict-Transport-Security', ''), 'HSTS header set')
+check(h.get('X-Content-Type-Options') == 'nosniff', 'X-Content-Type-Options: nosniff')
+check('X-Powered-By' not in h, 'X-Powered-By header hidden')
+probes = {
+    'SQL injection': "' OR '1'='1' --",
+    'SQL injection (union)': '1 UNION SELECT password FROM users',
+    'XSS': '<script>alert(1)</script>',
+    'XSS (attribute)': '"><img src=x onerror=alert(1)>',
+    'NoSQL injection': '{"$gt":""}',
+    'path traversal': '../../etc/passwd',
+    'command injection': '; cat /etc/passwd',
+    'oversized input': 'A' * 5000,
+}
+import urllib.parse as up
+for name, payload in probes.items():
+    s, h, body = get('/api/track?q=' + up.quote(payload))
+    check(400 <= s < 500 and '<script' not in body and 'root:' not in body and 'stack' not in body.lower(),
+          f'API rejects {name} safely ({s})')
+for name, qs in {'array parameters': 'q=a&q=b&type=x&type=y', 'bad courier': 'q=C1002935719&courier=../../x', 'empty': 'q='}.items():
+    s, _, body = get('/api/track?' + qs)
+    check(s < 500 and 'stack' not in body.lower(), f'API handles {name} without a server error ({s})')
+s, _, body = get('/%3Cscript%3Ealert(1)%3C/script%3E')
+check(s == 404 and '<script>alert(1)' not in body, 'unknown page does not reflect injected HTML')
+s, _, body = get('/?q=' + up.quote('"><script>alert(1)</script>'))
+check('<script>alert(1)' not in body, 'tracking link does not reflect injected HTML')
+for path in ['/../server/.env', '/server/.env', '/.env', '/.git/config', '/package.json', '/server/src/index.js']:
+    s, _, body = get(path)
+    check(s == 404 and 'TRACKCOURIER' not in body and '[core]' not in body, f'{path} not exposed ({s})')
+req = urllib.request.Request(BASE + '/api/track?q=C1002935719', method='POST', data=b'x=1')
+try:
+    st = urllib.request.urlopen(req, timeout=10).status
+except urllib.error.HTTPError as e:
+    st = e.code
+check(st == 405, f'POST requests refused ({st})')
+s, h, _ = get('/api/track?q=C1002935719', {'Origin': 'https://evil.example'})
+check('evil.example' not in h.get('Access-Control-Allow-Origin', ''), 'API not callable from other websites (CORS)')
+s, _, sec = get('/.well-known/security.txt')
+check(s == 200 and 'Contact: mailto:' in sec and 'Expires:' in sec, 'security.txt published')
+
 # ---- real browser (JavaScript, hydration, search) ----
 if '--browser' in sys.argv:
     from playwright.sync_api import sync_playwright
@@ -142,9 +186,9 @@ if '--browser' in sys.argv:
             pg.on('console', lambda m: errors.append(m.text) if m.type == 'error' else None)
             pg.on('pageerror', lambda e: errors.append(str(e)))
             pg.goto(BASE + path, wait_until='networkidle')
-            bad = [e for e in errors if 'hydrat' in e.lower() or 'error' in e.lower()]
+            bad = [e for e in errors if any(k in e.lower() for k in ('hydrat', 'error', 'refused', 'content security policy'))]
             bad = [e for e in bad if 'googletagmanager' not in e and 'ERR_' not in e]
-            check(not bad, f'browser {path}: no JavaScript/hydration errors {bad[:2]}')
+            check(not bad, f'browser {path}: no JavaScript, hydration or CSP errors {bad[:2]}')
             pg.close()
         pg = b.new_page()
         pg.goto(BASE + '/', wait_until='networkidle')
