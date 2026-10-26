@@ -44,7 +44,7 @@ export function pageFor(path) {
     path: c.path,
     canonical: `${SITE}${c.path}`,
     updated: SEO.site.updated,
-    title: `${c.name} Tracking – Track ${c.name} Courier & Consignment Live | Track My Ship`,
+    title: `${c.name} Tracking – Live Parcel Status | Track My Ship`,
     description: `${c.name} tracking: enter your ${c.name} ${c.numberName} to see live status, every scan and the parcel's route on a map. How to find your number and who to contact.`,
     h1: `${c.name} Tracking`,
     sub: `Enter your ${c.name} ${c.numberName} (${c.example}) to track it live on a map.`,

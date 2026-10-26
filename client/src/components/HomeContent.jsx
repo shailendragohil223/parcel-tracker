@@ -30,11 +30,32 @@ function CourierAnswer({ courier: c }) {
   );
 }
 
+// Short introduction on the home page: what Track My Ship is, in plain words.
+function HomeIntro() {
+  const top = SEO.couriers.slice(0, 4);
+  return (
+    <section className="panel" aria-labelledby="about-tms">
+      <h2 className="panel-title" id="about-tms">Online courier tracking for India</h2>
+      <p className="answer">
+        Track My Ship is a free parcel and shipment tracking website. Enter the AWB or consignment number from your
+        booking receipt or the seller's shipping message, and see where your parcel is — the latest status, every scan
+        with date and place, and the route on a map. No sign-up is needed.
+      </p>
+      <p className="muted small">
+        Popular courier tracking pages:{' '}
+        {top.map((c, i) => (
+          <span key={c.slug}>{i > 0 && ' · '}<a href={c.path}>{c.name} tracking</a></span>
+        ))}. Track My Ship is an independent tracking website, not a courier company.
+      </p>
+    </section>
+  );
+}
+
 // Visible content for the home and courier pages: how it works, supported couriers, FAQ.
 export default function HomeContent({ courier }) {
   return (
     <div className="home-content">
-      {courier && <CourierAnswer courier={courier} />}
+      {courier ? <CourierAnswer courier={courier} /> : <HomeIntro />}
 
       <section className="panel" aria-labelledby="how">
         <h2 className="panel-title" id="how">How to track your parcel</h2>
