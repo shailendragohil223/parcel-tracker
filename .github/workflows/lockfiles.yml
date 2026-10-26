@@ -18,6 +18,10 @@ on:
         description: 'Also save screenshots to the ci-screenshots branch'
         type: boolean
         default: false
+      upgrade_packages:
+        description: 'Space-separated packages to upgrade in client/ (e.g. "vite@latest @vitejs/plugin-react@latest"); committed only if all checks pass'
+        type: string
+        default: ''
 
 permissions:
   contents: write
@@ -30,6 +34,11 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 22
+      - name: Upgrade packages (manual runs only)
+        if: github.event_name == 'workflow_dispatch' && inputs.upgrade_packages != ''
+        run: |
+          cd client && npm install --save --no-audit --no-fund ${{ inputs.upgrade_packages }}
+          node -e 'const p=require("./package.json");console.log("::notice::upgraded:",JSON.stringify(p.dependencies))'
       - name: Generate lock files
         run: |
           npm install --package-lock-only --no-audit --no-fund
@@ -101,9 +110,9 @@ jobs:
         run: |
           rm -rf shots
           node scripts/generate-crawler-files.mjs
-          git add package-lock.json server/package-lock.json client/package-lock.json client/public/sitemap.xml client/public/robots.txt client/public/llms.txt
+          git add client/package.json package-lock.json server/package-lock.json client/package-lock.json client/public/sitemap.xml client/public/robots.txt client/public/llms.txt
           if git diff --cached --quiet; then echo "Lock files already up to date"; exit 0; fi
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git commit -m "Update lock files and crawler files (sitemap.xml, robots.txt, llms.txt)"
+          git commit -m "Update packages, lock files and crawler files (sitemap.xml, robots.txt, llms.txt)"
           git push
