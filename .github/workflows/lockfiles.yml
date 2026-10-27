@@ -66,6 +66,7 @@ jobs:
           (PORT=5099 DEMO_SHIPMENTS=true timeout 240 npm start > start.log 2>&1 &) ; sleep 8
           (PORT=5098 timeout 240 npm start > start-live.log 2>&1 &) ; sleep 4
           curl -fsS http://localhost:5099/api/health
+          grep -q 'Site build is up to date' start.log
           curl -fsS "http://localhost:5099/api/track?q=TMS100245781" | head -c 200
           curl -fsS http://localhost:5099/ | grep -q '<div id="root" data-ssr="1">'
           curl -fsSI http://localhost:5099/ | grep -i 'referrer-policy: strict-origin-when-cross-origin'
