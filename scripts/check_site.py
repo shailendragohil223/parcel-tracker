@@ -187,7 +187,11 @@ if '--browser' in sys.argv:
             pg.on('pageerror', lambda e: errors.append(str(e)))
             pg.goto(BASE + path, wait_until='networkidle')
             bad = [e for e in errors if any(k in e.lower() for k in ('hydrat', 'error', 'refused', 'content security policy'))]
-            bad = [e for e in bad if 'googletagmanager' not in e and 'ERR_' not in e]
+            # Google Analytics/AdSense log their own errors (e.g. Google's iframes carry their own
+            # report-only CSP); those come from Google's pages, not from this site.
+            third_party = ('googletagmanager', 'googlesyndication', 'doubleclick', 'adtrafficquality',
+                           "Framing 'https://www.google.com/'")
+            bad = [e for e in bad if not any(k in e for k in third_party) and 'ERR_' not in e]
             check(not bad, f'browser {path}: no JavaScript, hydration or CSP errors {bad[:2]}')
             pg.close()
         pg = b.new_page()
