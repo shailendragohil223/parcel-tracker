@@ -25,7 +25,8 @@ app.use(generalLimiter); // logs search/AI crawler visits and whether they're ge
 const SITE_HOST = new URL(process.env.SITE_URL || 'https://trackmyship.co').host;
 app.use((req, res, next) => {
   if (req.method !== 'GET' && req.method !== 'HEAD') return next();
-  const host = req.get('host') || '';
+  // Behind GoDaddy's proxy the visitor's domain can arrive in X-Forwarded-Host instead of Host.
+  const host = (req.get('x-forwarded-host') || req.get('host') || '').split(',')[0].trim().toLowerCase();
   const wrongHost = host === `www.${SITE_HOST}`;
   const plainHttp = req.get('x-forwarded-proto') === 'http' && host.endsWith(SITE_HOST);
   const slash = req.path.length > 1 && req.path.endsWith('/') && !req.path.startsWith('/api/');
