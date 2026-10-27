@@ -6,19 +6,35 @@ import rateLimit from 'express-rate-limit';
 // Content-Security-Policy: the browser only runs scripts and loads resources from the
 // sources listed here, so injected <script> tags or links to other servers are blocked.
 // Inline scripts in index.html (the Google tag) are allowed by their exact SHA-256 hash.
-// If you add a new third-party script (e.g. AdSense ads), add its domains below.
+// If you add a new third-party script, add its domains below. The Google AdSense domains
+// follow Google's CSP guidance (ads load images from many hosts, so img-src allows https:).
 // CSP_REPORT_ONLY=true reports violations in the browser console without blocking.
 export function inlineScriptHashes(html) {
   return [...html.matchAll(/<script(?![^>]*\bsrc=)(?![^>]*application\/ld\+json)[^>]*>([\s\S]*?)<\/script>/g)]
     .map((m) => `'sha256-${createHash('sha256').update(m[1]).digest('base64')}'`);
 }
 
+const ADSENSE_SCRIPTS = [
+  'https://pagead2.googlesyndication.com', 'https://tpc.googlesyndication.com', 'https://partner.googleadservices.com',
+  'https://www.googletagservices.com', 'https://adservice.google.com', 'https://*.adtrafficquality.google',
+  'https://fundingchoicesmessages.google.com', 'https://www.google.com',
+];
+const ADSENSE_CONNECT = [
+  'https://*.googlesyndication.com', 'https://*.doubleclick.net', 'https://adservice.google.com',
+  'https://*.adtrafficquality.google', 'https://fundingchoicesmessages.google.com', 'https://www.google.com',
+];
+const ADSENSE_FRAMES = [
+  'https://googleads.g.doubleclick.net', 'https://tpc.googlesyndication.com', 'https://*.googlesyndication.com',
+  'https://www.google.com', 'https://*.adtrafficquality.google',
+];
+
 export function securityHeaders({ scriptHashes = [] } = {}) {
   const directives = {
     defaultSrc: ["'self'"],
-    scriptSrc: ["'self'", ...scriptHashes, 'https://*.googletagmanager.com'],
-    connectSrc: ["'self'", 'https://*.google-analytics.com', 'https://*.analytics.google.com', 'https://*.googletagmanager.com'],
-    imgSrc: ["'self'", 'data:', 'https://tile.openstreetmap.org', 'https://*.google-analytics.com', 'https://*.googletagmanager.com'],
+    scriptSrc: ["'self'", ...scriptHashes, 'https://*.googletagmanager.com', ...ADSENSE_SCRIPTS],
+    connectSrc: ["'self'", 'https://*.google-analytics.com', 'https://*.analytics.google.com', 'https://*.googletagmanager.com', ...ADSENSE_CONNECT],
+    imgSrc: ["'self'", 'data:', 'https:'],
+    frameSrc: ADSENSE_FRAMES,
     styleSrc: ["'self'", "'unsafe-inline'", 'https://fonts.googleapis.com'],
     fontSrc: ["'self'", 'https://fonts.gstatic.com'],
     objectSrc: ["'none'"],
