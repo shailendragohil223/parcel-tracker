@@ -140,6 +140,13 @@ check(not re.search(r'<link[^>]+rel="stylesheet"', html) and '<style>' in html, 
 check('fonts.googleapis.com' not in html, 'no web-font requests (system fonts)')
 check("addEventListener('load', loadGa)" in html, 'Google Analytics loads after the page')
 
+# ---- AdSense ad unit present in the page HTML ----
+s, _, html = get('/')
+check('class="adsbygoogle"' in html and 'data-ad-slot="2045498736"' in html and 'pagead2.googlesyndication.com/pagead/js/adsbygoogle.js' in html,
+      'AdSense script and ad unit present on home page')
+s, _, html = get('/parcel-tracking-guide')
+check('data-ad-slot="2045498736"' in html, 'AdSense ad unit present in guide')
+
 # ---- security: headers and attack probes ----
 s, h, _ = get('/')
 csp = h.get('Content-Security-Policy', '')

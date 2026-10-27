@@ -166,6 +166,10 @@ button { font: inherit; cursor: pointer; }
 .toc { background: #f8fafc; border: 1px solid var(--line); border-radius: 10px; padding: 10px 14px; font-size: 14px; margin: 0 0 16px; line-height: 1.8; }
 .info-page ol { margin: 0 0 12px; padding-left: 22px; }
 
+/* AdSense ad unit: spaced away from content and the search box */
+.ad-slot { margin: 16px 0; min-height: 0; overflow: hidden; }
+.info-page .ad-slot { margin: 24px 0; }
+
 /* Text sent by the server for search engines; replaced by the app on load */
 .prerender { max-width: 1120px; margin: 0 auto; padding: 24px 16px; color: var(--ink); }
 

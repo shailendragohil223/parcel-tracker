@@ -1,5 +1,6 @@
 import SEO from '../seo-pages.json';
 import { courierFaq } from '../courier-faq.js';
+import AdSlot from './AdSlot.jsx';
 
 function CourierAnswer({ courier: c }) {
   return (
@@ -77,6 +78,8 @@ export default function HomeContent({ courier }) {
           Not sure which number you have? Read the <a href="/parcel-tracking-guide">parcel tracking guide</a>.
         </p>
       </section>
+
+      <AdSlot />
 
       <section className="panel" aria-labelledby="couriers">
         <h2 className="panel-title" id="couriers">Track parcels from popular couriers</h2>

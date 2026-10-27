@@ -1,4 +1,5 @@
 import SEO from '../seo-pages.json';
+import AdSlot from './AdSlot.jsx';
 
 const PAGE = SEO.pages.find((p) => p.path === '/parcel-tracking-guide');
 const fmt = (d) => new Date(`${d}T00:00:00+05:30`).toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'Asia/Kolkata' });
@@ -109,6 +110,8 @@ export default function GuidePage() {
           </tbody>
         </table>
       </div>
+
+      <AdSlot />
 
       <h2 id="no-information">Why does my tracking number show no information?</h2>
       <p className="answer">Usually because the parcel was booked only recently, the wrong courier was chosen, or the number was typed incorrectly.</p>
