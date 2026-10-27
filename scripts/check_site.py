@@ -134,6 +134,12 @@ for path in urls:
     s, _, html = get(path[len(SITE):] or '/')
     check(not re.search(r'Rahul|Priya|98\*{6}|TMS1002', html), f'{path[len(SITE):] or "/"}: no shipment or personal data in public HTML')
 
+# ---- performance: nothing blocks the first render ----
+s, _, html = get('/')
+check(not re.search(r'<link[^>]+rel="stylesheet"', html) and '<style>' in html, 'main CSS inlined (no render-blocking stylesheet)')
+check('fonts.googleapis.com' not in html, 'no web-font requests (system fonts)')
+check("addEventListener('load', loadGa)" in html, 'Google Analytics loads after the page')
+
 # ---- security: headers and attack probes ----
 s, h, _ = get('/')
 csp = h.get('Content-Security-Policy', '')

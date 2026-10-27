@@ -39,7 +39,13 @@ app.use((req, res, next) => {
 });
 // Built page template (also used to allow its inline Google-tag script in the CSP)
 const clientDist = join(__dirname, '../../client/dist');
-const template = existsSync(clientDist) ? readFileSync(join(clientDist, 'index.html'), 'utf8') : null;
+// The main stylesheet (a few KB) is put straight into the page so the browser can draw it
+// without waiting for a separate CSS download (faster first paint / LCP).
+const inlineCss = (html) => html.replace(/<link rel="stylesheet"[^>]*href="(\/assets\/[^"]+\.css)"[^>]*>/g, (tag, href) => {
+  const file = join(clientDist, href);
+  return existsSync(file) ? `<style>${readFileSync(file, 'utf8')}</style>` : tag;
+});
+const template = existsSync(clientDist) ? inlineCss(readFileSync(join(clientDist, 'index.html'), 'utf8')) : null;
 
 app.use(securityHeaders({ scriptHashes: template ? inlineScriptHashes(template) : [] }));
 // Only our own site may call the API from a browser (CLIENT_ORIGIN adds others, e.g. local dev).

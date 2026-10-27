@@ -8,10 +8,15 @@
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       if (/(^|\.)trackmyship\.co$/.test(location.hostname)) {
-        var ga = document.createElement('script');
-        ga.async = true;
-        ga.src = 'https://www.googletagmanager.com/gtag/js?id=G-9SSY3WPVGQ';
-        document.head.appendChild(ga);
+        // The tag (~170 KB) is downloaded after the page has loaded so it doesn't slow the first
+        // view; the page view below is queued now and sent as soon as it arrives.
+        var loadGa = function () {
+          var ga = document.createElement('script');
+          ga.async = true;
+          ga.src = 'https://www.googletagmanager.com/gtag/js?id=G-9SSY3WPVGQ';
+          document.head.appendChild(ga);
+        };
+        if (document.readyState === 'complete') loadGa(); else window.addEventListener('load', loadGa);
         gtag('js', new Date());
         // Tracking links (/?q=AWB) are reported without the tracking number, so customers'
         // parcel numbers never reach Google Analytics.
@@ -97,9 +102,6 @@
     }
     </script>
 
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet" />
   </head>
   <body>
     <div id="root"></div>
