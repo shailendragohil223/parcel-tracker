@@ -88,7 +88,10 @@ export default function App({ path }) {
           <Logo size={36} />
           <span className="brand-name">Track My <span>Ship</span></span>
         </a>
-        <a className="help" href="/contact">Need help?</a>
+        <nav className="top-links" aria-label="Main">
+          <a href="/parcel-tracking-guide">Tracking guide</a>
+          <a className="help" href="/contact">Need help?</a>
+        </nav>
       </header>
 
       {infoPage ? (

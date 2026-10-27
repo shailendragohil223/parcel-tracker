@@ -31,6 +31,9 @@ button { font: inherit; cursor: pointer; }
 .brand-name { font-weight: 700; font-size: 20px; letter-spacing: -0.02em; }
 .brand-name span { color: var(--brand); }
 .help { color: var(--brand); text-decoration: none; font-weight: 500; font-size: 14px; }
+.top-links { display: flex; gap: 18px; align-items: center; }
+.top-links a:not(.help) { color: #475569; text-decoration: none; font-weight: 500; font-size: 14px; }
+.top-links a:hover { color: var(--brand); }
 
 .hero { background: linear-gradient(135deg, #0f1f4b, #1d4ed8); color: #fff; border-radius: 20px; padding: 48px 32px; text-align: center; }
 .hero--compact { padding: 20px 24px; }
