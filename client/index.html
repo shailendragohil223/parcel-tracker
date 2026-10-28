@@ -63,7 +63,9 @@
     <meta name="twitter:description" content="Track your shipments online with Track My Ship. Check AWB and consignment status and delivery updates for DTDC, Blue Dart, Delhivery, Speed Post and more." />
     <meta name="twitter:image" content="https://trackmyship.co/og-image.png" />
 
-    <!-- Structured data: brand, site search box, web app -->
+    <!-- Structured data: brand and website. No SoftwareApplication/WebApplication type:
+         Google requires real ratings or reviews for it, and the site has none. -->
+
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -86,17 +88,8 @@
           "name": "Track My Ship",
           "alternateName": ["TrackMyShip", "trackmyship.co"],
           "inLanguage": "en-IN",
+          "description": "Free courier tracking website for India. Enter a courier AWB or consignment number to see status, scan history and route on a map. Independent; does not book or deliver parcels.",
           "publisher": { "@id": "https://trackmyship.co/#org" }
-        },
-        {
-          "@type": "WebApplication",
-          "name": "Track My Ship",
-          "url": "https://trackmyship.co/",
-          "applicationCategory": "BusinessApplication",
-          "operatingSystem": "Any",
-          "browserRequirements": "Requires JavaScript",
-          "offers": { "@type": "Offer", "price": "0", "priceCurrency": "INR" },
-          "description": "Free courier tracking website for India. Enter a courier AWB or consignment number to see status, scan history and route on a map. Independent; does not book or deliver parcels."
         }
       ]
     }
