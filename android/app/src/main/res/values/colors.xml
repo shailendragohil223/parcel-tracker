@@ -1,0 +1,5 @@
+<resources>
+    <!-- From client/public/site.webmanifest -->
+    <color name="themeColor">#0F1F4B</color>
+    <color name="backgroundColor">#F4F6FA</color>
+</resources>

@@ -70,6 +70,20 @@ app.get('/robots.txt', crawlerFile('text/plain', robotsTxt));
 app.get('/sitemap.xml', crawlerFile('application/xml', sitemapXml));
 app.get('/llms.txt', crawlerFile('text/plain', llmsTxt));
 app.get('/ads.txt', crawlerFile('text/plain', adsTxt));
+// Digital Asset Links for the Android app (android/): proves the app and the site belong
+// together, so the app opens full-screen without a browser address bar. Lists the SHA-256
+// fingerprints of the app's signing certificates: the upload key below, plus the Play App
+// Signing key from Play Console > Test and release > App integrity, added via
+// ANDROID_CERT_SHA256 (comma-separated) in the host's environment.
+const ANDROID_CERTS = [
+  'EA:39:42:40:36:0F:34:84:C5:7A:08:0C:F1:AF:1C:54:7B:02:40:4E:A0:BF:4E:44:A2:C3:5A:7F:2A:3B:9E:EB', // upload key
+  ...(process.env.ANDROID_CERT_SHA256 || '').split(',').map((s) => s.trim().toUpperCase()).filter(Boolean),
+];
+app.get('/.well-known/assetlinks.json', (_req, res) =>
+  res.set('Cache-Control', 'public, max-age=3600').json([{
+    relation: ['delegate_permission/common.handle_all_urls'],
+    target: { namespace: 'android_app', package_name: 'co.trackmyship.app', sha256_cert_fingerprints: [...new Set(ANDROID_CERTS)] },
+  }]));
 app.get('/.well-known/security.txt', (_req, res) =>
   res.type('text/plain').send(securityTxt(process.env.SECURITY_CONTACT || 'info@trackmyship.co', `https://${SITE_HOST}`)));
 

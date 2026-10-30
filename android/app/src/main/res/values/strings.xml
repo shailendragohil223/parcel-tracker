@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">Track My Ship</string>
+    <string name="launch_url">https://trackmyship.co/?utm_source=android_app&amp;utm_medium=app</string>
+    <string name="provider_authority">co.trackmyship.app.fileprovider</string>
+    <string name="asset_statements" translatable="false">
+        [{
+            \"relation\": [\"delegate_permission/common.handle_all_urls\"],
+            \"target\": {\"namespace\": \"web\", \"site\": \"https://trackmyship.co\"}
+        }]
+    </string>
+</resources>

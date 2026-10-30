@@ -70,6 +70,8 @@ jobs:
           curl -fsS "http://localhost:5099/api/track?q=TMS100245781" | head -c 200
           curl -fsS http://localhost:5099/ | grep -q '<div id="root" data-ssr="1">'
           curl -fsSI http://localhost:5099/ | grep -i 'referrer-policy: strict-origin-when-cross-origin'
+          # Android app link verification file
+          curl -fsS http://localhost:5099/.well-known/assetlinks.json | grep -q '"package_name":"co.trackmyship.app"'
           # Crawler / SEO / browser checks (see scripts/check_site.py)
           pip install --quiet playwright==1.47.0
           python3 scripts/check_site.py http://localhost:5099 --browser --demo > check.log 2>&1 || { cat check.log; false; }
