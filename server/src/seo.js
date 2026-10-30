@@ -12,6 +12,10 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 const SEO = JSON.parse(readFileSync(join(__dirname, '../../client/src/seo-pages.json'), 'utf8'));
 const SITE = (process.env.SITE_URL || SEO.site.url).replace(/\/$/, '');
 const B = SEO.business;
+// Blog: post list in client/src/blog/posts.json, post text in client/src/blog/<slug>.md
+const BLOG = JSON.parse(readFileSync(join(__dirname, '../../client/src/blog/posts.json'), 'utf8'));
+const POSTS = [...BLOG.posts].sort((a, b) => b.published.localeCompare(a.published));
+const blogUpdated = () => POSTS.reduce((d, p) => (p.updated > d ? p.updated : d), POSTS[0]?.updated || SEO.site.updated);
 
 // React server renderer, built by `npm run build` (client/dist-ssr). Falls back to a text summary if missing.
 let ssrRender = null;
@@ -38,6 +42,15 @@ export function pageFor(path) {
   if (path === '/' || path === '') return { ...SEO.home, path: '/', canonical: `${SITE}/`, updated: SEO.site.updated };
   const info = SEO.pages.find((p) => p.path === path);
   if (info) return { ...info, canonical: `${SITE}${info.path}`, info: true };
+  if (path === BLOG.index.path) return { ...BLOG.index, canonical: `${SITE}${path}`, updated: blogUpdated(), info: true, blogIndex: true };
+  const post = POSTS.find((p) => `/blog/${p.slug}` === path);
+  if (post) {
+    return {
+      path, canonical: `${SITE}${path}`, type: 'article', info: true, post,
+      title: `${post.title} | Track My Ship`, description: post.description, h1: post.h1, sub: post.description,
+      published: post.published, updated: post.updated,
+    };
+  }
   const c = courierPageFor(path);
   if (!c) return null;
   return {
@@ -63,11 +76,12 @@ function jsonLd(page) {
     '@id': `${page.canonical}#breadcrumb`,
     itemListElement: [
       { '@type': 'ListItem', position: 1, name: 'Track My Ship', item: `${SITE}/` },
-      { '@type': 'ListItem', position: 2, name: page.h1, item: page.canonical },
+      ...(page.post ? [{ '@type': 'ListItem', position: 2, name: 'Blog', item: `${SITE}${BLOG.index.path}` }] : []),
+      { '@type': 'ListItem', position: page.post ? 3 : 2, name: page.h1, item: page.canonical },
     ],
   };
   const webPage = {
-    '@type': page.path === '/contact' ? ['WebPage', 'ContactPage', 'AboutPage'] : 'WebPage',
+    '@type': page.path === '/contact' ? ['WebPage', 'ContactPage', 'AboutPage'] : page.blogIndex ? ['WebPage', 'CollectionPage'] : 'WebPage',
     '@id': `${page.canonical}#webpage`,
     url: page.canonical,
     name: page.title,
@@ -81,11 +95,26 @@ function jsonLd(page) {
   const graph = [webPage];
   if (crumbs) graph.push(crumbs);
 
-  if (page.type === 'article') {
+  const BLOG_ID = `${SITE}${BLOG.index.path}#blog`;
+  if (page.blogIndex) {
     graph.push({
-      '@type': 'Article',
+      '@type': 'Blog',
+      '@id': BLOG_ID,
+      name: BLOG.index.h1,
+      url: page.canonical,
+      description: page.description,
+      publisher: ORG,
+      inLanguage: 'en-IN',
+      blogPost: POSTS.map((p) => ({
+        '@type': 'BlogPosting', headline: p.h1, url: `${SITE}/blog/${p.slug}`, datePublished: p.published, dateModified: p.updated,
+      })),
+    });
+  } else if (page.type === 'article') {
+    graph.push({
+      '@type': page.post ? 'BlogPosting' : 'Article',
       '@id': `${page.canonical}#article`,
-      headline: page.title.replace(/ \| Track My Ship$/, ''),
+      ...(page.post ? { isPartOf: { '@id': BLOG_ID } } : {}),
+      headline: page.post ? page.h1 : page.title.replace(/ \| Track My Ship$/, ''),
       description: page.description,
       mainEntityOfPage: { '@id': webPage['@id'] },
       datePublished: page.published,
@@ -110,7 +139,7 @@ function fallbackContent(page) {
   return `<main class="prerender"><h1>${esc(page.h1)}</h1><p>${esc(page.sub)}</p>`
     + `<h2>Track parcels from popular couriers</h2><ul>${links}</ul>`
     + `<h2>Frequently asked questions</h2>${faq}`
-    + `<p><a href="/parcel-tracking-guide">Parcel tracking guide</a> · <a href="/contact">About &amp; Contact</a> · <a href="/privacy-policy">Privacy Policy</a> · <a href="/terms">Terms of Use</a></p></main>`;
+    + `<p><a href="/parcel-tracking-guide">Parcel tracking guide</a> · <a href="/blog">Blog</a> · <a href="/contact">About &amp; Contact</a> · <a href="/privacy-policy">Privacy Policy</a> · <a href="/terms">Terms of Use</a></p></main>`;
 }
 
 export function renderPage(template, path, { noindex = false } = {}) {
@@ -150,6 +179,8 @@ export function sitemapXml() {
     { loc: `${SITE}/`, lastmod: SEO.site.updated, priority: '1.0' },
     ...SEO.couriers.map((c) => ({ loc: `${SITE}${c.path}`, lastmod: SEO.site.updated, priority: '0.8' })),
     ...SEO.pages.map((p) => ({ loc: `${SITE}${p.path}`, lastmod: p.updated, priority: p.type === 'article' ? '0.7' : '0.3' })),
+    { loc: `${SITE}${BLOG.index.path}`, lastmod: blogUpdated(), priority: '0.6' },
+    ...POSTS.map((p) => ({ loc: `${SITE}/blog/${p.slug}`, lastmod: p.updated, priority: '0.6' })),
   ];
   return `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n`
     + urls.map((u) => `  <url><loc>${u.loc}</loc><lastmod>${u.lastmod}</lastmod><priority>${u.priority}</priority></url>`).join('\n')
@@ -207,6 +238,10 @@ export function llmsTxt() {
     '## Courier tracking pages',
     ...SEO.couriers.map((c) => link(c.path, `${c.name} tracking`, `how to track a ${c.name} parcel; the ${c.numberName} is ${c.format}`)),
     '',
+    '## Blog',
+    link(BLOG.index.path, 'Track My Ship Blog', 'practical help when a parcel is late, missing or stuck'),
+    ...POSTS.map((p) => link(`/blog/${p.slug}`, p.h1, p.description)),
+    '',
     '## About',
     link('/contact', 'About & Contact'),
     link('/privacy-policy', 'Privacy Policy'),
@@ -218,6 +253,31 @@ export function llmsTxt() {
     '- Delivery dates are estimates from the courier; for problems with a parcel, users should contact the courier or the sender.',
     '',
   ].filter((l) => l !== null).join('\n');
+}
+
+// ---------- Blog RSS feed (/blog/rss.xml): lets feed readers and search engines find new posts ----------
+const rfc822 = (d) => new Date(`${d}T09:00:00+05:30`).toUTCString();
+export function blogRss() {
+  const items = POSTS.map((p) => `    <item>
+      <title>${esc(p.h1)}</title>
+      <link>${SITE}/blog/${p.slug}</link>
+      <guid isPermaLink="true">${SITE}/blog/${p.slug}</guid>
+      <description>${esc(p.description)}</description>
+      <pubDate>${rfc822(p.published)}</pubDate>
+    </item>`).join('\n');
+  return `<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>${esc(BLOG.index.h1)}</title>
+    <link>${SITE}${BLOG.index.path}</link>
+    <atom:link href="${SITE}/blog/rss.xml" rel="self" type="application/rss+xml" />
+    <description>${esc(BLOG.index.description)}</description>
+    <language>en-in</language>
+    <lastBuildDate>${rfc822(blogUpdated())}</lastBuildDate>
+${items}
+  </channel>
+</rss>
+`;
 }
 
 // ---------- ads.txt (Google AdSense) ----------

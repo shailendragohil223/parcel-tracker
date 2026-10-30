@@ -84,12 +84,14 @@ jobs:
           mkdir -p shots && cp check.log shots/check.log
           # Screenshots (downloadable from the run's Artifacts)
           mkdir -p shots
-          for u in "home|/" "dtdc|/dtdc-tracking" "result|/?q=TMS100245781" "privacy|/privacy-policy" "guide|/parcel-tracking-guide" "courier|/delhivery-tracking"; do
+          for u in "home|/" "dtdc|/dtdc-tracking" "result|/?q=TMS100245781" "privacy|/privacy-policy" "guide|/parcel-tracking-guide" "courier|/delhivery-tracking" "blog|/blog" "post|/blog/out-for-delivery-not-delivered"; do
             google-chrome --headless=new --no-sandbox --hide-scrollbars --window-size=1280,1600 \
               --virtual-time-budget=8000 --screenshot="shots/${u%%|*}.png" "http://localhost:5099${u#*|}" 2>/dev/null
           done
           google-chrome --headless=new --no-sandbox --hide-scrollbars --window-size=390,1500 \
             --virtual-time-budget=8000 --screenshot=shots/mobile.png http://localhost:5099/ 2>/dev/null
+          google-chrome --headless=new --no-sandbox --hide-scrollbars --window-size=390,2400 \
+            --virtual-time-budget=8000 --screenshot=shots/mobile-post.png http://localhost:5099/blog/how-to-write-delivery-address-india 2>/dev/null
           ls -la shots
           rm -f start.log
       - uses: actions/upload-artifact@v4

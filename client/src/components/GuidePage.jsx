@@ -1,5 +1,6 @@
 import SEO from '../seo-pages.json';
 import AdSlot from './AdSlot.jsx';
+import { POSTS, postPath } from '../blog/index.js';
 
 const PAGE = SEO.pages.find((p) => p.path === '/parcel-tracking-guide');
 const fmt = (d) => new Date(`${d}T00:00:00+05:30`).toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'Asia/Kolkata' });
@@ -147,6 +148,11 @@ export default function GuidePage() {
           ))}.
         </p>
       )}
+
+      <h2 id="more-help">More help</h2>
+      <ul>
+        {POSTS.map((p) => <li key={p.slug}><a href={postPath(p)}>{p.h1}</a></li>)}
+      </ul>
 
       <h2 id="track">Track your parcel</h2>
       <p>

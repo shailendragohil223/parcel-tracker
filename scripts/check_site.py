@@ -73,6 +73,15 @@ check(s == 200 and llms.startswith('# Track My Ship') and '/parcel-tracking-guid
 s, _, ads = get('/ads.txt')
 check(s == 200 and re.match(r'google\.com, pub-\d+, DIRECT, f08c47fec0942fa0', ads or '') is not None, 'ads.txt returns AdSense line')
 
+# ---- blog: listed in the sitemap, RSS feed, llms.txt and structured data ----
+posts = [u for u in urls if u.startswith(SITE + '/blog/')]
+check(f'{SITE}/blog' in urls and len(posts) >= 4, f'sitemap.xml lists the blog and {len(posts)} posts')
+s, h, rss = get('/blog/rss.xml')
+items = ET.fromstring(rss).findall('./channel/item') if s == 200 else []
+check(s == 200 and 'xml' in h.get('Content-Type', '') and len(items) == len(posts)
+      and all(i.find('link').text in posts for i in items), f'blog RSS feed valid with {len(items)} posts')
+check(all(p[len(SITE):] in llms for p in posts), 'llms.txt lists every blog post')
+
 # ---- every sitemap page, as a crawler without JavaScript ----
 expect_text = {
     '/': 'Is Track My Ship a courier company?',
@@ -81,6 +90,8 @@ expect_text = {
     '/privacy-policy': 'Digital Personal Data Protection Act',
     '/terms': 'Governing law',
     '/contact': 'We do not book, carry or deliver parcels',
+    '/blog': 'Track My Ship Blog',
+    '/blog/rto-meaning-in-courier-tracking': 'Can RTO be stopped?',
 }
 all_links, titles, descs = set(), {}, {}
 for url in urls:
@@ -106,6 +117,15 @@ for url in urls:
     all_links.update(l.split('#')[0] for l in p.links)
 
 check(len(set(titles.values())) == len(titles), 'page titles are unique')
+for path in ['/blog'] + [u[len(SITE):] for u in posts]:
+    _, _, html = get(path)
+    lds = [json.loads(b) for b in re.findall(r'<script type="application/ld\+json">(.*?)</script>', html, re.S)]
+    types = [t for d in lds for g in d.get('@graph', [d]) for t in ([g['@type']] if isinstance(g['@type'], str) else g['@type'])]
+    want = 'Blog' if path == '/blog' else 'BlogPosting'
+    check(want in types and 'BreadcrumbList' in types, f'{path}: {want} + breadcrumb structured data')
+    if path != '/blog':
+        check('property="og:type" content="article"' in html and 'More from the blog' in html and '<p class="answer">' in html,
+              f'{path}: article tags, direct answer and related posts')
 check(len(set(descs.values())) == len(descs), 'meta descriptions are unique')
 
 for link in sorted(all_links):
@@ -196,7 +216,7 @@ if '--browser' in sys.argv:
     from playwright.sync_api import sync_playwright
     with sync_playwright() as pw:
         b = pw.chromium.launch(channel='chrome')
-        for path in ['/', '/dtdc-tracking', '/parcel-tracking-guide', '/privacy-policy']:
+        for path in ['/', '/dtdc-tracking', '/parcel-tracking-guide', '/privacy-policy', '/blog', '/blog/delivered-but-not-received']:
             pg = b.new_page(); errors = []
             pg.on('console', lambda m: errors.append(m.text) if m.type == 'error' else None)
             pg.on('pageerror', lambda e: errors.append(str(e)))

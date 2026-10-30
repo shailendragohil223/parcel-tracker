@@ -1,0 +1,44 @@
+{
+  "_howto": "To add a post: write client/src/blog/<slug>.md and add an entry below (newest first). The page /blog/<slug>, the blog list, sitemap.xml, the RSS feed, llms.txt and the structured data all update automatically. Dates are YYYY-MM-DD. Keep each description unique, about 120-160 characters.",
+  "index": {
+    "path": "/blog",
+    "title": "Courier Tracking Tips & Delivery Help – Track My Ship Blog",
+    "description": "Practical help for parcels in India: what tracking statuses really mean, what to do when a delivery goes wrong, and how to make sure your courier arrives.",
+    "h1": "Track My Ship Blog",
+    "sub": "Plain-language help for when a parcel is late, missing or stuck."
+  },
+  "posts": [
+    {
+      "slug": "delivered-but-not-received",
+      "h1": "Parcel shows Delivered but you didn't get it? What to do",
+      "title": "Parcel Shows Delivered but Not Received? What to Do",
+      "description": "Tracking says delivered but there's no parcel? Check these places first, then contact the courier and the seller in the right order, with the right details.",
+      "published": "2026-10-30",
+      "updated": "2026-10-30"
+    },
+    {
+      "slug": "out-for-delivery-not-delivered",
+      "h1": "Out for delivery but not delivered: why it happens and what to do",
+      "title": "Out for Delivery but Not Delivered: Why and What to Do",
+      "description": "Your parcel was out for delivery all day and never came. The common reasons, what the next tracking scan tells you, and how to get it delivered.",
+      "published": "2026-10-30",
+      "updated": "2026-10-30"
+    },
+    {
+      "slug": "rto-meaning-in-courier-tracking",
+      "h1": "What does RTO mean in courier tracking?",
+      "title": "What Does RTO Mean in Courier Tracking?",
+      "description": "RTO means return to origin: the courier is sending your parcel back to the sender. Why it happens, whether it can be stopped, and what to do next.",
+      "published": "2026-10-30",
+      "updated": "2026-10-30"
+    },
+    {
+      "slug": "how-to-write-delivery-address-india",
+      "h1": "How to write a delivery address in India so your parcel arrives",
+      "title": "How to Write a Delivery Address in India (With Examples)",
+      "description": "A complete delivery address in India, line by line: name, phone, house, landmark, area, city and PIN code. Small details that stop failed deliveries.",
+      "published": "2026-10-30",
+      "updated": "2026-10-30"
+    }
+  ]
+}

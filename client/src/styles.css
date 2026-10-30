@@ -170,9 +170,25 @@ button { font: inherit; cursor: pointer; }
 .ad-slot { margin: 16px 0; min-height: 0; overflow: hidden; }
 .info-page .ad-slot { margin: 24px 0; }
 
+/* Blog */
+.post-list { list-style: none; margin: 0 0 12px; padding: 0; display: grid; gap: 12px; }
+.post-card a { display: grid; gap: 4px; padding: 16px 18px; border: 1px solid var(--line); border-radius: 12px; color: inherit; text-decoration: none; }
+.post-card a:hover { border-color: var(--brand); background: #f8faff; }
+.post-card-title { color: var(--ink); font-weight: 650; font-size: 17px; line-height: 1.35; }
+.post-card a:hover .post-card-title { color: var(--brand); }
+.post-card-desc { color: #475569; font-size: 14px; line-height: 1.55; }
+.post-card-date { color: var(--muted); font-size: 13px; }
+.crumbs { font-size: 13px; color: var(--muted); margin: 0 0 6px; }
+.crumbs a { color: var(--muted); }
+.info-page h3 { color: var(--ink); font-size: 16px; margin: 18px 0 6px; }
+
 /* Text sent by the server for search engines; replaced by the app on load */
 .prerender { max-width: 1120px; margin: 0 auto; padding: 24px 16px; color: var(--ink); }
 
+@media (max-width: 420px) {
+  .brand-name { font-size: 16px; }
+  .top-links { gap: 10px; }
+}
 @media (max-width: 800px) {
   .grid { grid-template-columns: 1fr; }
   .hero { padding: 32px 16px; }
@@ -181,6 +197,8 @@ button { font: inherit; cursor: pointer; }
   .btn { padding: 0 16px; min-width: 76px; }
   .how { grid-template-columns: 1fr; }
   .brand-name { font-size: 18px; }
+  .top-links { gap: 12px; }
+  .top-links a:not(.help), .help { font-size: 13px; }
   .search-row { flex-wrap: wrap; }
   .courier { max-width: none; width: 100%; padding: 10px; border-right: 0; }
 }

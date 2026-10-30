@@ -1,6 +1,7 @@
 import SEO from '../seo-pages.json';
 import { courierFaq } from '../courier-faq.js';
 import AdSlot from './AdSlot.jsx';
+import { POSTS, postPath } from '../blog/index.js';
 
 function CourierAnswer({ courier: c }) {
   return (
@@ -90,6 +91,14 @@ export default function HomeContent({ courier }) {
             </li>
           ))}
         </ul>
+      </section>
+
+      <section className="panel" aria-labelledby="help-posts">
+        <h2 className="panel-title" id="help-posts">Help with a delivery problem</h2>
+        <ul className="courier-links">
+          {POSTS.slice(0, 4).map((p) => <li key={p.slug}><a href={postPath(p)}>{p.h1}</a></li>)}
+        </ul>
+        <p className="muted small">More tips on the <a href="/blog">Track My Ship blog</a>.</p>
       </section>
 
       <section className="panel" aria-labelledby="faq">

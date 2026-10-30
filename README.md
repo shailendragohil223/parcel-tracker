@@ -103,6 +103,18 @@ Courier APIs change their response fields from time to time — check each adapt
 - **Crawler logging:** visits from Googlebot, bingbot, OAI-SearchBot, GPTBot, ChatGPT-User, Claude-SearchBot, ClaudeBot, Claude-User, PerplexityBot and Perplexity-User are logged as `[crawler] {...,"verified":true|false|null}` — verified against each operator's published IP list (Google/Bing: reverse DNS). User-agent alone is never trusted. `CRAWLER_LOG=off` disables it.
 - **Check the site:** `python3 scripts/check_site.py https://trackmyship.co` tests robots/sitemap/status codes/canonicals/JSON-LD/links like a crawler; GitHub runs it with `--browser` on every change.
 
+## Blog
+
+Posts live in `client/src/blog/`. To add one:
+
+1. Write the post as `client/src/blog/<slug>.md` (lower-case words joined by hyphens, e.g. `cod-parcel-refund.md`).
+   Supported formatting: `## Heading`, `### Subheading`, `> In short: …` (highlighted answer, put it first),
+   `- lists`, `1. lists`, tables with `|`, `**bold**`, `[links](/dtdc-tracking)` and `[ad]` for an AdSense unit.
+2. Add an entry to `client/src/blog/posts.json` with `slug`, `h1`, `title` (under ~60 characters),
+   a unique `description` (120–160 characters) and the `published` / `updated` dates.
+3. Push and redeploy. The post appears at `/blog/<slug>`, in the blog list, on the home page,
+   in `sitemap.xml`, the RSS feed (`/blog/rss.xml`), `llms.txt` and the structured data (BlogPosting).
+
 ## Security built in
 
 - Rate limit: 20 searches/minute per IP on `/api/track` (stops people guessing phone numbers).

@@ -20,6 +20,13 @@ Track My Ship is an independent tracking website based in Vadodara, Gujarat, Ind
 - [Shree Anjani Courier tracking](https://trackmyship.co/shree-anjani-courier-tracking): how to track a Shree Anjani Courier parcel; the tracking (docket) number is printed on your booking receipt
 - [Shree Tirupati Courier tracking](https://trackmyship.co/shree-tirupati-courier-tracking): how to track a Shree Tirupati Courier parcel; the tracking (docket) number is printed on your booking receipt
 
+## Blog
+- [Track My Ship Blog](https://trackmyship.co/blog): practical help when a parcel is late, missing or stuck
+- [Parcel shows Delivered but you didn't get it? What to do](https://trackmyship.co/blog/delivered-but-not-received): Tracking says delivered but there's no parcel? Check these places first, then contact the courier and the seller in the right order, with the right details.
+- [Out for delivery but not delivered: why it happens and what to do](https://trackmyship.co/blog/out-for-delivery-not-delivered): Your parcel was out for delivery all day and never came. The common reasons, what the next tracking scan tells you, and how to get it delivered.
+- [What does RTO mean in courier tracking?](https://trackmyship.co/blog/rto-meaning-in-courier-tracking): RTO means return to origin: the courier is sending your parcel back to the sender. Why it happens, whether it can be stopped, and what to do next.
+- [How to write a delivery address in India so your parcel arrives](https://trackmyship.co/blog/how-to-write-delivery-address-india): A complete delivery address in India, line by line: name, phone, house, landmark, area, city and PIN code. Small details that stop failed deliveries.
+
 ## About
 - [About & Contact](https://trackmyship.co/contact)
 - [Privacy Policy](https://trackmyship.co/privacy-policy)

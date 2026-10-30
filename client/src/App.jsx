@@ -7,6 +7,8 @@ import ShipmentList from './components/ShipmentList.jsx';
 import ShipmentDetail from './components/ShipmentDetail.jsx';
 import HomeContent from './components/HomeContent.jsx';
 import InfoPage, { infoPageFor } from './components/InfoPage.jsx';
+import { BlogIndex, BlogPost } from './components/BlogPage.jsx';
+import { BLOG, postFor } from './blog/index.js';
 
 const clean = (p) => (p.length > 1 ? p.replace(/\/$/, '') : p);
 
@@ -16,11 +18,15 @@ function setNoindex(on) {
 }
 
 // `path` is passed in so the same app renders on the server (server/src/seo.js) and in the browser.
-export default function App({ path }) {
+// `postBody` is a blog post's text (blog pages only).
+export default function App({ path, postBody = null }) {
   const pathname = clean(path);
   // Courier landing page (e.g. /dtdc-tracking); guide / About / Privacy / Terms pages
   const courierPage = SEO.couriers.find((c) => c.path === pathname) || null;
-  const infoPage = infoPageFor(pathname);
+  const blogPost = postFor(pathname);
+  const blogIndex = pathname === BLOG.index.path;
+  // Pages without the search box: guide, About, Privacy, Terms and the blog
+  const infoPage = infoPageFor(pathname) || (blogIndex ? BLOG.index : blogPost ? { h1: blogPost.h1, sub: blogPost.description } : null);
   const notFound = pathname !== '/' && !courierPage && !infoPage;
   const PAGE = notFound
     ? { h1: 'Page not found', sub: 'This page does not exist. You can still track your parcel below.' }
@@ -90,6 +96,7 @@ export default function App({ path }) {
         </a>
         <nav className="top-links" aria-label="Main">
           <a href="/parcel-tracking-guide">Tracking guide</a>
+          <a href="/blog">Blog</a>
           <a className="help" href="/contact">Need help?</a>
         </nav>
       </header>
@@ -100,7 +107,7 @@ export default function App({ path }) {
             <h1>{infoPage.h1}</h1>
             <p className="sub">{infoPage.sub}</p>
           </section>
-          <InfoPage page={infoPage} />
+          {blogPost ? <BlogPost post={blogPost} body={postBody} /> : blogIndex ? <BlogIndex /> : <InfoPage page={infoPage} />}
         </main>
       ) : (
         <main>
@@ -131,6 +138,7 @@ export default function App({ path }) {
         <nav className="foot-links" aria-label="Footer">
           <a href="/">Track a parcel</a>
           <a href="/parcel-tracking-guide">Tracking guide</a>
+          <a href="/blog">Blog</a>
           <a href="/contact">About &amp; Contact</a>
           <a href="/privacy-policy">Privacy Policy</a>
           <a href="/terms">Terms of Use</a>

@@ -3,7 +3,7 @@ import express from 'express';
 import cors from 'cors';
 import rateLimit from 'express-rate-limit';
 import { existsSync, readFileSync } from 'node:fs';
-import { pageFor, renderPage, sitemapXml, robotsTxt, llmsTxt, adsTxt } from './seo.js';
+import { pageFor, renderPage, sitemapXml, robotsTxt, llmsTxt, adsTxt, blogRss } from './seo.js';
 import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
 import trackRoutes from './routes/track.js';
@@ -70,6 +70,7 @@ app.get('/robots.txt', crawlerFile('text/plain', robotsTxt));
 app.get('/sitemap.xml', crawlerFile('application/xml', sitemapXml));
 app.get('/llms.txt', crawlerFile('text/plain', llmsTxt));
 app.get('/ads.txt', crawlerFile('text/plain', adsTxt));
+app.get('/blog/rss.xml', crawlerFile('application/rss+xml', blogRss));
 // Digital Asset Links for the Android app (android/): proves the app and the site belong
 // together, so the app opens full-screen without a browser address bar. Lists the SHA-256
 // fingerprints of the app's signing certificates: the upload key below, plus the Play App
