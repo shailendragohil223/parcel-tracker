@@ -1,0 +1,132 @@
+PASS robots.txt returns 200 text/plain
+PASS robots.txt: OAI-SearchBot allowed, /api/ disallowed
+PASS robots.txt: Claude-SearchBot and PerplexityBot in the search-crawler group
+PASS robots.txt: GPTBot left to the default rule (unchanged)
+PASS robots.txt: default group keeps /api/ blocked
+PASS robots.txt: sitemap URL listed
+PASS sitemap.xml returns 200 XML
+PASS sitemap.xml valid, 20 https URLs on https://trackmyship.co
+PASS sitemap.xml has no query-string URLs
+PASS llms.txt returns 200 with key pages
+PASS ads.txt returns AdSense line
+PASS sitemap.xml lists the blog and 4 posts
+PASS blog RSS feed valid with 4 posts
+PASS llms.txt lists every blog post
+PASS /: 200, canonical, indexable, server-rendered, one H1, JSON-LD valid (status=200 canonical=True ssr=True h1=['Track My Ship – Track Your Courier Online'] ld=2/True text=True)
+PASS /dtdc-tracking: 200, canonical, indexable, server-rendered, one H1, JSON-LD valid (status=200 canonical=True ssr=True h1=['DTDC Tracking'] ld=2/True text=True)
+PASS /bluedart-tracking: 200, canonical, indexable, server-rendered, one H1, JSON-LD valid (status=200 canonical=True ssr=True h1=['Blue Dart Tracking'] ld=2/True text=True)
+PASS /delhivery-tracking: 200, canonical, indexable, server-rendered, one H1, JSON-LD valid (status=200 canonical=True ssr=True h1=['Delhivery Tracking'] ld=2/True text=True)
+PASS /speed-post-tracking: 200, canonical, indexable, server-rendered, one H1, JSON-LD valid (status=200 canonical=True ssr=True h1=['Speed Post (India Post) Tracking'] ld=2/True text=True)
+PASS /trackon-tracking: 200, canonical, indexable, server-rendered, one H1, JSON-LD valid (status=200 canonical=True ssr=True h1=['Trackon Couriers Tracking'] ld=2/True text=True)
+PASS /professional-courier-tracking: 200, canonical, indexable, server-rendered, one H1, JSON-LD valid (status=200 canonical=True ssr=True h1=['The Professional Couriers Tracking'] ld=2/True text=True)
+PASS /st-courier-tracking: 200, canonical, indexable, server-rendered, one H1, JSON-LD valid (status=200 canonical=True ssr=True h1=['ST Courier Tracking'] ld=2/True text=True)
+PASS /shree-maruti-courier-tracking: 200, canonical, indexable, server-rendered, one H1, JSON-LD valid (status=200 canonical=True ssr=True h1=['Shree Maruti Courier Tracking'] ld=2/True text=True)
+PASS /shree-anjani-courier-tracking: 200, canonical, indexable, server-rendered, one H1, JSON-LD valid (status=200 canonical=True ssr=True h1=['Shree Anjani Courier Tracking'] ld=2/True text=True)
+PASS /shree-tirupati-courier-tracking: 200, canonical, indexable, server-rendered, one H1, JSON-LD valid (status=200 canonical=True ssr=True h1=['Shree Tirupati Courier Tracking'] ld=2/True text=True)
+PASS /parcel-tracking-guide: 200, canonical, indexable, server-rendered, one H1, JSON-LD valid (status=200 canonical=True ssr=True h1=['Parcel tracking guide'] ld=2/True text=True)
+PASS /contact: 200, canonical, indexable, server-rendered, one H1, JSON-LD valid (status=200 canonical=True ssr=True h1=['About & Contact'] ld=2/True text=True)
+PASS /privacy-policy: 200, canonical, indexable, server-rendered, one H1, JSON-LD valid (status=200 canonical=True ssr=True h1=['Privacy Policy'] ld=2/True text=True)
+PASS /terms: 200, canonical, indexable, server-rendered, one H1, JSON-LD valid (status=200 canonical=True ssr=True h1=['Terms of Use'] ld=2/True text=True)
+PASS /blog: 200, canonical, indexable, server-rendered, one H1, JSON-LD valid (status=200 canonical=True ssr=True h1=['Track My Ship Blog'] ld=2/True text=True)
+PASS /blog/delivered-but-not-received: 200, canonical, indexable, server-rendered, one H1, JSON-LD valid (status=200 canonical=True ssr=True h1=["Parcel shows Delivered but you didn't get it? What to do"] ld=2/True text=True)
+PASS /blog/out-for-delivery-not-delivered: 200, canonical, indexable, server-rendered, one H1, JSON-LD valid (status=200 canonical=True ssr=True h1=['Out for delivery but not delivered: why it happens and what to do'] ld=2/True text=True)
+PASS /blog/rto-meaning-in-courier-tracking: 200, canonical, indexable, server-rendered, one H1, JSON-LD valid (status=200 canonical=True ssr=True h1=['What does RTO mean in courier tracking?'] ld=2/True text=True)
+PASS /blog/how-to-write-delivery-address-india: 200, canonical, indexable, server-rendered, one H1, JSON-LD valid (status=200 canonical=True ssr=True h1=['How to write a delivery address in India so your parcel arrives'] ld=2/True text=True)
+PASS page titles are unique
+PASS /blog: Blog + breadcrumb structured data
+PASS /blog/delivered-but-not-received: BlogPosting + breadcrumb structured data
+PASS /blog/delivered-but-not-received: article tags, direct answer and related posts
+PASS /blog/out-for-delivery-not-delivered: BlogPosting + breadcrumb structured data
+PASS /blog/out-for-delivery-not-delivered: article tags, direct answer and related posts
+PASS /blog/rto-meaning-in-courier-tracking: BlogPosting + breadcrumb structured data
+PASS /blog/rto-meaning-in-courier-tracking: article tags, direct answer and related posts
+PASS /blog/how-to-write-delivery-address-india: BlogPosting + breadcrumb structured data
+PASS /blog/how-to-write-delivery-address-india: article tags, direct answer and related posts
+PASS meta descriptions are unique
+PASS internal link / -> 200
+PASS internal link /blog -> 200
+PASS internal link /blog/delivered-but-not-received -> 200
+PASS internal link /blog/how-to-write-delivery-address-india -> 200
+PASS internal link /blog/out-for-delivery-not-delivered -> 200
+PASS internal link /blog/rto-meaning-in-courier-tracking -> 200
+PASS internal link /bluedart-tracking -> 200
+PASS internal link /contact -> 200
+PASS internal link /delhivery-tracking -> 200
+PASS internal link /dtdc-tracking -> 200
+PASS internal link /parcel-tracking-guide -> 200
+PASS internal link /privacy-policy -> 200
+PASS internal link /professional-courier-tracking -> 200
+PASS internal link /shree-anjani-courier-tracking -> 200
+PASS internal link /shree-maruti-courier-tracking -> 200
+PASS internal link /shree-tirupati-courier-tracking -> 200
+PASS internal link /speed-post-tracking -> 200
+PASS internal link /st-courier-tracking -> 200
+PASS internal link /terms -> 200
+PASS internal link /trackon-tracking -> 200
+PASS trailing slash 301 -> /dtdc-tracking
+PASS www 301 -> main domain
+PASS www via proxy header (X-Forwarded-Host) 301 -> main domain
+PASS tracking result URL is noindex
+PASS /api/ responses are noindex
+PASS unknown page returns 404 + noindex
+PASS Referrer-Policy allows map tiles
+PASS /: no shipment or personal data in public HTML
+PASS /dtdc-tracking: no shipment or personal data in public HTML
+PASS /bluedart-tracking: no shipment or personal data in public HTML
+PASS /delhivery-tracking: no shipment or personal data in public HTML
+PASS /speed-post-tracking: no shipment or personal data in public HTML
+PASS /trackon-tracking: no shipment or personal data in public HTML
+PASS /professional-courier-tracking: no shipment or personal data in public HTML
+PASS /st-courier-tracking: no shipment or personal data in public HTML
+PASS /shree-maruti-courier-tracking: no shipment or personal data in public HTML
+PASS /shree-anjani-courier-tracking: no shipment or personal data in public HTML
+PASS /shree-tirupati-courier-tracking: no shipment or personal data in public HTML
+PASS /parcel-tracking-guide: no shipment or personal data in public HTML
+PASS /contact: no shipment or personal data in public HTML
+PASS /privacy-policy: no shipment or personal data in public HTML
+PASS /terms: no shipment or personal data in public HTML
+PASS /blog: no shipment or personal data in public HTML
+PASS /blog/delivered-but-not-received: no shipment or personal data in public HTML
+PASS /blog/out-for-delivery-not-delivered: no shipment or personal data in public HTML
+PASS /blog/rto-meaning-in-courier-tracking: no shipment or personal data in public HTML
+PASS /blog/how-to-write-delivery-address-india: no shipment or personal data in public HTML
+PASS main CSS inlined (no render-blocking stylesheet)
+PASS no web-font requests (system fonts)
+PASS Google Analytics loads after the page
+PASS AdSense script and ad unit present on home page
+PASS AdSense ad unit present in guide
+PASS Content-Security-Policy set (no inline scripts except hashed Google tag)
+PASS HSTS header set
+PASS X-Content-Type-Options: nosniff
+PASS X-Powered-By header hidden
+PASS API rejects SQL injection safely (400)
+PASS API rejects SQL injection (union) safely (404)
+PASS API rejects XSS safely (400)
+PASS API rejects XSS (attribute) safely (400)
+PASS API rejects NoSQL injection safely (400)
+PASS API rejects path traversal safely (400)
+PASS API rejects command injection safely (400)
+PASS API rejects oversized input safely (400)
+PASS API handles array parameters without a server error (400)
+PASS API handles bad courier without a server error (404)
+PASS API handles empty without a server error (400)
+PASS unknown page does not reflect injected HTML
+PASS tracking link does not reflect injected HTML
+PASS /../server/.env not exposed (404)
+PASS /server/.env not exposed (404)
+PASS /.env not exposed (404)
+PASS /.git/config not exposed (404)
+PASS /package.json not exposed (404)
+PASS /server/src/index.js not exposed (404)
+PASS POST requests refused (405)
+PASS API not callable from other websites (CORS)
+PASS security.txt published
+PASS browser /: no JavaScript, hydration or CSP errors []
+PASS browser /dtdc-tracking: no JavaScript, hydration or CSP errors []
+PASS browser /parcel-tracking-guide: no JavaScript, hydration or CSP errors []
+PASS browser /privacy-policy: no JavaScript, hydration or CSP errors []
+PASS browser /blog: no JavaScript, hydration or CSP errors []
+PASS browser /blog/delivered-but-not-received: no JavaScript, hydration or CSP errors []
+PASS browser: search shows tracking history and map
+
+0 failure(s)
