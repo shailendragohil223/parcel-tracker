@@ -147,6 +147,7 @@ s, h, html = get('/shree-anjani-courier-tracking')
 check(s == 200 and 'noindex' in h.get('X-Robots-Tag', '') and 'content="noindex, follow"' in html and 'data-ad-slot' not in html
       and f'{SITE}/shree-anjani-courier-tracking' not in urls, 'thin courier page: noindex, no ad, not in sitemap')
 s, _, html = get('/dtdc-tracking')
+html = html.replace('<!-- -->', '')  # React SSR text separators
 check('Good to know about DTDC tracking' in html and 'Is Track My Ship a courier company?' not in html,
       'courier page has its own tips and no copy of the general FAQ')
 s, h, html = get('/no-such-page')
