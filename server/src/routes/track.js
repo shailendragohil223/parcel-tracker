@@ -173,7 +173,9 @@ router.get('/track', safe(async (req, res) => {
 
   if (!shipments.length) {
     if (liveError) {
-      return res.status(503).json({ type, code: liveError, error: LIVE_ERRORS[liveError] || LIVE_ERRORS.default });
+      // An unsupported courier is the visitor's choice (400), not an outage (503).
+      const status = ['COURIER_NOT_FOUND', 'COURIER_NOT_SUPPORTED'].includes(liveError) ? 400 : 503;
+      return res.status(status).json({ type, code: liveError, error: LIVE_ERRORS[liveError] || LIVE_ERRORS.default });
     }
     const hint = !courier && type === 'awb' && activeProviders().includes('trackcourier')
       ? ` If it was sent by another courier, choose the courier and try again.` : '';

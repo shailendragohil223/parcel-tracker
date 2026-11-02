@@ -23,6 +23,7 @@ def check(ok, msg):
     if not ok:
         failures.append(msg)
 
+# Response headers are kept as received (case-insensitive lookups): Cloudflare sends them in lower case.
 class NoRedirect(urllib.request.HTTPRedirectHandler):
     def redirect_request(self, *a, **k):
         return None
@@ -32,9 +33,9 @@ def get(path, headers=None, follow=False):
     opener = urllib.request.build_opener() if follow else urllib.request.build_opener(NoRedirect)
     try:
         r = opener.open(req, timeout=20)
-        return r.status, dict(r.headers), r.read().decode('utf-8', 'replace')
+        return r.status, r.headers, r.read().decode('utf-8', 'replace')
     except urllib.error.HTTPError as e:
-        return e.code, dict(e.headers), e.read().decode('utf-8', 'replace')
+        return e.code, e.headers, e.read().decode('utf-8', 'replace')
 
 class Page(HTMLParser):
     def __init__(self):
@@ -161,8 +162,8 @@ s, h, _ = get('/dtdc-tracking/')
 check(s == 301 and h.get('Location', '').endswith('/dtdc-tracking'), 'trailing slash 301 -> /dtdc-tracking')
 if LIVE:
     def raw(url):
-        try: r = urllib.request.build_opener(NoRedirect).open(urllib.request.Request(url, headers={'User-Agent': 'Mozilla/5.0'}), timeout=20); return r.status, dict(r.headers)
-        except urllib.error.HTTPError as e: return e.code, dict(e.headers)
+        try: r = urllib.request.build_opener(NoRedirect).open(urllib.request.Request(url, headers={'User-Agent': 'Mozilla/5.0'}), timeout=20); return r.status, r.headers
+        except urllib.error.HTTPError as e: return e.code, e.headers
     s, h = raw('https://www.trackmyship.co/terms')
     check(s == 301 and h.get('Location') == f'{SITE}/terms', f'www.trackmyship.co 301 -> main domain ({s} {h.get("Location")})')
     s, h = raw('http://trackmyship.co/terms')
@@ -247,13 +248,14 @@ s, _, body = get('/?q=' + up.quote('"><script>alert(1)</script>'))
 check('<script>alert(1)' not in body, 'tracking link does not reflect injected HTML')
 for path in ['/../server/.env', '/server/.env', '/.env', '/.git/config', '/package.json', '/server/src/index.js']:
     s, _, body = get(path)
-    check(s == 404 and 'TRACKCOURIER' not in body and '[core]' not in body, f'{path} not exposed ({s})')
+    # 400 = blocked by Cloudflare before reaching the site (live), 404 = refused by the site
+    check(s in (400, 404) and 'TRACKCOURIER' not in body and '[core]' not in body, f'{path} not exposed ({s})')
 req = urllib.request.Request(BASE + '/api/track?q=C1002935719', method='POST', data=b'x=1')
 try:
     st = urllib.request.urlopen(req, timeout=10).status
 except urllib.error.HTTPError as e:
     st = e.code
-check(st == 405, f'POST requests refused ({st})')
+check(st in (403, 405), f'POST requests refused ({st})')  # 403 = Cloudflare firewall on the live site
 s, h, _ = get('/api/track?q=C1002935719', {'Origin': 'https://evil.example'})
 check('evil.example' not in h.get('Access-Control-Allow-Origin', ''), 'API not callable from other websites (CORS)')
 s, _, sec = get('/.well-known/security.txt')
