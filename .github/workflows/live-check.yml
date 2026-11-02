@@ -25,6 +25,15 @@ jobs:
           cat live-check.log
           grep '^FAIL ' live-check.log | head -40 | sed 's/^/::error::/'
           echo "status=$status" >> "$GITHUB_ENV"
+      - name: Raw response headers (diagnostics)
+        if: always()
+        run: |
+          for u in / "/?q=TEST123456" /dtdc-tracking/ /no-such-page /terms "/api/health" "/api/track?q=C1002935719&courier=../../x" "https://www.trackmyship.co/terms"; do
+            case "$u" in http*) url="$u";; *) url="https://trackmyship.co$u";; esac
+            echo "===== GET $url"
+            curl -sS -o /tmp/body -D - --max-time 20 -A "Mozilla/5.0 (compatible; live-check)" "$url" | tr -d '\r'
+            head -c 300 /tmp/body; echo
+          done >> live-check.log 2>&1
       - name: Save report to the live-check branch
         if: always()
         run: |
