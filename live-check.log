@@ -1,0 +1,428 @@
+PASS robots.txt returns 200 text/plain
+PASS robots.txt: OAI-SearchBot allowed, /api/ disallowed
+PASS robots.txt: Claude-SearchBot and PerplexityBot in the search-crawler group
+PASS robots.txt: GPTBot left to the default rule (unchanged)
+PASS robots.txt: default group keeps /api/ blocked
+PASS robots.txt: sitemap URL listed
+PASS sitemap.xml returns 200 XML
+PASS sitemap.xml valid, 16 https URLs on https://trackmyship.co
+PASS sitemap.xml has no query-string URLs
+PASS sitemap.xml: no duplicates, no trailing slashes
+PASS sitemap.xml: every URL has a valid lastmod date
+PASS robots.txt blocks only /api/ (pages, CSS, JS, images and tracking links stay crawlable)
+PASS llms.txt returns 200 with key pages
+FAIL llms.txt: blog, about, privacy, terms, independence and tracking-result rules
+PASS llms.txt links only to indexable sitemap pages (16)
+PASS ads.txt returns AdSense line
+PASS sitemap.xml lists the blog and 6 posts
+PASS blog RSS feed valid with 6 posts
+PASS llms.txt lists every blog post
+PASS /: social tags, lang, viewport, one canonical, H2s, no X-Robots-Tag header
+PASS /: 200, canonical, indexable, server-rendered, one H1, JSON-LD valid (status=200 canonical=True ssr=True h1=['Track My Ship – Track Your Courier Online'] ld=2/True text=True)
+PASS /dtdc-tracking: social tags, lang, viewport, one canonical, H2s, no X-Robots-Tag header
+PASS /dtdc-tracking: 200, canonical, indexable, server-rendered, one H1, JSON-LD valid (status=200 canonical=True ssr=True h1=['DTDC Tracking'] ld=2/True text=True)
+PASS /bluedart-tracking: social tags, lang, viewport, one canonical, H2s, no X-Robots-Tag header
+PASS /bluedart-tracking: 200, canonical, indexable, server-rendered, one H1, JSON-LD valid (status=200 canonical=True ssr=True h1=['Blue Dart Tracking'] ld=2/True text=True)
+PASS /delhivery-tracking: social tags, lang, viewport, one canonical, H2s, no X-Robots-Tag header
+PASS /delhivery-tracking: 200, canonical, indexable, server-rendered, one H1, JSON-LD valid (status=200 canonical=True ssr=True h1=['Delhivery Tracking'] ld=2/True text=True)
+PASS /speed-post-tracking: social tags, lang, viewport, one canonical, H2s, no X-Robots-Tag header
+PASS /speed-post-tracking: 200, canonical, indexable, server-rendered, one H1, JSON-LD valid (status=200 canonical=True ssr=True h1=['Speed Post (India Post) Tracking'] ld=2/True text=True)
+PASS /parcel-tracking-guide: social tags, lang, viewport, one canonical, H2s, no X-Robots-Tag header
+PASS /parcel-tracking-guide: 200, canonical, indexable, server-rendered, one H1, JSON-LD valid (status=200 canonical=True ssr=True h1=['Parcel tracking guide'] ld=2/True text=True)
+PASS /contact: social tags, lang, viewport, one canonical, H2s, no X-Robots-Tag header
+PASS /contact: 200, canonical, indexable, server-rendered, one H1, JSON-LD valid (status=200 canonical=True ssr=True h1=['About & Contact'] ld=2/True text=True)
+PASS /privacy-policy: social tags, lang, viewport, one canonical, H2s, no X-Robots-Tag header
+PASS /privacy-policy: 200, canonical, indexable, server-rendered, one H1, JSON-LD valid (status=200 canonical=True ssr=True h1=['Privacy Policy'] ld=2/True text=True)
+PASS /terms: social tags, lang, viewport, one canonical, H2s, no X-Robots-Tag header
+PASS /terms: 200, canonical, indexable, server-rendered, one H1, JSON-LD valid (status=200 canonical=True ssr=True h1=['Terms of Use'] ld=2/True text=True)
+FAIL /blog: social tags, lang, viewport, one canonical, H2s, no X-Robots-Tag header
+PASS /blog: 200, canonical, indexable, server-rendered, one H1, JSON-LD valid (status=200 canonical=True ssr=True h1=['Track My Ship Blog'] ld=2/True text=True)
+PASS /blog/parcel-stuck-in-transit: social tags, lang, viewport, one canonical, H2s, no X-Robots-Tag header
+PASS /blog/parcel-stuck-in-transit: 200, canonical, indexable, server-rendered, one H1, JSON-LD valid (status=200 canonical=True ssr=True h1=['Parcel stuck in transit? Why tracking stops and what to do'] ld=2/True text=True)
+PASS /blog/damaged-parcel-what-to-do: social tags, lang, viewport, one canonical, H2s, no X-Robots-Tag header
+PASS /blog/damaged-parcel-what-to-do: 200, canonical, indexable, server-rendered, one H1, JSON-LD valid (status=200 canonical=True ssr=True h1=['Received a damaged parcel? What to do'] ld=2/True text=True)
+PASS /blog/delivered-but-not-received: social tags, lang, viewport, one canonical, H2s, no X-Robots-Tag header
+PASS /blog/delivered-but-not-received: 200, canonical, indexable, server-rendered, one H1, JSON-LD valid (status=200 canonical=True ssr=True h1=["Parcel shows Delivered but you didn't get it? What to do"] ld=2/True text=True)
+PASS /blog/out-for-delivery-not-delivered: social tags, lang, viewport, one canonical, H2s, no X-Robots-Tag header
+PASS /blog/out-for-delivery-not-delivered: 200, canonical, indexable, server-rendered, one H1, JSON-LD valid (status=200 canonical=True ssr=True h1=['Out for delivery but not delivered: why it happens and what to do'] ld=2/True text=True)
+PASS /blog/rto-meaning-in-courier-tracking: social tags, lang, viewport, one canonical, H2s, no X-Robots-Tag header
+PASS /blog/rto-meaning-in-courier-tracking: 200, canonical, indexable, server-rendered, one H1, JSON-LD valid (status=200 canonical=True ssr=True h1=['What does RTO mean in courier tracking?'] ld=2/True text=True)
+PASS /blog/how-to-write-delivery-address-india: social tags, lang, viewport, one canonical, H2s, no X-Robots-Tag header
+PASS /blog/how-to-write-delivery-address-india: 200, canonical, indexable, server-rendered, one H1, JSON-LD valid (status=200 canonical=True ssr=True h1=['How to write a delivery address in India so your parcel arrives'] ld=2/True text=True)
+PASS page titles are unique
+FAIL no FAQPage markup (Google limits FAQ rich results to government/health sites)
+PASS home: Organization, WebSite, WebPage structured data
+PASS every other page: WebPage + BreadcrumbList
+PASS guide: Article; contact: AboutPage
+PASS /blog: Blog + breadcrumb structured data
+PASS /blog/parcel-stuck-in-transit: BlogPosting + breadcrumb structured data
+PASS /blog/parcel-stuck-in-transit: article tags, direct answer and related posts
+PASS /blog/damaged-parcel-what-to-do: BlogPosting + breadcrumb structured data
+PASS /blog/damaged-parcel-what-to-do: article tags, direct answer and related posts
+PASS /blog/delivered-but-not-received: BlogPosting + breadcrumb structured data
+PASS /blog/delivered-but-not-received: article tags, direct answer and related posts
+PASS /blog/out-for-delivery-not-delivered: BlogPosting + breadcrumb structured data
+PASS /blog/out-for-delivery-not-delivered: article tags, direct answer and related posts
+PASS /blog/rto-meaning-in-courier-tracking: BlogPosting + breadcrumb structured data
+PASS /blog/rto-meaning-in-courier-tracking: article tags, direct answer and related posts
+PASS /blog/how-to-write-delivery-address-india: BlogPosting + breadcrumb structured data
+PASS /blog/how-to-write-delivery-address-india: article tags, direct answer and related posts
+PASS meta descriptions are unique
+PASS internal link / -> 200
+PASS internal link /blog -> 200
+PASS internal link /blog/damaged-parcel-what-to-do -> 200
+PASS internal link /blog/delivered-but-not-received -> 200
+PASS internal link /blog/how-to-write-delivery-address-india -> 200
+PASS internal link /blog/out-for-delivery-not-delivered -> 200
+PASS internal link /blog/parcel-stuck-in-transit -> 200
+PASS internal link /blog/rto-meaning-in-courier-tracking -> 200
+PASS internal link /bluedart-tracking -> 200
+PASS internal link /contact -> 200
+PASS internal link /delhivery-tracking -> 200
+PASS internal link /dtdc-tracking -> 200
+PASS internal link /parcel-tracking-guide -> 200
+PASS internal link /privacy-policy -> 200
+PASS internal link /professional-courier-tracking -> 200
+PASS internal link /shree-anjani-courier-tracking -> 200
+PASS internal link /shree-maruti-courier-tracking -> 200
+PASS internal link /shree-tirupati-courier-tracking -> 200
+PASS internal link /speed-post-tracking -> 200
+PASS internal link /st-courier-tracking -> 200
+PASS internal link /terms -> 200
+PASS internal link /trackon-tracking -> 200
+PASS trailing slash 301 -> /dtdc-tracking
+PASS www.trackmyship.co 301 -> main domain (301 https://trackmyship.co/terms)
+PASS http 301 -> https (301 https://trackmyship.co/terms)
+FAIL /index.html 301 -> home page
+PASS tracking result /?q=TEST123456: noindex (meta + header), number not in page metadata
+PASS tracking result /?q=TEST123456&courier=dtdc: noindex (meta + header), number not in page metadata
+PASS tracking result /?courier=dtdc&q=TEST123456: noindex (meta + header), number not in page metadata
+PASS tracking result /dtdc-tracking?q=TEST123456: noindex (meta + header), number not in page metadata
+PASS tracking result /?q=: noindex (meta + header), number not in page metadata
+PASS tracking result /blog?q=x: noindex (meta + header), number not in page metadata
+PASS /: indexable, canonical = home page (no accidental noindex)
+PASS /?utm_source=facebook: indexable, canonical = home page (no accidental noindex)
+PASS /?courier=dtdc: indexable, canonical = home page (no accidental noindex)
+PASS /api/ responses are noindex
+PASS thin courier page: noindex, no ad, not in sitemap
+PASS courier page has its own tips and no copy of the general FAQ
+PASS unknown page returns 404 + noindex
+PASS Referrer-Policy allows map tiles
+PASS mobile-number search explains it is not available (400)
+PASS /: no shipment or personal data in public HTML
+PASS /dtdc-tracking: no shipment or personal data in public HTML
+PASS /bluedart-tracking: no shipment or personal data in public HTML
+PASS /delhivery-tracking: no shipment or personal data in public HTML
+PASS /speed-post-tracking: no shipment or personal data in public HTML
+PASS /parcel-tracking-guide: no shipment or personal data in public HTML
+PASS /contact: no shipment or personal data in public HTML
+PASS /privacy-policy: no shipment or personal data in public HTML
+PASS /terms: no shipment or personal data in public HTML
+PASS /blog: no shipment or personal data in public HTML
+PASS /blog/parcel-stuck-in-transit: no shipment or personal data in public HTML
+PASS /blog/damaged-parcel-what-to-do: no shipment or personal data in public HTML
+PASS /blog/delivered-but-not-received: no shipment or personal data in public HTML
+PASS /blog/out-for-delivery-not-delivered: no shipment or personal data in public HTML
+PASS /blog/rto-meaning-in-courier-tracking: no shipment or personal data in public HTML
+PASS /blog/how-to-write-delivery-address-india: no shipment or personal data in public HTML
+PASS main CSS inlined (no render-blocking stylesheet)
+PASS no web-font requests (system fonts)
+PASS Google Analytics loads after the page
+PASS AdSense script and ad unit present on home page
+PASS AdSense ad unit present in guide
+PASS Content-Security-Policy set (no inline scripts except hashed Google tag)
+PASS HSTS header set
+PASS X-Content-Type-Options: nosniff
+PASS X-Powered-By header hidden
+PASS API rejects SQL injection safely (400)
+PASS API rejects SQL injection (union) safely (404)
+PASS API rejects XSS safely (400)
+PASS API rejects XSS (attribute) safely (400)
+PASS API rejects NoSQL injection safely (400)
+PASS API rejects path traversal safely (400)
+PASS API rejects command injection safely (400)
+PASS API rejects oversized input safely (400)
+PASS API handles array parameters without a server error (400)
+FAIL API handles bad courier without a server error (503)
+PASS API handles empty without a server error (400)
+PASS unknown page does not reflect injected HTML
+PASS tracking link does not reflect injected HTML
+PASS /../server/.env not exposed (400)
+PASS /server/.env not exposed (404)
+PASS /.env not exposed (404)
+PASS /.git/config not exposed (404)
+PASS /package.json not exposed (404)
+PASS /server/src/index.js not exposed (404)
+PASS POST requests refused (403)
+PASS API not callable from other websites (CORS)
+PASS security.txt published
+
+5 failure(s)
+===== GET https://trackmyship.co/
+HTTP/2 200 
+date: Mon, 02 Nov 2026 10:22:09 GMT
+content-type: text/html; charset=utf-8
+content-length: 28846
+cache-control: no-cache
+content-security-policy: default-src 'self';base-uri 'self';font-src 'self' https://fonts.gstatic.com;form-action 'self';frame-ancestors 'none';img-src 'self' data: https:;object-src 'none';script-src 'self' 'sha256-3W57GrC+EnegdbEkov+LJjp4VtfNeHjs6uDLBflu0xY=' https://*.googletagmanager.com https://pagead2.googlesyndication.com https://tpc.googlesyndication.com https://partner.googleadservices.com https://www.googletagservices.com https://adservice.google.com https://*.adtrafficquality.google https://fundingchoicesmessages.google.com https://www.google.com;script-src-attr 'none';style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;upgrade-insecure-requests;connect-src 'self' https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com https://*.googlesyndication.com https://*.doubleclick.net https://adservice.google.com https://*.adtrafficquality.google https://fundingchoicesmessages.google.com https://www.google.com;frame-src https://googleads.g.doubleclick.net https://tpc.googlesyndication.com https://*.googlesyndication.com https://www.google.com https://*.adtrafficquality.google
+cross-origin-opener-policy: same-origin
+cross-origin-resource-policy: same-origin
+etag: W/"70ae-awxY74OyC1XMrZtACJBhnXBjorc"
+origin-agent-cluster: ?1
+ratelimit-limit: 300
+ratelimit-policy: 300;w=60
+ratelimit-remaining: 244
+ratelimit-reset: 42
+referrer-policy: strict-origin-when-cross-origin
+ss-product-id: paas-nodejs-v1
+strict-transport-security: max-age=31536000; includeSubDomains
+vary: Origin
+x-content-type-options: nosniff
+x-dns-prefetch-control: off
+x-download-options: noopen
+x-frame-options: SAMEORIGIN
+x-permitted-cross-domain-policies: none
+x-request-id: b0e2beb6009ab0fb
+x-xss-protection: 0
+cf-cache-status: DYNAMIC
+set-cookie: __cf_bm=RWTnzOSVuW7yr4GnejRsA74eHQtYIq.bjfSQO5Surjo-1793614929.4344034-1.0.1.1-sW4ewaflRtWyP9nuEl8tpw.6BlahFD6Heco6n_VtJrOpi0KyklNVIC2BwDt_wo3el5uk8M6ltaLJmADoqUmKkexxvEqL33jVXh_YxJcQ56kZV5MXJ4SR6tagEJT38Z8t; HttpOnly; SameSite=None; Secure; Path=/; Domain=trackmyship.co; Expires=Mon, 02 Nov 2026 10:52:09 GMT
+server: cloudflare
+cf-ray: a5426a9cffc9b2f1-LAX
+
+<!doctype html>
+<html lang="en-IN">
+  <head>
+    <meta charset="UTF-8" />
+    <!-- Google tag (gtag.js) – Google Analytics 4. Only loads on the live domain, so local
+         development and automated tests don't count as visitors. -->
+    <script>
+      window.dataLayer = window.dataLayer || [];
+
+===== GET https://trackmyship.co/?q=TEST123456
+HTTP/2 200 
+date: Mon, 02 Nov 2026 10:22:09 GMT
+content-type: text/html; charset=utf-8
+content-length: 28823
+cache-control: no-cache
+content-security-policy: default-src 'self';base-uri 'self';font-src 'self' https://fonts.gstatic.com;form-action 'self';frame-ancestors 'none';img-src 'self' data: https:;object-src 'none';script-src 'self' 'sha256-3W57GrC+EnegdbEkov+LJjp4VtfNeHjs6uDLBflu0xY=' https://*.googletagmanager.com https://pagead2.googlesyndication.com https://tpc.googlesyndication.com https://partner.googleadservices.com https://www.googletagservices.com https://adservice.google.com https://*.adtrafficquality.google https://fundingchoicesmessages.google.com https://www.google.com;script-src-attr 'none';style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;upgrade-insecure-requests;connect-src 'self' https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com https://*.googlesyndication.com https://*.doubleclick.net https://adservice.google.com https://*.adtrafficquality.google https://fundingchoicesmessages.google.com https://www.google.com;frame-src https://googleads.g.doubleclick.net https://tpc.googlesyndication.com https://*.googlesyndication.com https://www.google.com https://*.adtrafficquality.google
+cross-origin-opener-policy: same-origin
+cross-origin-resource-policy: same-origin
+etag: W/"7097-v3uzruib86VBYIhK5ambHaF5ul0"
+origin-agent-cluster: ?1
+ratelimit-limit: 300
+ratelimit-policy: 300;w=60
+ratelimit-remaining: 231
+ratelimit-reset: 41
+referrer-policy: strict-origin-when-cross-origin
+ss-product-id: paas-nodejs-v1
+strict-transport-security: max-age=31536000; includeSubDomains
+vary: Origin
+x-content-type-options: nosniff
+x-dns-prefetch-control: off
+x-download-options: noopen
+x-frame-options: SAMEORIGIN
+x-permitted-cross-domain-policies: none
+x-request-id: 961db1123c5e8ca6
+x-robots-tag: noindex
+x-xss-protection: 0
+cf-cache-status: DYNAMIC
+set-cookie: __cf_bm=Nge9cNNbhMX613_2pe8Wscy6kmZaP1t95gkEK3OZoeE-1793614929.5728805-1.0.1.1-bPLioaJRLyzJZjrMkc3.ZNjvKkt1szH7Dpw2dn8npS7GuOZ9XWDNHslkQyAofKYOgt3rwzg0A9U6htVojdsRvFcy7ziFBo3HoHd0TfMxvi0t0XkgHzDYGrn8LzfezL9K; HttpOnly; SameSite=None; Secure; Path=/; Domain=trackmyship.co; Expires=Mon, 02 Nov 2026 10:52:09 GMT
+server: cloudflare
+cf-ray: a5426a9dd8599dfc-LAX
+
+<!doctype html>
+<html lang="en-IN">
+  <head>
+    <meta charset="UTF-8" />
+    <!-- Google tag (gtag.js) – Google Analytics 4. Only loads on the live domain, so local
+         development and automated tests don't count as visitors. -->
+    <script>
+      window.dataLayer = window.dataLayer || [];
+
+===== GET https://trackmyship.co/dtdc-tracking/
+HTTP/2 301 
+date: Mon, 02 Nov 2026 10:22:09 GMT
+content-type: text/plain; charset=utf-8
+content-length: 70
+location: https://trackmyship.co/dtdc-tracking
+ratelimit-limit: 300
+ratelimit-policy: 300;w=60
+ratelimit-remaining: 243
+ratelimit-reset: 41
+ss-product-id: paas-nodejs-v1
+vary: Origin
+vary: Accept
+x-request-id: 82984f65b27538c7
+cf-cache-status: DYNAMIC
+set-cookie: __cf_bm=MQqRi7UBR1TujyxFWYP1M9ZrTcxN.Gr.BDAHF3WLUfk-1793614929.7183836-1.0.1.1-mqcCRXS9VwHmUolhLqpbORgi9NEpptdJusnrJOtAfmqiDqe1FqJSAIlgbwceuCcbeKnaUKP._DpKzE8UydrCeUbpO9pmQHdH7eCKsKxrbL_F0wbaHtZVy7wzV.0wWoG0; HttpOnly; SameSite=None; Secure; Path=/; Domain=trackmyship.co; Expires=Mon, 02 Nov 2026 10:52:09 GMT
+server: cloudflare
+cf-ray: a5426a9ebcb0fbf8-LAX
+
+Moved Permanently. Redirecting to https://trackmyship.co/dtdc-tracking
+===== GET https://trackmyship.co/no-such-page
+HTTP/2 404 
+date: Mon, 02 Nov 2026 10:22:10 GMT
+content-type: text/html; charset=utf-8
+content-length: 25574
+cache-control: no-cache
+content-security-policy: default-src 'self';base-uri 'self';font-src 'self' https://fonts.gstatic.com;form-action 'self';frame-ancestors 'none';img-src 'self' data: https:;object-src 'none';script-src 'self' 'sha256-3W57GrC+EnegdbEkov+LJjp4VtfNeHjs6uDLBflu0xY=' https://*.googletagmanager.com https://pagead2.googlesyndication.com https://tpc.googlesyndication.com https://partner.googleadservices.com https://www.googletagservices.com https://adservice.google.com https://*.adtrafficquality.google https://fundingchoicesmessages.google.com https://www.google.com;script-src-attr 'none';style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;upgrade-insecure-requests;connect-src 'self' https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com https://*.googlesyndication.com https://*.doubleclick.net https://adservice.google.com https://*.adtrafficquality.google https://fundingchoicesmessages.google.com https://www.google.com;frame-src https://googleads.g.doubleclick.net https://tpc.googlesyndication.com https://*.googlesyndication.com https://www.google.com https://*.adtrafficquality.google
+cross-origin-opener-policy: same-origin
+cross-origin-resource-policy: same-origin
+etag: W/"63e6-dpgNsskIhsc/aS4Ec5D6vbXljWc"
+origin-agent-cluster: ?1
+ratelimit-limit: 300
+ratelimit-policy: 300;w=60
+ratelimit-remaining: 242
+ratelimit-reset: 41
+referrer-policy: strict-origin-when-cross-origin
+ss-product-id: paas-nodejs-v1
+strict-transport-security: max-age=31536000; includeSubDomains
+vary: Origin
+x-content-type-options: nosniff
+x-dns-prefetch-control: off
+x-download-options: noopen
+x-frame-options: SAMEORIGIN
+x-permitted-cross-domain-policies: none
+x-request-id: 7a82e2dbf0d4d4b2
+x-robots-tag: noindex
+x-xss-protection: 0
+cf-cache-status: DYNAMIC
+set-cookie: __cf_bm=FWGqDobEPq5CT8uezvRTgfmLHCE008ZR.6.606dnAbk-1793614929.9485395-1.0.1.1-M78hWA4NGYZDnWFR_L9WQLc.zBqersfRQQL5td70JrGJ_9F8z0VjRUIqPRyJ_xKQrMdQ8kdSy0FRiBnHvwwK9BQg2aBIDKsmhJOhPAqZlP.xWep5G78qfMOjB.Ef2RO8; HttpOnly; SameSite=None; Secure; Path=/; Domain=trackmyship.co; Expires=Mon, 02 Nov 2026 10:52:10 GMT
+server: cloudflare
+cf-ray: a5426aa02f5a4ba2-LAX
+
+<!doctype html>
+<html lang="en-IN">
+  <head>
+    <meta charset="UTF-8" />
+    <!-- Google tag (gtag.js) – Google Analytics 4. Only loads on the live domain, so local
+         development and automated tests don't count as visitors. -->
+    <script>
+      window.dataLayer = window.dataLayer || [];
+
+===== GET https://trackmyship.co/terms
+HTTP/2 200 
+date: Mon, 02 Nov 2026 10:22:10 GMT
+content-type: text/html; charset=utf-8
+content-length: 21826
+cache-control: no-cache
+content-security-policy: default-src 'self';base-uri 'self';font-src 'self' https://fonts.gstatic.com;form-action 'self';frame-ancestors 'none';img-src 'self' data: https:;object-src 'none';script-src 'self' 'sha256-3W57GrC+EnegdbEkov+LJjp4VtfNeHjs6uDLBflu0xY=' https://*.googletagmanager.com https://pagead2.googlesyndication.com https://tpc.googlesyndication.com https://partner.googleadservices.com https://www.googletagservices.com https://adservice.google.com https://*.adtrafficquality.google https://fundingchoicesmessages.google.com https://www.google.com;script-src-attr 'none';style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;upgrade-insecure-requests;connect-src 'self' https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com https://*.googlesyndication.com https://*.doubleclick.net https://adservice.google.com https://*.adtrafficquality.google https://fundingchoicesmessages.google.com https://www.google.com;frame-src https://googleads.g.doubleclick.net https://tpc.googlesyndication.com https://*.googlesyndication.com https://www.google.com https://*.adtrafficquality.google
+cross-origin-opener-policy: same-origin
+cross-origin-resource-policy: same-origin
+etag: W/"5542-6+m9osTSh7IlmaH6tgABjCmdcYM"
+origin-agent-cluster: ?1
+ratelimit-limit: 300
+ratelimit-policy: 300;w=60
+ratelimit-remaining: 230
+ratelimit-reset: 40
+referrer-policy: strict-origin-when-cross-origin
+ss-product-id: paas-nodejs-v1
+strict-transport-security: max-age=31536000; includeSubDomains
+vary: Origin
+x-content-type-options: nosniff
+x-dns-prefetch-control: off
+x-download-options: noopen
+x-frame-options: SAMEORIGIN
+x-permitted-cross-domain-policies: none
+x-request-id: ec15f8b162ca6911
+x-xss-protection: 0
+cf-cache-status: DYNAMIC
+set-cookie: __cf_bm=xP74tKs_PM5odaIK_lwNe6DKYBj8IoK2sl6GymQZZvU-1793614930.095696-1.0.1.1-hZF9kCxinkq34PP.R30e2b4ggmzbxZyXZ7DWtjzop5vwPNnYjCkkJKlb2OT5tP.Cw5fogUI2Mqwju_Yx0Bnyvxb5x2R5A9m3dKhzbxBq9loQsvaeVM1M4xGXX3NGTPX0; HttpOnly; SameSite=None; Secure; Path=/; Domain=trackmyship.co; Expires=Mon, 02 Nov 2026 10:52:10 GMT
+server: cloudflare
+cf-ray: a5426aa11c8208f2-LAX
+
+<!doctype html>
+<html lang="en-IN">
+  <head>
+    <meta charset="UTF-8" />
+    <!-- Google tag (gtag.js) – Google Analytics 4. Only loads on the live domain, so local
+         development and automated tests don't count as visitors. -->
+    <script>
+      window.dataLayer = window.dataLayer || [];
+
+===== GET https://trackmyship.co/api/health
+HTTP/2 200 
+date: Mon, 02 Nov 2026 10:22:10 GMT
+content-type: application/json; charset=utf-8
+content-length: 64
+content-security-policy: default-src 'self';base-uri 'self';font-src 'self' https://fonts.gstatic.com;form-action 'self';frame-ancestors 'none';img-src 'self' data: https:;object-src 'none';script-src 'self' 'sha256-3W57GrC+EnegdbEkov+LJjp4VtfNeHjs6uDLBflu0xY=' https://*.googletagmanager.com https://pagead2.googlesyndication.com https://tpc.googlesyndication.com https://partner.googleadservices.com https://www.googletagservices.com https://adservice.google.com https://*.adtrafficquality.google https://fundingchoicesmessages.google.com https://www.google.com;script-src-attr 'none';style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;upgrade-insecure-requests;connect-src 'self' https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com https://*.googlesyndication.com https://*.doubleclick.net https://adservice.google.com https://*.adtrafficquality.google https://fundingchoicesmessages.google.com https://www.google.com;frame-src https://googleads.g.doubleclick.net https://tpc.googlesyndication.com https://*.googlesyndication.com https://www.google.com https://*.adtrafficquality.google
+cross-origin-opener-policy: same-origin
+cross-origin-resource-policy: same-origin
+etag: W/"40-ORSM1932EPLW8JhrAN9HRqIdUFY"
+origin-agent-cluster: ?1
+ratelimit-limit: 300
+ratelimit-policy: 300;w=60
+ratelimit-remaining: 241
+ratelimit-reset: 41
+referrer-policy: strict-origin-when-cross-origin
+ss-product-id: paas-nodejs-v1
+strict-transport-security: max-age=31536000; includeSubDomains
+vary: Origin
+vary: Origin
+x-content-type-options: nosniff
+x-dns-prefetch-control: off
+x-download-options: noopen
+x-frame-options: SAMEORIGIN
+x-permitted-cross-domain-policies: none
+x-request-id: 82816e3f9e467b1c
+x-robots-tag: noindex
+x-xss-protection: 0
+cf-cache-status: DYNAMIC
+set-cookie: __cf_bm=zakSTwaDqhzm0zYtK7gkZXwH1ca15qlXvhPjXsPnPDc-1793614930.2438464-1.0.1.1-6gCkn6xsY2GHSt4ol5rW48MJZRPAL6KzEYitRtDzTyzZZK5r.E86iomlDGJeAYOUSPVoAvhFrzWUweten_o6QkCdzlclmG1KzfN0kXHnwTrn4bisEqA7.iRC6KOmigmx; HttpOnly; SameSite=None; Secure; Path=/; Domain=trackmyship.co; Expires=Mon, 02 Nov 2026 10:52:10 GMT
+server: cloudflare
+cf-ray: a5426aa20f66498b-LAX
+
+{"ok":true,"providers":["trackcourier"],"yourIp":"20.171.39.58"}
+===== GET https://trackmyship.co/api/track?q=C1002935719&courier=../../x
+HTTP/2 503 
+date: Mon, 02 Nov 2026 10:22:10 GMT
+content-type: application/json; charset=utf-8
+content-length: 113
+content-security-policy: default-src 'self';base-uri 'self';font-src 'self' https://fonts.gstatic.com;form-action 'self';frame-ancestors 'none';img-src 'self' data: https:;object-src 'none';script-src 'self' 'sha256-3W57GrC+EnegdbEkov+LJjp4VtfNeHjs6uDLBflu0xY=' https://*.googletagmanager.com https://pagead2.googlesyndication.com https://tpc.googlesyndication.com https://partner.googleadservices.com https://www.googletagservices.com https://adservice.google.com https://*.adtrafficquality.google https://fundingchoicesmessages.google.com https://www.google.com;script-src-attr 'none';style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;upgrade-insecure-requests;connect-src 'self' https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com https://*.googlesyndication.com https://*.doubleclick.net https://adservice.google.com https://*.adtrafficquality.google https://fundingchoicesmessages.google.com https://www.google.com;frame-src https://googleads.g.doubleclick.net https://tpc.googlesyndication.com https://*.googlesyndication.com https://www.google.com https://*.adtrafficquality.google
+cross-origin-opener-policy: same-origin
+cross-origin-resource-policy: same-origin
+etag: W/"71-Je8W6gJv3VK2YL/NIuAYxYaI2Kk"
+origin-agent-cluster: ?1
+ratelimit-limit: 20
+ratelimit-policy: 20;w=60
+ratelimit-remaining: 10
+ratelimit-reset: 54
+referrer-policy: strict-origin-when-cross-origin
+ss-product-id: paas-nodejs-v1
+strict-transport-security: max-age=31536000; includeSubDomains
+vary: Origin
+vary: Origin
+x-content-type-options: nosniff
+x-dns-prefetch-control: off
+x-download-options: noopen
+x-frame-options: SAMEORIGIN
+x-permitted-cross-domain-policies: none
+x-request-id: f8aaea97ff9a9344
+x-robots-tag: noindex
+x-xss-protection: 0
+cf-cache-status: DYNAMIC
+set-cookie: __cf_bm=NkgT0VjQifI6KZGSP1.qZP.Ai12TL3B_zJr2v8hNSnY-1793614930.3454292-1.0.1.1-SbnbitfB7M65MFwdyfI3gEYgMCNbiCei6iZQX47tBKdD5kIykyQe.luWuoPJV60CmgF7EY1oENeo8cl1KRxLEmNlLxV..pVBvlFIgfsEbLpuoP8VMmz7mOCxorUQPXT4; HttpOnly; SameSite=None; Secure; Path=/; Domain=trackmyship.co; Expires=Mon, 02 Nov 2026 10:52:10 GMT
+server: cloudflare
+cf-ray: a5426aa2aa3847fc-LAX
+
+{"type":"awb","code":"COURIER_NOT_FOUND","error":"That courier is not supported. Please choose another courier."}
+===== GET https://www.trackmyship.co/terms
+HTTP/2 301 
+date: Mon, 02 Nov 2026 10:22:10 GMT
+content-type: text/plain; charset=utf-8
+content-length: 62
+location: https://trackmyship.co/terms
+ratelimit-limit: 300
+ratelimit-policy: 300;w=60
+ratelimit-remaining: 229
+ratelimit-reset: 40
+ss-product-id: paas-nodejs-v1
+vary: Origin
+vary: Accept
+x-request-id: bbb2cd8c3d4d85ee
+cf-cache-status: DYNAMIC
+set-cookie: __cf_bm=K0kj.6VlYXYFqPVSeyfs28u.rRi8FA1eR8EyXrZlnG0-1793614930.779334-1.0.1.1-ncJ7npa1c0SztELpDwCns1KpVsFdapbPSxIcoIkvvt3kkW0P1gCr_liKETRKBgaP3JZko4dgQObdhGvoDCaytcH443NMaQ.xqTNQKTNROVsm5EZTQc8hTxdVP8.hDdKa; HttpOnly; SameSite=None; Secure; Path=/; Domain=www.trackmyship.co; Expires=Mon, 02 Nov 2026 10:52:10 GMT
+server: cloudflare
+cf-ray: a5426aa55bf8af67-LAX
+
+Moved Permanently. Redirecting to https://trackmyship.co/terms
