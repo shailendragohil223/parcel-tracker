@@ -4,11 +4,13 @@ import Markdown from './Markdown.jsx';
 
 const fmt = (d) => new Date(`${d}T00:00:00+05:30`).toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'Asia/Kolkata' });
 
-function PostCard({ post }) {
+// Post titles are headings: H2 on the blog list, H3 under "More from the blog".
+function PostCard({ post, level = 2 }) {
+  const Title = `h${level}`;
   return (
     <li className="post-card">
       <a href={postPath(post)}>
-        <span className="post-card-title">{post.h1}</span>
+        <Title className="post-card-title">{post.h1}</Title>
         <span className="post-card-desc">{post.description}</span>
         <span className="post-card-date">{fmt(post.published)}</span>
       </a>
@@ -59,7 +61,7 @@ export function BlogPost({ post, body }) {
       {more.length > 0 && (
         <section className="panel info-page" aria-labelledby="more-posts">
           <h2 id="more-posts">More from the blog</h2>
-          <ul className="post-list">{more.map((p) => <PostCard key={p.slug} post={p} />)}</ul>
+          <ul className="post-list">{more.map((p) => <PostCard key={p.slug} post={p} level={3} />)}</ul>
         </section>
       )}
     </>

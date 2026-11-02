@@ -1,0 +1,40 @@
+# Checks the LIVE site (https://trackmyship.co) the way search engines and AI crawlers see it:
+# robots.txt, sitemap.xml, llms.txt, canonicals, noindex on tracking results, structured data,
+# redirects and security headers (scripts/check_site.py). Run it from the Actions tab after a
+# GoDaddy deploy; it also runs every Monday. The full report is saved to the "live-check" branch.
+name: Live site SEO check
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '17 4 * * 1'
+
+permissions:
+  contents: write
+
+jobs:
+  live-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check https://trackmyship.co
+        run: |
+          set +e
+          python3 scripts/check_site.py https://trackmyship.co > live-check.log 2>&1
+          status=$?
+          cat live-check.log
+          grep '^FAIL ' live-check.log | head -40 | sed 's/^/::error::/'
+          echo "status=$status" >> "$GITHUB_ENV"
+      - name: Save report to the live-check branch
+        if: always()
+        run: |
+          mkdir -p /tmp/report && cp live-check.log /tmp/report/
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git checkout --orphan live-check
+          git rm -rfq . && cp /tmp/report/live-check.log .
+          git add live-check.log
+          git commit -qm "Live check of ${GITHUB_SHA::7} ($(date -u +%F))"
+          git push -f origin live-check
+      - name: Result
+        run: exit ${status:-1}

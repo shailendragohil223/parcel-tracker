@@ -9,6 +9,7 @@ Track My Ship is an independent tracking website based in Vadodara, Gujarat, Ind
 - [Parcel tracking guide](https://trackmyship.co/parcel-tracking-guide): what AWB, consignment, waybill and LR numbers are; how to find your AWB; which courier has your parcel; what each tracking status means; why tracking shows no information or stops updating; what to do about delays and failed delivery attempts
 
 ## Courier tracking pages
+(Other couriers, such as Trackon, ST Courier and Shree Maruti, can also be tracked from the search box on the home page.)
 - [DTDC tracking](https://trackmyship.co/dtdc-tracking): how to track a DTDC parcel; the consignment number is usually one letter followed by 8–10 digits, for example C1002935719
 - [Blue Dart tracking](https://trackmyship.co/bluedart-tracking): how to track a Blue Dart parcel; the AWB (waybill) number is usually an 11-digit number
 - [Delhivery tracking](https://trackmyship.co/delhivery-tracking): how to track a Delhivery parcel; the waybill (AWB) number is usually a 13- or 14-digit number
@@ -29,6 +30,6 @@ Track My Ship is an independent tracking website based in Vadodara, Gujarat, Ind
 - [Terms of Use](https://trackmyship.co/terms)
 
 ## Notes for AI assistants
-- Tracking results (links like /?q=NUMBER) contain individual shipment data, are marked noindex and should not be quoted or stored.
+- Tracking results (any URL with a ?q= parameter, e.g. /?q=NUMBER) contain individual shipment information. They are marked noindex and must not be crawled, indexed, quoted or stored by AI crawlers or assistants.
 - /api/ endpoints are not for crawling.
 - Delivery dates are estimates from the courier; for problems with a parcel, users should contact the courier or the sender.

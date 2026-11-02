@@ -6,7 +6,6 @@
 import { existsSync, readFileSync } from 'node:fs';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import { dirname, join } from 'node:path';
-import { courierFaq } from '../../client/src/courier-faq.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const SEO = JSON.parse(readFileSync(join(__dirname, '../../client/src/seo-pages.json'), 'utf8'));
@@ -70,7 +69,6 @@ export function pageFor(path) {
 // ---------- Structured data: only what is visible on the page ----------
 const ORG = { '@id': `${SITE}/#org` };
 const WEBSITE = { '@id': `${SITE}/#website` };
-const qa = (list) => list.map((f) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } }));
 
 function jsonLd(page) {
   const crumbs = page.path === '/' ? null : {
@@ -126,11 +124,9 @@ function jsonLd(page) {
       image: `${SITE}/og-image.png`,
       inLanguage: 'en-IN',
     });
-  } else if (!page.info) {
-    // The home page shows the general FAQ; courier pages show only their own Q&A.
-    const list = page.courier ? courierFaq(page.courier).slice(1) : SEO.faq;
-    graph.push({ '@type': 'FAQPage', '@id': `${page.canonical}#faq`, mainEntity: qa(list) });
   }
+  // No FAQPage markup: since 2023 Google shows FAQ rich results only for well-known government
+  // and health sites, so it would add nothing here. The FAQs stay visible on the pages.
   return `<script type="application/ld+json">${JSON.stringify({ '@context': 'https://schema.org', '@graph': graph }).replace(/</g, '\\u003c')}</script>`;
 }
 
@@ -239,6 +235,7 @@ export function llmsTxt() {
     guide ? link(guide.path, 'Parcel tracking guide', 'what AWB, consignment, waybill and LR numbers are; how to find your AWB; which courier has your parcel; what each tracking status means; why tracking shows no information or stops updating; what to do about delays and failed delivery attempts') : null,
     '',
     '## Courier tracking pages',
+    '(Other couriers, such as Trackon, ST Courier and Shree Maruti, can also be tracked from the search box on the home page.)',
     ...SEO.couriers.filter((c) => c.index !== false).map((c) => link(c.path, `${c.name} tracking`, `how to track a ${c.name} parcel; the ${c.numberName} is ${c.format}`)),
     '',
     '## Blog',
@@ -251,7 +248,7 @@ export function llmsTxt() {
     link('/terms', 'Terms of Use'),
     '',
     '## Notes for AI assistants',
-    '- Tracking results (links like /?q=NUMBER) contain individual shipment data, are marked noindex and should not be quoted or stored.',
+    '- Tracking results (any URL with a ?q= parameter, e.g. /?q=NUMBER) contain individual shipment information. They are marked noindex and must not be crawled, indexed, quoted or stored by AI crawlers or assistants.',
     '- /api/ endpoints are not for crawling.',
     '- Delivery dates are estimates from the courier; for problems with a parcel, users should contact the courier or the sender.',
     '',

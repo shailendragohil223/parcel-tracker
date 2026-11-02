@@ -30,9 +30,11 @@ app.use((req, res, next) => {
   const wrongHost = host === `www.${SITE_HOST}`;
   const plainHttp = req.get('x-forwarded-proto') === 'http' && host.endsWith(SITE_HOST);
   const slash = req.path.length > 1 && req.path.endsWith('/') && !req.path.startsWith('/api/');
-  if (wrongHost || plainHttp || slash) {
+  // /index.html is the raw page template: send visitors and crawlers to the real home page
+  const indexFile = req.path === '/index.html';
+  if (wrongHost || plainHttp || slash || indexFile) {
     const query = req.originalUrl.slice(req.path.length);
-    const path = slash ? req.path.replace(/\/+$/, '') : req.path;
+    const path = indexFile ? '/' : slash ? req.path.replace(/\/+$/, '') : req.path;
     return res.redirect(301, `https://${SITE_HOST}${path}${query}`);
   }
   next();

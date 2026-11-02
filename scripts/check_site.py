@@ -15,6 +15,7 @@ from html.parser import HTMLParser
 
 BASE = sys.argv[1].rstrip('/')
 SITE = 'https://trackmyship.co'
+LIVE = BASE == SITE  # checking the live site (tests that need the demo database are skipped)
 failures = []
 
 def check(ok, msg):
@@ -67,9 +68,18 @@ ns = {'s': 'http://www.sitemaps.org/schemas/sitemap/0.9'}
 urls = [u.find('s:loc', ns).text for u in ET.fromstring(sm).findall('s:url', ns)]
 check(len(urls) >= 10 and all(u.startswith(SITE + '/') for u in urls), f'sitemap.xml valid, {len(urls)} https URLs on {SITE}')
 check(not any('?' in u for u in urls), 'sitemap.xml has no query-string URLs')
+check(len(urls) == len(set(urls)) and not any(u != SITE + '/' and u.endswith('/') for u in urls), 'sitemap.xml: no duplicates, no trailing slashes')
+lastmods = [u.find('s:lastmod', ns).text for u in ET.fromstring(sm).findall('s:url', ns)]
+check(all(re.fullmatch(r'\d{4}-\d{2}-\d{2}', d or '') for d in lastmods), 'sitemap.xml: every URL has a valid lastmod date')
+check(re.findall(r'^Disallow: (.*)$', robots, re.M) and all(d == '/api/' for d in re.findall(r'^Disallow: (.*)$', robots, re.M)),
+      'robots.txt blocks only /api/ (pages, CSS, JS, images and tracking links stay crawlable)')
 
 s, _, llms = get('/llms.txt')
 check(s == 200 and llms.startswith('# Track My Ship') and '/parcel-tracking-guide' in llms, 'llms.txt returns 200 with key pages')
+check(all(k in llms for k in ['/blog', '/contact', '/privacy-policy', '/terms', 'not affiliated', 'must not be crawled, indexed, quoted or stored']),
+      'llms.txt: blog, about, privacy, terms, independence and tracking-result rules')
+llms_links = set(re.findall(r'\]\((https://trackmyship\.co[^)]*)\)', llms))
+check(llms_links and llms_links <= set(urls), f'llms.txt links only to indexable sitemap pages ({len(llms_links)})')
 s, _, ads = get('/ads.txt')
 check(s == 200 and re.match(r'google\.com, pub-\d+, DIRECT, f08c47fec0942fa0', ads or '') is not None, 'ads.txt returns AdSense line')
 
@@ -109,6 +119,10 @@ for url in urls:
     for block in p.ld:
         try: json.loads(block)
         except Exception: ld_ok = False
+    og = {k: re.search(rf'<meta (?:property|name)="{k}" content="([^"]*)"', html) for k in ['og:url', 'og:title', 'og:description', 'og:image', 'twitter:card', 'twitter:title', 'twitter:description', 'twitter:image']}
+    check(all(og.values()) and og['og:url'].group(1) == url and 'noindex' not in h.get('X-Robots-Tag', '')
+          and '<html lang="en-IN">' in html and 'name="viewport"' in html and html.count('rel="canonical"') == 1 and '<h2' in html,
+          f'{path}: social tags, lang, viewport, one canonical, H2s, no X-Robots-Tag header')
     ok = (s == 200 and canon and canon.group(1) == url and robots_meta and 'noindex' not in robots_meta.group(1)
           and 'data-ssr="1"' in html and len(p.h1) == 1 and ld_ok and p.ld and p.imgs_no_alt == 0
           and (path not in expect_text or expect_text[path] in html))
@@ -117,6 +131,16 @@ for url in urls:
     all_links.update(l.split('#')[0] for l in p.links)
 
 check(len(set(titles.values())) == len(titles), 'page titles are unique')
+types_by_page = {}
+for url in urls:
+    path = url[len(SITE):] or '/'
+    _, _, html = get(path)
+    lds = [json.loads(b) for b in re.findall(r'<script type="application/ld\+json">(.*?)</script>', html, re.S)]
+    types_by_page[path] = [t for d in lds for g in d.get('@graph', [d]) for t in ([g['@type']] if isinstance(g['@type'], str) else g['@type'])]
+check(not any('FAQPage' in t for t in types_by_page.values()), 'no FAQPage markup (Google limits FAQ rich results to government/health sites)')
+check({'Organization', 'WebSite', 'WebPage'} <= set(types_by_page.get('/', [])), 'home: Organization, WebSite, WebPage structured data')
+check(all({'WebPage', 'BreadcrumbList'} <= set(t) for p, t in types_by_page.items() if p != '/'), 'every other page: WebPage + BreadcrumbList')
+check('Article' in types_by_page.get('/parcel-tracking-guide', []) and 'AboutPage' in types_by_page.get('/contact', []), 'guide: Article; contact: AboutPage')
 for path in ['/blog'] + [u[len(SITE):] for u in posts]:
     _, _, html = get(path)
     lds = [json.loads(b) for b in re.findall(r'<script type="application/ld\+json">(.*?)</script>', html, re.S)]
@@ -135,12 +159,29 @@ for link in sorted(all_links):
 # ---- redirects, noindex and 404 ----
 s, h, _ = get('/dtdc-tracking/')
 check(s == 301 and h.get('Location', '').endswith('/dtdc-tracking'), 'trailing slash 301 -> /dtdc-tracking')
-s, h, _ = get('/', {'Host': 'www.trackmyship.co'})
-check(s == 301 and h.get('Location') == f'{SITE}/', 'www 301 -> main domain')
-s, h, _ = get('/terms', {'X-Forwarded-Host': 'www.trackmyship.co'})
-check(s == 301 and h.get('Location') == f'{SITE}/terms', 'www via proxy header (X-Forwarded-Host) 301 -> main domain')
-s, h, html = get('/?q=TMS100245781')
-check(s == 200 and 'noindex' in h.get('X-Robots-Tag', '') and 'content="noindex, follow"' in html, 'tracking result URL is noindex')
+if LIVE:
+    def raw(url):
+        try: r = urllib.request.build_opener(NoRedirect).open(urllib.request.Request(url, headers={'User-Agent': 'Mozilla/5.0'}), timeout=20); return r.status, dict(r.headers)
+        except urllib.error.HTTPError as e: return e.code, dict(e.headers)
+    s, h = raw('https://www.trackmyship.co/terms')
+    check(s == 301 and h.get('Location') == f'{SITE}/terms', f'www.trackmyship.co 301 -> main domain ({s} {h.get("Location")})')
+    s, h = raw('http://trackmyship.co/terms')
+    check(s in (301, 308) and h.get('Location', '').startswith('https://trackmyship.co/terms'), f'http 301 -> https ({s} {h.get("Location")})')
+else:
+    s, h, _ = get('/', {'Host': 'www.trackmyship.co'})
+    check(s == 301 and h.get('Location') == f'{SITE}/', 'www 301 -> main domain')
+    s, h, _ = get('/terms', {'X-Forwarded-Host': 'www.trackmyship.co'})
+    check(s == 301 and h.get('Location') == f'{SITE}/terms', 'www via proxy header (X-Forwarded-Host) 301 -> main domain')
+s, h, _ = get('/index.html')
+check(s == 301 and h.get('Location') == f'{SITE}/', '/index.html 301 -> home page')
+for q in ['/?q=TEST123456', '/?q=TEST123456&courier=dtdc', '/?courier=dtdc&q=TEST123456', '/dtdc-tracking?q=TEST123456', '/?q=', '/blog?q=x']:
+    s, h, html = get(q)
+    check(s == 200 and 'noindex' in h.get('X-Robots-Tag', '') and 'content="noindex, follow"' in html and 'TEST123456' not in re.sub(r'<script[\s\S]*?</script>', '', html.split('<div id="root"')[0]),
+          f'tracking result {q}: noindex (meta + header), number not in page metadata')
+for q in ['/', '/?utm_source=facebook', '/?courier=dtdc']:
+    s, h, html = get(q)
+    check(s == 200 and 'noindex' not in h.get('X-Robots-Tag', '') and 'content="noindex' not in html and f'<link rel="canonical" href="{SITE}/"' in html,
+          f'{q}: indexable, canonical = home page (no accidental noindex)')
 s, h, _ = get('/api/health')
 check('noindex' in h.get('X-Robots-Tag', ''), '/api/ responses are noindex')
 s, h, html = get('/shree-anjani-courier-tracking')

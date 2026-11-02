@@ -178,13 +178,14 @@ button { font: inherit; cursor: pointer; }
 .post-list, .info-page .post-list { list-style: none; margin: 0 0 12px; padding: 0; display: grid; gap: 12px; }
 .post-card a { display: grid; gap: 4px; padding: 16px 18px; border: 1px solid var(--line); border-radius: 12px; color: inherit; text-decoration: none; }
 .post-card a:hover { border-color: var(--brand); background: #f8faff; }
-.post-card-title { color: var(--ink); font-weight: 650; font-size: 17px; line-height: 1.35; }
+.post-card-title { margin: 0; color: var(--ink); font-weight: 650; font-size: 17px; line-height: 1.35; }
 .post-card a:hover .post-card-title { color: var(--brand); }
 .post-card-desc { color: #475569; font-size: 14px; line-height: 1.55; }
 .post-card-date { color: var(--muted); font-size: 13px; }
 .crumbs { font-size: 13px; color: var(--muted); margin: 0 0 6px; }
 .crumbs a { color: var(--muted); }
 .info-page h3 { color: var(--ink); font-size: 16px; margin: 18px 0 6px; }
+.info-page .post-card-title { margin: 0; font-size: 17px; }
 
 /* Text sent by the server for search engines; replaced by the app on load */
 .prerender { max-width: 1120px; margin: 0 auto; padding: 24px 16px; color: var(--ink); }
