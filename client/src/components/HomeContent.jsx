@@ -24,6 +24,12 @@ function CourierAnswer({ courier: c }) {
           </div>
         ))}
       </dl>
+      {c.tips && (
+        <>
+          <h3 className="panel-subtitle">Good to know about {c.name} tracking</h3>
+          <ul className="tips">{c.tips.map((t) => <li key={t}>{t}</li>)}</ul>
+        </>
+      )}
       <p className="muted small">
         Track My Ship is an independent tracking service, not affiliated with {c.name}. See the{' '}
         <a href="/parcel-tracking-guide#statuses">guide to tracking statuses</a> for what each update means.
@@ -80,7 +86,8 @@ export default function HomeContent({ courier }) {
         </p>
       </section>
 
-      <AdSlot />
+      {/* No ads on courier pages without content of their own (AdSense low-value content policy) */}
+      {courier?.index !== false && <AdSlot />}
 
       <section className="panel" aria-labelledby="couriers">
         <h2 className="panel-title" id="couriers">Track parcels from popular couriers</h2>
@@ -101,17 +108,20 @@ export default function HomeContent({ courier }) {
         <p className="muted small">More tips on the <a href="/blog">Track My Ship blog</a>.</p>
       </section>
 
-      <section className="panel" aria-labelledby="faq">
-        <h2 className="panel-title" id="faq">Frequently asked questions</h2>
-        <div className="faq">
-          {SEO.faq.map((f) => (
-            <details key={f.q}>
-              <summary>{f.q}</summary>
-              <p>{f.a}</p>
-            </details>
-          ))}
-        </div>
-      </section>
+      {/* The general FAQ appears once, on the home page — not repeated on every courier page */}
+      {!courier && (
+        <section className="panel" aria-labelledby="faq">
+          <h2 className="panel-title" id="faq">Frequently asked questions</h2>
+          <div className="faq">
+            {SEO.faq.map((f) => (
+              <details key={f.q}>
+                <summary>{f.q}</summary>
+                <p>{f.a}</p>
+              </details>
+            ))}
+          </div>
+        </section>
+      )}
     </div>
   );
 }

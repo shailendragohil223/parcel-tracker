@@ -143,6 +143,12 @@ s, h, html = get('/?q=TMS100245781')
 check(s == 200 and 'noindex' in h.get('X-Robots-Tag', '') and 'content="noindex, follow"' in html, 'tracking result URL is noindex')
 s, h, _ = get('/api/health')
 check('noindex' in h.get('X-Robots-Tag', ''), '/api/ responses are noindex')
+s, h, html = get('/shree-anjani-courier-tracking')
+check(s == 200 and 'noindex' in h.get('X-Robots-Tag', '') and 'content="noindex, follow"' in html and 'data-ad-slot' not in html
+      and f'{SITE}/shree-anjani-courier-tracking' not in urls, 'thin courier page: noindex, no ad, not in sitemap')
+s, _, html = get('/dtdc-tracking')
+check('Good to know about DTDC tracking' in html and 'Is Track My Ship a courier company?' not in html,
+      'courier page has its own tips and no copy of the general FAQ')
 s, h, html = get('/no-such-page')
 check(s == 404 and 'Page not found' in html and 'noindex' in h.get('X-Robots-Tag', ''), 'unknown page returns 404 + noindex')
 s, h, _ = get('/')

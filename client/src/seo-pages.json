@@ -3,7 +3,7 @@
     "url": "https://trackmyship.co",
     "name": "Track My Ship",
     "image": "/og-image.png",
-    "updated": "2026-10-26"
+    "updated": "2026-11-02"
   },
   "business": {
     "_note": "Real contact details shown on the site. Empty fields are hidden.",
@@ -30,7 +30,12 @@
       "example": "e.g. C1002935719",
       "numberName": "consignment number",
       "format": "usually one letter followed by 8–10 digits, for example C1002935719",
-      "officialUrl": "https://www.dtdc.in/"
+      "officialUrl": "https://www.dtdc.in/",
+      "tips": [
+        "DTDC numbers usually start with a letter followed by digits (for example C1002935719). Enter the whole number, letter included, without spaces.",
+        "DTDC books many parcels through franchise counters, so your receipt may show the counter's name. The consignment number on it is still DTDC's tracking number.",
+        "For a parcel that hasn't moved for 48 hours, call the counter where it was booked or DTDC customer care with the consignment number — the booking counter can often check fastest."
+      ]
     },
     {
       "slug": "bluedart",
@@ -39,7 +44,12 @@
       "example": "11-digit AWB number",
       "numberName": "AWB (waybill) number",
       "format": "usually an 11-digit number",
-      "officialUrl": "https://www.bluedart.com/"
+      "officialUrl": "https://www.bluedart.com/",
+      "tips": [
+        "Blue Dart is an express courier that is part of DHL Group. Its tracking number is the 11-digit waybill (AWB) number.",
+        "If you ordered online, the seller's shipping SMS or email usually names Blue Dart and gives the AWB number.",
+        "Blue Dart deliveries may need you to share a delivery OTP or sign for the parcel — keep your phone with you on the delivery day."
+      ]
     },
     {
       "slug": "delhivery",
@@ -48,7 +58,12 @@
       "example": "13–14 digit waybill number",
       "numberName": "waybill (AWB) number",
       "format": "usually a 13- or 14-digit number",
-      "officialUrl": "https://www.delhivery.com/"
+      "officialUrl": "https://www.delhivery.com/",
+      "tips": [
+        "Delhivery carries a large number of online-shopping orders in India, so if your seller's SMS mentions Delhivery, the waybill number in it is what you track here.",
+        "Delhivery waybill numbers are usually 13 or 14 digits long. Copy them exactly — a missing digit gives no result.",
+        "Business freight (truck-load) shipments can use a different reference; if your number doesn't work, ask the sender which number to track."
+      ]
     },
     {
       "slug": "speedpost",
@@ -57,7 +72,12 @@
       "example": "e.g. EE123456789IN",
       "numberName": "article (consignment) number",
       "format": "13 characters: 2 letters, 9 digits and 2 letters ending in IN, for example EE123456789IN",
-      "officialUrl": "https://www.indiapost.gov.in/"
+      "officialUrl": "https://www.indiapost.gov.in/",
+      "tips": [
+        "Speed Post is India Post's express mail service. Article numbers have 13 characters ending in IN, for example EE123456789IN; Registered Post and India Post parcels use the same pattern with different starting letters.",
+        "If nobody is home, the postman usually leaves an intimation and the article is held at your delivery post office for collection — take the slip and an ID.",
+        "Tracking updates come from post office scans. Parcels can show no update while they travel between sorting hubs."
+      ]
     },
     {
       "slug": "trackon",
@@ -66,7 +86,8 @@
       "example": "Trackon AWB number",
       "numberName": "AWB / consignment number",
       "format": "printed on your Trackon booking receipt",
-      "officialUrl": "https://trackon.in/"
+      "officialUrl": "https://trackon.in/",
+      "index": false
     },
     {
       "slug": "professional",
@@ -75,7 +96,8 @@
       "example": "Professional consignment number",
       "numberName": "consignment number",
       "format": "printed on your booking receipt",
-      "officialUrl": ""
+      "officialUrl": "",
+      "index": false
     },
     {
       "slug": "stcourier",
@@ -84,7 +106,8 @@
       "example": "ST Courier AWB number",
       "numberName": "AWB / consignment number",
       "format": "printed on your ST Courier booking receipt",
-      "officialUrl": "https://stcourier.com/"
+      "officialUrl": "https://stcourier.com/",
+      "index": false
     },
     {
       "slug": "shreemaruti",
@@ -93,7 +116,8 @@
       "example": "Shree Maruti tracking number",
       "numberName": "tracking (docket) number",
       "format": "printed on your Shree Maruti booking receipt",
-      "officialUrl": "https://www.shreemaruti.com/"
+      "officialUrl": "https://www.shreemaruti.com/",
+      "index": false
     },
     {
       "slug": "shreeanjani",
@@ -102,7 +126,8 @@
       "example": "Shree Anjani tracking number",
       "numberName": "tracking (docket) number",
       "format": "printed on your booking receipt",
-      "officialUrl": ""
+      "officialUrl": "",
+      "index": false
     },
     {
       "slug": "shreetirupati",
@@ -111,7 +136,8 @@
       "example": "Shree Tirupati tracking number",
       "numberName": "tracking (docket) number",
       "format": "printed on your booking receipt",
-      "officialUrl": ""
+      "officialUrl": "",
+      "index": false
     }
   ],
   "faq": [
@@ -183,5 +209,6 @@
       "sub": "The rules for using this website.",
       "updated": "2026-10-24"
     }
-  ]
+  ],
+  "_note_couriers": "Courier pages with \"index\": false are kept out of Google (noindex, not in sitemap) and show no ads, because they have little content of their own. Add real, courier-specific \"tips\" before setting index back to true."
 }

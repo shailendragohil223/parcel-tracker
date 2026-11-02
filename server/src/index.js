@@ -96,7 +96,7 @@ if (template) {
   app.get(/^\/(?!api\/).*/, (req, res) => {
     const known = pageFor(req.path);
     // Tracking result links (/?q=...) contain customer data: keep them out of search results.
-    const noindex = !known || 'q' in req.query;
+    const noindex = !known || known.noindex || 'q' in req.query;
     if (noindex) res.set('X-Robots-Tag', 'noindex');
     res.set('Cache-Control', 'no-cache');
     res.status(known ? 200 : 404).type('html').send(renderPage(template, req.path, { noindex }));

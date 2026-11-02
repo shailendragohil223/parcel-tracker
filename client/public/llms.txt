@@ -13,15 +13,11 @@ Track My Ship is an independent tracking website based in Vadodara, Gujarat, Ind
 - [Blue Dart tracking](https://trackmyship.co/bluedart-tracking): how to track a Blue Dart parcel; the AWB (waybill) number is usually an 11-digit number
 - [Delhivery tracking](https://trackmyship.co/delhivery-tracking): how to track a Delhivery parcel; the waybill (AWB) number is usually a 13- or 14-digit number
 - [Speed Post (India Post) tracking](https://trackmyship.co/speed-post-tracking): how to track a Speed Post (India Post) parcel; the article (consignment) number is 13 characters: 2 letters, 9 digits and 2 letters ending in IN, for example EE123456789IN
-- [Trackon Couriers tracking](https://trackmyship.co/trackon-tracking): how to track a Trackon Couriers parcel; the AWB / consignment number is printed on your Trackon booking receipt
-- [The Professional Couriers tracking](https://trackmyship.co/professional-courier-tracking): how to track a The Professional Couriers parcel; the consignment number is printed on your booking receipt
-- [ST Courier tracking](https://trackmyship.co/st-courier-tracking): how to track a ST Courier parcel; the AWB / consignment number is printed on your ST Courier booking receipt
-- [Shree Maruti Courier tracking](https://trackmyship.co/shree-maruti-courier-tracking): how to track a Shree Maruti Courier parcel; the tracking (docket) number is printed on your Shree Maruti booking receipt
-- [Shree Anjani Courier tracking](https://trackmyship.co/shree-anjani-courier-tracking): how to track a Shree Anjani Courier parcel; the tracking (docket) number is printed on your booking receipt
-- [Shree Tirupati Courier tracking](https://trackmyship.co/shree-tirupati-courier-tracking): how to track a Shree Tirupati Courier parcel; the tracking (docket) number is printed on your booking receipt
 
 ## Blog
 - [Track My Ship Blog](https://trackmyship.co/blog): practical help when a parcel is late, missing or stuck
+- [Parcel stuck in transit? Why tracking stops and what to do](https://trackmyship.co/blog/parcel-stuck-in-transit): No tracking update for days? Why parcels show In transit between hubs, when a long gap is normal, when it's a problem, and who to contact after 48 hours.
+- [Received a damaged parcel? What to do](https://trackmyship.co/blog/damaged-parcel-what-to-do): Box crushed or item broken? What to check at the door, how to record evidence, who to contact (seller, courier or sender) and how to report it quickly.
 - [Parcel shows Delivered but you didn't get it? What to do](https://trackmyship.co/blog/delivered-but-not-received): Tracking says delivered but there's no parcel? Check these places first, then contact the courier and the seller in the right order, with the right details.
 - [Out for delivery but not delivered: why it happens and what to do](https://trackmyship.co/blog/out-for-delivery-not-delivered): Your parcel was out for delivery all day and never came. The common reasons, what the next tracking scan tells you, and how to get it delivered.
 - [What does RTO mean in courier tracking?](https://trackmyship.co/blog/rto-meaning-in-courier-tracking): RTO means return to origin: the courier is sending your parcel back to the sender. Why it happens, whether it can be stopped, and what to do next.

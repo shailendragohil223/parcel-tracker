@@ -62,6 +62,8 @@ export function pageFor(path) {
     h1: `${c.name} Tracking`,
     sub: `Enter your ${c.name} ${c.numberName} (${c.example}) to track it live on a map.`,
     courier: c,
+    // Couriers without content of their own stay out of search results (see seo-pages.json)
+    noindex: c.index === false,
   };
 }
 
@@ -125,8 +127,8 @@ function jsonLd(page) {
       inLanguage: 'en-IN',
     });
   } else if (!page.info) {
-    // Home and courier pages show the general FAQ; courier pages also show their own Q&A.
-    const list = [...(page.courier ? courierFaq(page.courier).slice(1) : []), ...SEO.faq];
+    // The home page shows the general FAQ; courier pages show only their own Q&A.
+    const list = page.courier ? courierFaq(page.courier).slice(1) : SEO.faq;
     graph.push({ '@type': 'FAQPage', '@id': `${page.canonical}#faq`, mainEntity: qa(list) });
   }
   return `<script type="application/ld+json">${JSON.stringify({ '@context': 'https://schema.org', '@graph': graph }).replace(/</g, '\\u003c')}</script>`;
@@ -144,6 +146,7 @@ function fallbackContent(page) {
 
 export function renderPage(template, path, { noindex = false } = {}) {
   const known = pageFor(path);
+  if (known?.noindex) noindex = true;
   const page = known || { ...SEO.home, path: '/', canonical: `${SITE}/`, title: 'Page not found | Track My Ship' };
   const setMeta = (html, attr, key, value) =>
     html.replace(new RegExp(`(<meta ${attr}="${key}" content=")[^"]*(")`), `$1${esc(value)}$2`);
@@ -177,7 +180,7 @@ export function renderPage(template, path, { noindex = false } = {}) {
 export function sitemapXml() {
   const urls = [
     { loc: `${SITE}/`, lastmod: SEO.site.updated, priority: '1.0' },
-    ...SEO.couriers.map((c) => ({ loc: `${SITE}${c.path}`, lastmod: SEO.site.updated, priority: '0.8' })),
+    ...SEO.couriers.filter((c) => c.index !== false).map((c) => ({ loc: `${SITE}${c.path}`, lastmod: SEO.site.updated, priority: '0.8' })),
     ...SEO.pages.map((p) => ({ loc: `${SITE}${p.path}`, lastmod: p.updated, priority: p.type === 'article' ? '0.7' : '0.3' })),
     { loc: `${SITE}${BLOG.index.path}`, lastmod: blogUpdated(), priority: '0.6' },
     ...POSTS.map((p) => ({ loc: `${SITE}/blog/${p.slug}`, lastmod: p.updated, priority: '0.6' })),
@@ -236,7 +239,7 @@ export function llmsTxt() {
     guide ? link(guide.path, 'Parcel tracking guide', 'what AWB, consignment, waybill and LR numbers are; how to find your AWB; which courier has your parcel; what each tracking status means; why tracking shows no information or stops updating; what to do about delays and failed delivery attempts') : null,
     '',
     '## Courier tracking pages',
-    ...SEO.couriers.map((c) => link(c.path, `${c.name} tracking`, `how to track a ${c.name} parcel; the ${c.numberName} is ${c.format}`)),
+    ...SEO.couriers.filter((c) => c.index !== false).map((c) => link(c.path, `${c.name} tracking`, `how to track a ${c.name} parcel; the ${c.numberName} is ${c.format}`)),
     '',
     '## Blog',
     link(BLOG.index.path, 'Track My Ship Blog', 'practical help when a parcel is late, missing or stuck'),

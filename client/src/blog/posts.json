@@ -9,6 +9,22 @@
   },
   "posts": [
     {
+      "slug": "parcel-stuck-in-transit",
+      "h1": "Parcel stuck in transit? Why tracking stops and what to do",
+      "title": "Parcel Stuck in Transit? Why Tracking Stops and What to Do",
+      "description": "No tracking update for days? Why parcels show In transit between hubs, when a long gap is normal, when it's a problem, and who to contact after 48 hours.",
+      "published": "2026-11-02",
+      "updated": "2026-11-02"
+    },
+    {
+      "slug": "damaged-parcel-what-to-do",
+      "h1": "Received a damaged parcel? What to do",
+      "title": "Received a Damaged Parcel? What to Do in India",
+      "description": "Box crushed or item broken? What to check at the door, how to record evidence, who to contact (seller, courier or sender) and how to report it quickly.",
+      "published": "2026-11-02",
+      "updated": "2026-11-02"
+    },
+    {
       "slug": "delivered-but-not-received",
       "h1": "Parcel shows Delivered but you didn't get it? What to do",
       "title": "Parcel Shows Delivered but Not Received? What to Do",
