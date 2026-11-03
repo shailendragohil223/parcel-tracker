@@ -82,7 +82,7 @@ export default function GuidePage() {
             <tr><th scope="col">Courier</th><th scope="col">Typical tracking number format</th></tr>
           </thead>
           <tbody>
-            <tr><td>DTDC</td><td>One letter followed by 8–10 digits, e.g. C1002935719</td></tr>
+            <tr><td>DTDC</td><td>One letter followed by 8–10 digits, e.g. C1002935719; or 7 and a letter followed by 8–9 digits (e.g. starting 7D or 7X)</td></tr>
             <tr><td>Blue Dart</td><td>11 digits</td></tr>
             <tr><td>Delhivery</td><td>13 or 14 digits</td></tr>
             <tr><td>Speed Post (India Post)</td><td>2 letters, 9 digits, 2 letters ending in IN, e.g. EE123456789IN</td></tr>

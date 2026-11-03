@@ -88,7 +88,7 @@ function toPublic(s) {
 // Only one guess is tried per search, so at most one API request is used.
 const COURIER_PATTERNS = [
   [/^[A-Z]{2}\d{9}IN$/i, 'speedpost'],        // India Post / Speed Post: EE123456789IN
-  [/^(?:[A-Z]\d{8,10}|7X\d{8,9})$/i, 'dtdc'],  // DTDC: C1002935719, B33464684, 7X12345678
+  [/^(?:[A-Z]\d{8,10}|7[A-Z]\d{8,9})$/i, 'dtdc'], // DTDC: C1002935719, B33464684, 7X12345678, 7D123456789
   [/^\d{13,14}$/, 'delhivery'],                // Delhivery waybill: 13–14 digits
   [/^\d{11}$/, 'bluedart'],                    // Blue Dart AWB: 11 digits
 ];

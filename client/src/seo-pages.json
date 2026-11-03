@@ -29,10 +29,10 @@
       "path": "/dtdc-tracking",
       "example": "e.g. C1002935719",
       "numberName": "consignment number",
-      "format": "usually one letter followed by 8–10 digits, for example C1002935719",
+      "format": "usually one letter followed by 8–10 digits (for example C1002935719), or 7 and a letter followed by 8–9 digits (for example 7D followed by 9 digits)",
       "officialUrl": "https://www.dtdc.in/",
       "tips": [
-        "DTDC numbers usually start with a letter followed by digits (for example C1002935719). Enter the whole number, letter included, without spaces.",
+        "DTDC numbers usually start with a letter followed by digits (for example C1002935719); some start with 7 and a letter, such as 7D or 7X. Enter the whole number, letters included, without spaces.",
         "DTDC books many parcels through franchise counters, so your receipt may show the counter's name. The consignment number on it is still DTDC's tracking number.",
         "For a parcel that hasn't moved for 48 hours, call the counter where it was booked or DTDC customer care with the consignment number — the booking counter can often check fastest."
       ]

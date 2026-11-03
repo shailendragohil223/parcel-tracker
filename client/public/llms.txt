@@ -10,7 +10,7 @@ Track My Ship is an independent tracking website based in Vadodara, Gujarat, Ind
 
 ## Courier tracking pages
 (Other couriers, such as Trackon, ST Courier and Shree Maruti, can also be tracked from the search box on the home page.)
-- [DTDC tracking](https://trackmyship.co/dtdc-tracking): how to track a DTDC parcel; the consignment number is usually one letter followed by 8–10 digits, for example C1002935719
+- [DTDC tracking](https://trackmyship.co/dtdc-tracking): how to track a DTDC parcel; the consignment number is usually one letter followed by 8–10 digits (for example C1002935719), or 7 and a letter followed by 8–9 digits (for example 7D followed by 9 digits)
 - [Blue Dart tracking](https://trackmyship.co/bluedart-tracking): how to track a Blue Dart parcel; the AWB (waybill) number is usually an 11-digit number
 - [Delhivery tracking](https://trackmyship.co/delhivery-tracking): how to track a Delhivery parcel; the waybill (AWB) number is usually a 13- or 14-digit number
 - [Speed Post (India Post) tracking](https://trackmyship.co/speed-post-tracking): how to track a Speed Post (India Post) parcel; the article (consignment) number is 13 characters: 2 letters, 9 digits and 2 letters ending in IN, for example EE123456789IN
