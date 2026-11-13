@@ -34,6 +34,11 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 22
+      # Pinned: the runner's default Python can be newer than Playwright/greenlet support
+      # (Python 3.14 makes greenlet fail to build from source).
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
       - name: Upgrade packages (manual runs only)
         if: github.event_name == 'workflow_dispatch' && inputs.upgrade_packages != ''
         run: |
