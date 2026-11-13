@@ -2,6 +2,22 @@ import SEO from '../seo-pages.json';
 import { courierFaq } from '../courier-faq.js';
 import AdSlot from './AdSlot.jsx';
 import { POSTS, postPath } from '../blog/index.js';
+import { courierGuide } from '../couriers/index.js';
+import Markdown from './Markdown.jsx';
+
+const fmtDay = (d) => new Date(`${d}T00:00:00+05:30`).toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'Asia/Kolkata' });
+
+// Long-form, courier-specific guide (client/src/couriers/<slug>.md)
+function CourierGuide({ courier: c }) {
+  const text = courierGuide(c.slug);
+  if (!text) return null;
+  return (
+    <section className="panel info-page courier-guide" aria-label={`${c.name} tracking guide`}>
+      <Markdown text={text} />
+      {c.reviewed && <p className="muted small">Written by the Track My Ship team · Last reviewed {fmtDay(c.reviewed)}</p>}
+    </section>
+  );
+}
 
 function CourierAnswer({ courier: c }) {
   return (
@@ -88,6 +104,8 @@ export default function HomeContent({ courier }) {
 
       {/* No ads on courier pages without content of their own (AdSense low-value content policy) */}
       {courier?.index !== false && <AdSlot />}
+
+      {courier && <CourierGuide courier={courier} />}
 
       <section className="panel" aria-labelledby="couriers">
         <h2 className="panel-title" id="couriers">Track parcels from popular couriers</h2>

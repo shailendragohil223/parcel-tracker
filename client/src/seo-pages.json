@@ -3,7 +3,7 @@
     "url": "https://trackmyship.co",
     "name": "Track My Ship",
     "image": "/og-image.png",
-    "updated": "2026-11-02"
+    "updated": "2026-11-13"
   },
   "business": {
     "_note": "Real contact details shown on the site. Empty fields are hidden.",
@@ -31,6 +31,7 @@
       "numberName": "consignment number",
       "format": "usually one letter followed by 8–10 digits (for example C1002935719), or 7 and a letter followed by 8–9 digits (for example 7D followed by 9 digits)",
       "officialUrl": "https://www.dtdc.in/",
+      "reviewed": "2026-11-13",
       "tips": [
         "DTDC numbers usually start with a letter followed by digits (for example C1002935719); some start with 7 and a letter, such as 7D or 7X. Enter the whole number, letters included, without spaces.",
         "DTDC books many parcels through franchise counters, so your receipt may show the counter's name. The consignment number on it is still DTDC's tracking number.",
@@ -45,6 +46,7 @@
       "numberName": "AWB (waybill) number",
       "format": "usually an 11-digit number",
       "officialUrl": "https://www.bluedart.com/",
+      "reviewed": "2026-11-13",
       "tips": [
         "Blue Dart is an express courier that is part of DHL Group. Its tracking number is the 11-digit waybill (AWB) number.",
         "If you ordered online, the seller's shipping SMS or email usually names Blue Dart and gives the AWB number.",
@@ -59,6 +61,7 @@
       "numberName": "waybill (AWB) number",
       "format": "usually a 13- or 14-digit number",
       "officialUrl": "https://www.delhivery.com/",
+      "reviewed": "2026-11-13",
       "tips": [
         "Delhivery carries a large number of online-shopping orders in India, so if your seller's SMS mentions Delhivery, the waybill number in it is what you track here.",
         "Delhivery waybill numbers are usually 13 or 14 digits long. Copy them exactly — a missing digit gives no result.",
@@ -73,6 +76,7 @@
       "numberName": "article (consignment) number",
       "format": "13 characters: 2 letters, 9 digits and 2 letters ending in IN, for example EE123456789IN",
       "officialUrl": "https://www.indiapost.gov.in/",
+      "reviewed": "2026-11-13",
       "tips": [
         "Speed Post is India Post's express mail service. Article numbers have 13 characters ending in IN, for example EE123456789IN; Registered Post and India Post parcels use the same pattern with different starting letters.",
         "If nobody is home, the postman usually leaves an intimation and the article is held at your delivery post office for collection — take the slip and an ID.",
@@ -191,7 +195,7 @@
       "description": "About Track My Ship, an independent courier tracking website based in Vadodara, Gujarat, and how to contact us.",
       "h1": "About & Contact",
       "sub": "Who we are and how to reach us.",
-      "updated": "2026-10-24"
+      "updated": "2026-11-13"
     },
     {
       "path": "/privacy-policy",

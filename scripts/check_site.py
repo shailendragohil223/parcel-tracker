@@ -192,6 +192,11 @@ s, _, html = get('/dtdc-tracking')
 html = html.replace('<!-- -->', '')  # React SSR text separators
 check('Good to know about DTDC tracking' in html and 'Is Track My Ship a courier company?' not in html,
       'courier page has its own tips and no copy of the general FAQ')
+for path, heading in [('/dtdc-tracking', 'About DTDC'), ('/bluedart-tracking', 'About Blue Dart'), ('/delhivery-tracking', 'About Delhivery'), ('/speed-post-tracking', 'About Speed Post')]:
+    _, _, html = get(path)
+    check(heading in html and 'Last reviewed' in html, f'{path}: in-depth courier guide is server-rendered')
+s, _, html = get('/')
+check(html.count('adsbygoogle.js') == 1, 'AdSense script loaded exactly once')
 s, h, html = get('/no-such-page')
 check(s == 404 and 'Page not found' in html and 'noindex' in h.get('X-Robots-Tag', ''), 'unknown page returns 404 + noindex')
 s, h, _ = get('/')

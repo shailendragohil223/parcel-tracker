@@ -40,6 +40,19 @@ function Contact() {
         New to tracking numbers? Read our <a href="/parcel-tracking-guide">parcel tracking guide</a> for what AWB,
         consignment and LR numbers are and what each tracking status means.
       </p>
+      <h2>How we write our guides</h2>
+      <p>
+        The <a href="/parcel-tracking-guide">tracking guide</a>, the courier pages and the <a href="/blog">blog</a> are
+        written by the Track My Ship team to answer the questions people actually have when a parcel is late, missing or
+        stuck. We aim to give practical steps, not filler.
+      </p>
+      <ul>
+        <li><b>Sources:</b> couriers' and India Post's own published information, the tracking updates couriers show, and government resources such as the National Consumer Helpline and the cyber crime portal. We link to official sources so you can check them.</li>
+        <li><b>No guesswork presented as fact:</b> where couriers' wording or rules vary, we say so. We don't publish customer care phone numbers that might go out of date — we link to each courier's official website instead.</li>
+        <li><b>Independent:</b> no courier pays us or reviews our content, and advertising does not affect what we write.</li>
+        <li><b>Kept up to date:</b> each page shows when it was published and last updated or reviewed. When couriers change their services or tracking, we update the affected pages.</li>
+        <li><b>Corrections:</b> if something is wrong or out of date, email us (details below) and we'll fix it.</li>
+      </ul>
       <h2>Contact us</h2>
       <p>For questions about this website, corrections or business enquiries:</p>
       <ContactDetails />

@@ -1,15 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url><loc>https://trackmyship.co/</loc><lastmod>2026-11-02</lastmod><priority>1.0</priority></url>
-  <url><loc>https://trackmyship.co/dtdc-tracking</loc><lastmod>2026-11-02</lastmod><priority>0.8</priority></url>
-  <url><loc>https://trackmyship.co/bluedart-tracking</loc><lastmod>2026-11-02</lastmod><priority>0.8</priority></url>
-  <url><loc>https://trackmyship.co/delhivery-tracking</loc><lastmod>2026-11-02</lastmod><priority>0.8</priority></url>
-  <url><loc>https://trackmyship.co/speed-post-tracking</loc><lastmod>2026-11-02</lastmod><priority>0.8</priority></url>
+  <url><loc>https://trackmyship.co/</loc><lastmod>2026-11-13</lastmod><priority>1.0</priority></url>
+  <url><loc>https://trackmyship.co/dtdc-tracking</loc><lastmod>2026-11-13</lastmod><priority>0.8</priority></url>
+  <url><loc>https://trackmyship.co/bluedart-tracking</loc><lastmod>2026-11-13</lastmod><priority>0.8</priority></url>
+  <url><loc>https://trackmyship.co/delhivery-tracking</loc><lastmod>2026-11-13</lastmod><priority>0.8</priority></url>
+  <url><loc>https://trackmyship.co/speed-post-tracking</loc><lastmod>2026-11-13</lastmod><priority>0.8</priority></url>
   <url><loc>https://trackmyship.co/parcel-tracking-guide</loc><lastmod>2026-10-27</lastmod><priority>0.7</priority></url>
-  <url><loc>https://trackmyship.co/contact</loc><lastmod>2026-10-24</lastmod><priority>0.3</priority></url>
+  <url><loc>https://trackmyship.co/contact</loc><lastmod>2026-11-13</lastmod><priority>0.3</priority></url>
   <url><loc>https://trackmyship.co/privacy-policy</loc><lastmod>2026-10-24</lastmod><priority>0.3</priority></url>
   <url><loc>https://trackmyship.co/terms</loc><lastmod>2026-10-24</lastmod><priority>0.3</priority></url>
-  <url><loc>https://trackmyship.co/blog</loc><lastmod>2026-11-02</lastmod><priority>0.6</priority></url>
+  <url><loc>https://trackmyship.co/blog</loc><lastmod>2026-11-13</lastmod><priority>0.6</priority></url>
+  <url><loc>https://trackmyship.co/blog/fake-courier-sms-scams</loc><lastmod>2026-11-13</lastmod><priority>0.6</priority></url>
+  <url><loc>https://trackmyship.co/blog/how-long-does-courier-take-india</loc><lastmod>2026-11-13</lastmod><priority>0.6</priority></url>
+  <url><loc>https://trackmyship.co/blog/cash-on-delivery-tips</loc><lastmod>2026-11-13</lastmod><priority>0.6</priority></url>
+  <url><loc>https://trackmyship.co/blog/change-delivery-address-after-shipping</loc><lastmod>2026-11-13</lastmod><priority>0.6</priority></url>
+  <url><loc>https://trackmyship.co/blog/how-to-pack-a-parcel-for-courier</loc><lastmod>2026-11-13</lastmod><priority>0.6</priority></url>
   <url><loc>https://trackmyship.co/blog/parcel-stuck-in-transit</loc><lastmod>2026-11-02</lastmod><priority>0.6</priority></url>
   <url><loc>https://trackmyship.co/blog/damaged-parcel-what-to-do</loc><lastmod>2026-11-02</lastmod><priority>0.6</priority></url>
   <url><loc>https://trackmyship.co/blog/delivered-but-not-received</loc><lastmod>2026-10-30</lastmod><priority>0.6</priority></url>
