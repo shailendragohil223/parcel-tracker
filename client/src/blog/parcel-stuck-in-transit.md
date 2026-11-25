@@ -27,7 +27,7 @@ How long the gap lasts depends mostly on distance. Within a city or state, the n
 
 1. **Check the latest scan again** on [Track My Ship](/) and note the last place and time. A new scan often appears after a hub processes its backlog.
 2. **Make sure the courier is right.** If the tracking looks strange, confirm the courier and number with the seller or sender.
-3. **Contact the courier** after about 48 hours without an update. Give the tracking number, the last scan location and your delivery PIN code, and ask them to trace the parcel. Note the complaint number.
+3. **Contact the courier** after about 48 hours without an update. Give the tracking number, the last scan location and your delivery PIN code, and ask them to trace the parcel. Note the complaint number. Our [DTDC](/dtdc-tracking), [Blue Dart](/bluedart-tracking), [Delhivery](/delhivery-tracking) and [Speed Post](/speed-post-tracking) tracking pages link to each courier's official website for customer care.
 4. **Contact the seller** if you bought it online. They booked the shipment and can escalate it with the courier, or arrange a replacement or refund if the parcel is lost.
 5. **Keep your phone reachable.** A parcel that finally reaches your local branch may go [out for delivery](/blog/out-for-delivery-not-delivered) quickly.
 

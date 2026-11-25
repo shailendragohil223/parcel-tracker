@@ -44,7 +44,7 @@ Put padding on the bottom, place the items in the middle, then fill every gap on
 - **Declare the real contents and value.** Couriers base any compensation on the declared value, and false declarations can mean the claim is refused.
 - **Ask about insurance or risk cover** for valuable items. Some couriers offer it for an extra charge.
 - **Check the receipt before you leave**: the receiver's address, PIN code, weight and tracking number should all be correct.
-- **Keep the receipt** until the parcel is delivered, and send the tracking number to the receiver so they can follow it on [Track My Ship](/).
+- **Keep the receipt** until the parcel is delivered, and send the tracking number to the receiver so they can follow it on [Track My Ship](/) — for example on the [DTDC](/dtdc-tracking), [Blue Dart](/bluedart-tracking) or [Speed Post](/speed-post-tracking) tracking page.
 
 ## Items couriers usually won't carry
 

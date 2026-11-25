@@ -21,7 +21,7 @@ The scan just before "RTO" in the tracking history usually shows which of these 
 
 ## Can RTO be stopped?
 
-Sometimes. If the return was only just started and the parcel is still at your local branch, the courier may be able to cancel it and deliver to you — especially if the problem was a wrong address or an unreachable phone number that you can correct. Contact the courier's customer care quickly with your tracking number. Once the parcel has left the area, it usually has to complete the return.
+Sometimes. If the return was only just started and the parcel is still at your local branch, the courier may be able to cancel it and deliver to you — especially if the problem was a wrong address or an unreachable phone number that you can correct. Contact the courier's customer care quickly with your tracking number. Our [DTDC](/dtdc-tracking), [Blue Dart](/bluedart-tracking), [Delhivery](/delhivery-tracking) and [Speed Post](/speed-post-tracking) tracking pages link to each courier's official website. Once the parcel has left the area, it usually has to complete the return.
 
 ## What to do when your parcel shows RTO
 

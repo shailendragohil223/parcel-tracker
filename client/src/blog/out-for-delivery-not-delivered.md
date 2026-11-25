@@ -23,7 +23,7 @@ If the status still shows **Out for delivery** late at night with no new scan, i
 
 ## What to do next
 
-1. **Check the tracking the next morning.** Look up your tracking number on [Track My Ship](/) to see the latest scan and its message.
+1. **Check the tracking the next morning.** Look up your tracking number on [Track My Ship](/), or on your courier's page such as [DTDC](/dtdc-tracking) or [Delhivery](/delhivery-tracking), to see the latest scan and its message.
 2. **Fix the reason if you can.** If it says the address was incomplete or you weren't reachable, contact the courier with your tracking number to confirm your full address, a landmark and a phone number you'll answer.
 3. **Expect another attempt.** Couriers usually make another attempt, often on the next working day. Keep your phone on and someone available at the address if possible.
 4. **Ask about collecting it.** Some couriers let you collect the parcel from the local branch. Ask customer care if that is possible for your parcel.

@@ -12,7 +12,7 @@ Three things follow from this:
 
 ## Before the delivery day
 
-1. **Track the parcel** on [Track My Ship](/) or the seller's app so you know when it is out for delivery.
+1. **Track the parcel** on [Track My Ship](/) (for example on the [Delhivery](/delhivery-tracking) or [Blue Dart](/bluedart-tracking) page) or the seller's app so you know when it is out for delivery.
 2. **Keep the exact amount ready**, or check whether the order allows UPI or card payment at the door. Delivery people often don't carry much change.
 3. **Make sure your phone is reachable.** Most delivery people call before arriving, and a missed call is one of the most common reasons COD parcels fail.
 4. **If someone else will receive it**, give them the order details and the money, and tell them what to check.

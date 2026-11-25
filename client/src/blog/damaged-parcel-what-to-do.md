@@ -27,7 +27,7 @@ If something is clearly wrong, take photos of the parcel with the shipping label
 | You sent the parcel | The courier where you booked it | You are the courier's customer; claims depend on the courier's terms and any insurance or declared value. |
 | Someone sent it to you | The sender | They booked it and can raise a claim with the courier. |
 
-Report it **quickly**. Sellers and couriers usually have a short window for reporting damage, often counted from the delivery date shown in tracking. Quote the tracking number, describe the damage, attach photos and note the complaint number you're given.
+Report it **quickly**. Sellers and couriers usually have a short window for reporting damage, often counted from the delivery date shown in tracking (check it on the [DTDC](/dtdc-tracking), [Blue Dart](/bluedart-tracking), [Delhivery](/delhivery-tracking) or [Speed Post](/speed-post-tracking) tracking page). Quote the tracking number, describe the damage, attach photos and note the complaint number you're given.
 
 ## If it isn't resolved
 

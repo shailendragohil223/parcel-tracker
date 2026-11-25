@@ -15,7 +15,7 @@ The "Delivered" status is recorded by the delivery person, usually on a handheld
 1. **Ask everyone at the address**: family, flatmates and anyone who was home during the day.
 2. **Ask the security guard or reception**: many buildings and offices collect parcels at the gate.
 3. **Ask your neighbours**, especially if your flat or house number is easy to confuse with theirs.
-4. **Look at the delivery time** in the tracking history on [Track My Ship](/). If it was marked delivered in the last few hours, wait until the end of the day: it may still arrive.
+4. **Look at the delivery time** in the tracking history on [Track My Ship](/) or your courier's page ([DTDC](/dtdc-tracking), [Blue Dart](/bluedart-tracking), [Delhivery](/delhivery-tracking) or [Speed Post](/speed-post-tracking)). If it was marked delivered in the last few hours, wait until the end of the day: it may still arrive.
 5. **Check the delivery message**: some couriers and sellers send an SMS or email with the name of the person who received the parcel, a photo or a delivery OTP.
 
 ## Contact the courier
