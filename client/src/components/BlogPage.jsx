@@ -4,7 +4,7 @@ import Markdown from './Markdown.jsx';
 
 const fmt = (d) => new Date(`${d}T00:00:00+05:30`).toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'Asia/Kolkata' });
 
-// Post titles are headings: H2 on the blog list, H3 under "More from the blog".
+// Post titles are headings: H2 on the blog list, H3 under "Related articles".
 function PostCard({ post, level = 2 }) {
   const Title = `h${level}`;
   return (
@@ -34,7 +34,9 @@ export function BlogIndex() {
 
 // `body` is the post's Markdown text: bundled in on the server, loaded before hydration in the browser.
 export function BlogPost({ post, body }) {
-  const more = POSTS.filter((p) => p.slug !== post.slug).slice(0, 3);
+  // Hand-picked related posts ("related" in posts.json), topped up with the newest posts
+  const related = (post.related || []).map((slug) => POSTS.find((p) => p.slug === slug)).filter(Boolean);
+  const more = [...related, ...POSTS.filter((p) => p.slug !== post.slug && !related.includes(p))].slice(0, 3);
   return (
     <>
       <article className="panel info-page info-page--article blog-post">
@@ -60,7 +62,7 @@ export function BlogPost({ post, body }) {
 
       {more.length > 0 && (
         <section className="panel info-page" aria-labelledby="more-posts">
-          <h2 id="more-posts">More from the blog</h2>
+          <h2 id="more-posts">Related articles</h2>
           <ul className="post-list">{more.map((p) => <PostCard key={p.slug} post={p} level={3} />)}</ul>
         </section>
       )}

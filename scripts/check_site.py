@@ -94,6 +94,8 @@ check(s == 200 and 'xml' in h.get('Content-Type', '') and len(items) == len(post
 check(all(p[len(SITE):] in llms for p in posts), 'llms.txt lists every blog post')
 _, _, home = get('/')
 check(all(f'href="{p[len(SITE):]}"' in home for p in posts), 'home page links to every blog post')
+_, _, page = get('/blog/how-to-pack-a-parcel-for-courier')
+check('Related articles' in page and 'href="/blog/damaged-parcel-what-to-do"' in page, 'blog post shows its related articles')
 
 # ---- every sitemap page, as a crawler without JavaScript ----
 expect_text = {
