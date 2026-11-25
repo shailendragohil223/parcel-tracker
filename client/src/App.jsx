@@ -22,7 +22,7 @@ function setNoindex(on) {
 export default function App({ path, postBody = null }) {
   const pathname = clean(path);
   // Courier landing page (e.g. /dtdc-tracking); guide / About / Privacy / Terms pages
-  const courierPage = SEO.couriers.find((c) => c.path === pathname) || null;
+  const courierPage = SEO.couriers.find((c) => c.index !== false && c.path === pathname) || null;
   const blogPost = postFor(pathname);
   const blogIndex = pathname === BLOG.index.path;
   // Pages without the search box: guide, About, Privacy, Terms and the blog
@@ -129,7 +129,7 @@ export default function App({ path, postBody = null }) {
             />
           )}
 
-          {!result && <HomeContent courier={courierPage} />}
+          {!result && <HomeContent courier={courierPage} ads={!notFound} />}
         </main>
       )}
 

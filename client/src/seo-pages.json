@@ -214,5 +214,5 @@
       "updated": "2026-10-24"
     }
   ],
-  "_note_couriers": "Courier pages with \"index\": false are kept out of Google (noindex, not in sitemap) and show no ads, because they have little content of their own. Add real, courier-specific \"tips\" before setting index back to true."
+  "_note_couriers": "Couriers with \"index\": false have no page of their own (their old URLs return 404) and are not linked anywhere, because they had little content of their own. They can still be tracked from the search box. Add real, courier-specific \"tips\" before setting index back to true."
 }

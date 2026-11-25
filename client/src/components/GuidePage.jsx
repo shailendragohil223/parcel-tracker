@@ -159,7 +159,7 @@ export default function GuidePage() {
         Use the <a href="/">Track My Ship tracker</a>, or go to your courier's page:
       </p>
       <ul className="courier-links">
-        {SEO.couriers.map((c) => (
+        {SEO.couriers.filter((c) => c.index !== false).map((c) => (
           <li key={c.slug}><a href={c.path}>{c.name} tracking</a></li>
         ))}
       </ul>

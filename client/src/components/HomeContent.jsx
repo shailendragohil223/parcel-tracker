@@ -76,7 +76,7 @@ function HomeIntro() {
 }
 
 // Visible content for the home and courier pages: how it works, supported couriers, FAQ.
-export default function HomeContent({ courier }) {
+export default function HomeContent({ courier, ads = true }) {
   return (
     <div className="home-content">
       {courier ? <CourierAnswer courier={courier} /> : <HomeIntro />}
@@ -102,15 +102,15 @@ export default function HomeContent({ courier }) {
         </p>
       </section>
 
-      {/* No ads on courier pages without content of their own (AdSense low-value content policy) */}
-      {courier?.index !== false && <AdSlot />}
+      {/* No ads on 404 / 410 pages (AdSense: no ads on error or low-value pages) */}
+      {ads && <AdSlot />}
 
       {courier && <CourierGuide courier={courier} />}
 
       <section className="panel" aria-labelledby="couriers">
         <h2 className="panel-title" id="couriers">Track parcels from popular couriers</h2>
         <ul className="courier-links">
-          {SEO.couriers.map((c) => (
+          {SEO.couriers.filter((c) => c.index !== false).map((c) => (
             <li key={c.slug}>
               <a href={c.path} aria-current={courier?.slug === c.slug ? 'page' : undefined}>{c.name} tracking</a>
             </li>

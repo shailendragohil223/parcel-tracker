@@ -33,7 +33,12 @@ const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replac
 const clean = (p) => (p.length > 1 ? p.replace(/\/$/, '') : p);
 
 export function courierPageFor(path) {
-  return SEO.couriers.find((c) => c.path === clean(path)) || null;
+  return SEO.couriers.find((c) => c.index !== false && c.path === clean(path)) || null;
+}
+
+// Courier pages removed from the site ("index": false): served as 410 Gone.
+export function isRetiredPage(path) {
+  return SEO.couriers.some((c) => c.index === false && c.path === clean(path));
 }
 
 export function pageFor(path) {
@@ -132,7 +137,7 @@ function jsonLd(page) {
 
 // Text-only fallback when the SSR bundle isn't available.
 function fallbackContent(page) {
-  const links = SEO.couriers.map((c) => `<li><a href="${c.path}">${esc(c.name)} tracking</a></li>`).join('');
+  const links = SEO.couriers.filter((c) => c.index !== false).map((c) => `<li><a href="${c.path}">${esc(c.name)} tracking</a></li>`).join('');
   const faq = SEO.faq.map((f) => `<h3>${esc(f.q)}</h3><p>${esc(f.a)}</p>`).join('');
   return `<main class="prerender"><h1>${esc(page.h1)}</h1><p>${esc(page.sub)}</p>`
     + `<h2>Track parcels from popular couriers</h2><ul>${links}</ul>`

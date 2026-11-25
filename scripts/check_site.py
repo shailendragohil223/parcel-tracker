@@ -186,8 +186,10 @@ for q in ['/', '/?utm_source=facebook', '/?courier=dtdc']:
 s, h, _ = get('/api/health')
 check('noindex' in h.get('X-Robots-Tag', ''), '/api/ responses are noindex')
 s, h, html = get('/shree-anjani-courier-tracking')
-check(s == 200 and 'noindex' in h.get('X-Robots-Tag', '') and 'content="noindex, follow"' in html and 'data-ad-slot' not in html
-      and f'{SITE}/shree-anjani-courier-tracking' not in urls, 'thin courier page: noindex, no ad, not in sitemap')
+check(s == 410 and 'noindex' in h.get('X-Robots-Tag', '') and 'data-ad-slot' not in html
+      and f'{SITE}/shree-anjani-courier-tracking' not in urls, 'retired thin courier page: 410 Gone, no ad, not in sitemap')
+_, _, html = get('/')
+check('-courier-tracking"' not in html and '/trackon-tracking"' not in html, 'home page does not link to retired courier pages')
 s, _, html = get('/dtdc-tracking')
 html = html.replace('<!-- -->', '')  # React SSR text separators
 check('Good to know about DTDC tracking' in html and 'Is Track My Ship a courier company?' not in html,

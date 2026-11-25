@@ -3,7 +3,7 @@ import express from 'express';
 import cors from 'cors';
 import rateLimit from 'express-rate-limit';
 import { existsSync, readFileSync } from 'node:fs';
-import { pageFor, renderPage, sitemapXml, robotsTxt, llmsTxt, adsTxt, blogRss } from './seo.js';
+import { pageFor, isRetiredPage, renderPage, sitemapXml, robotsTxt, llmsTxt, adsTxt, blogRss } from './seo.js';
 import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
 import trackRoutes from './routes/track.js';
@@ -101,7 +101,10 @@ if (template) {
     const noindex = !known || known.noindex || 'q' in req.query;
     if (noindex) res.set('X-Robots-Tag', 'noindex');
     res.set('Cache-Control', 'no-cache');
-    res.status(known ? 200 : 404).type('html').send(renderPage(template, req.path, { noindex }));
+    // Retired thin courier pages ("index": false in seo-pages.json): 410 Gone tells Google they were
+    // removed on purpose, so they leave Search Console's "Excluded by noindex" report sooner than a 404.
+    const retired = !known && isRetiredPage(req.path);
+    res.status(known ? 200 : retired ? 410 : 404).type('html').send(renderPage(template, req.path, { noindex }));
   });
 }
 

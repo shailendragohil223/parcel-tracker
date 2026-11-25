@@ -50,7 +50,7 @@ export function BlogPost({ post, body }) {
         <h2 id="track">Track your parcel</h2>
         <p>Enter your tracking number on the <a href="/">Track My Ship tracker</a>, or go to your courier's page:</p>
         <ul className="courier-links">
-          {SEO.couriers.map((c) => <li key={c.slug}><a href={c.path}>{c.name} tracking</a></li>)}
+          {SEO.couriers.filter((c) => c.index !== false).map((c) => <li key={c.slug}><a href={c.path}>{c.name} tracking</a></li>)}
         </ul>
         <p className="muted small">
           Track My Ship is an independent tracking website, not a courier. For problems with a delivery, contact the
