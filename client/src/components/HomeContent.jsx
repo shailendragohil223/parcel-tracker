@@ -120,8 +120,9 @@ export default function HomeContent({ courier, ads = true }) {
 
       <section className="panel" aria-labelledby="help-posts">
         <h2 className="panel-title" id="help-posts">Help with a delivery problem</h2>
+        {/* Every post, newest first: gives each one an internal link from the home and courier pages */}
         <ul className="courier-links">
-          {POSTS.slice(0, 4).map((p) => <li key={p.slug}><a href={postPath(p)}>{p.h1}</a></li>)}
+          {POSTS.map((p) => <li key={p.slug}><a href={postPath(p)}>{p.h1}</a></li>)}
         </ul>
         <p className="muted small">More tips on the <a href="/blog">Track My Ship blog</a>.</p>
       </section>

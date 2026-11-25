@@ -92,6 +92,8 @@ items = ET.fromstring(rss).findall('./channel/item') if s == 200 else []
 check(s == 200 and 'xml' in h.get('Content-Type', '') and len(items) == len(posts)
       and all(i.find('link').text in posts for i in items), f'blog RSS feed valid with {len(items)} posts')
 check(all(p[len(SITE):] in llms for p in posts), 'llms.txt lists every blog post')
+_, _, home = get('/')
+check(all(f'href="{p[len(SITE):]}"' in home for p in posts), 'home page links to every blog post')
 
 # ---- every sitemap page, as a crawler without JavaScript ----
 expect_text = {

@@ -141,6 +141,7 @@ function fallbackContent(page) {
   const faq = SEO.faq.map((f) => `<h3>${esc(f.q)}</h3><p>${esc(f.a)}</p>`).join('');
   return `<main class="prerender"><h1>${esc(page.h1)}</h1><p>${esc(page.sub)}</p>`
     + `<h2>Track parcels from popular couriers</h2><ul>${links}</ul>`
+    + `<h2>Help with a delivery problem</h2><ul>${POSTS.map((p) => `<li><a href="/blog/${p.slug}">${esc(p.h1)}</a></li>`).join('')}</ul>`
     + `<h2>Frequently asked questions</h2>${faq}`
     + `<p><a href="/parcel-tracking-guide">Parcel tracking guide</a> · <a href="/blog">Blog</a> · <a href="/contact">About &amp; Contact</a> · <a href="/privacy-policy">Privacy Policy</a> · <a href="/terms">Terms of Use</a></p></main>`;
 }
