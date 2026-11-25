@@ -25,15 +25,15 @@ You'll find the number on the counter receipt, or on the label stuck to the enve
 | Out for delivery / Item sent for delivery | The postman has it for today's delivery round. |
 | Item delivered | It was handed over at the address. |
 | Addressee absent / Intimation served / Door locked | Delivery failed and a notice was left. The item is usually kept at your delivery post office for you to collect. |
-| Item returned / Return to sender | The item is going back, for example because it wasn't collected or the address couldn't be found. |
+| Item returned / Return to sender | The item is going back, for example because it wasn't collected or the address couldn't be found. See [what RTO means](/blog/rto-meaning-in-courier-tracking). |
 
 ## Common Speed Post tracking problems
 
-**Long gaps between "bagged", "dispatched" and "received".** Items travel in sealed bags, so individual items are not scanned again until the bag is opened at the next hub. A day or two without an update is common on long routes.
+**Long gaps between "bagged", "dispatched" and "received".** Items travel in sealed bags, so individual items are not scanned again until the bag is opened at the next hub. A day or two without an update is common on long routes. Our guide on a [parcel stuck in transit](/blog/parcel-stuck-in-transit) explains when a gap is normal.
 
 **"Intimation served" but nobody came.** This means the postman recorded a failed attempt. Take the intimation slip (if one was left), your ID and the article number to your delivery post office. Items are held there only for a limited period before being returned, so go soon and ask the counter how long they will keep it.
 
-**Wrong or incomplete PIN code.** The PIN code decides which post office delivers your item. A wrong PIN sends it to the wrong office first. If you're expecting an item, check the PIN code with the sender; you can look it up on India Post's website.
+**Wrong or incomplete PIN code.** The PIN code decides which post office delivers your item. A wrong PIN sends it to the wrong office first. If you're expecting an item, check the PIN code with the sender; you can look it up on India Post's website. See how to [write a complete Indian delivery address](/blog/how-to-write-delivery-address-india), and if the item is already on its way, whether you can [change the delivery address after shipping](/blog/change-delivery-address-after-shipping).
 
 ## Who to contact
 

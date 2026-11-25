@@ -23,15 +23,15 @@ Blue Dart AWB numbers are usually **11 digits** long. Enter them without spaces 
 | Shipment delivered | It has been handed over; the receiver's name may be shown. |
 | Consignee not available / Premises closed | A delivery attempt failed. Blue Dart usually tries again. |
 | Address incomplete / incorrect | The delivery person couldn't find or confirm the address and needs your help. |
-| Return to origin | The shipment is going back to the sender. |
+| Return to origin | The shipment is going back to the sender. See [what RTO means](/blog/rto-meaning-in-courier-tracking). |
 
 ## Common Blue Dart tracking problems
 
-**Delivery needs an OTP or ID.** Some Blue Dart deliveries — often high-value online orders — need a delivery OTP sent to the receiver's phone, a signature or an ID. If you won't be there, ask the seller before the delivery day whether someone else can receive it.
+**Delivery needs an OTP or ID.** Some Blue Dart deliveries — often high-value online orders — need a delivery OTP sent to the receiver's phone, a signature or an ID. If you won't be there, ask the seller before the delivery day whether someone else can receive it. Never give the OTP to someone who calls or messages you asking for it — see [fake courier SMS and calls](/blog/fake-courier-sms-scams).
 
-**Not every PIN code is served the same way.** Blue Dart delivers to most of India, but remote PIN codes may be served less often, or only by ground services. Expect an extra day or two for these areas.
+**Not every PIN code is served the same way.** Blue Dart delivers to most of India, but remote PIN codes may be served less often, or only by ground services. Expect an extra day or two for these areas — see [how long a courier takes in India](/blog/how-long-does-courier-take-india).
 
-**Failed attempt because the phone wasn't answered.** Delivery people often call before arriving. Keep the phone number on the order reachable on the delivery day, and if a scan says "consignee not available", contact Blue Dart with the AWB number to arrange the next attempt.
+**Failed attempt because the phone wasn't answered.** Delivery people often call before arriving. Keep the phone number on the order reachable on the delivery day, and if a scan says "consignee not available", contact Blue Dart with the AWB number to arrange the next attempt. Our guide on [out for delivery but not delivered](/blog/out-for-delivery-not-delivered) covers what to do.
 
 ## Who to contact
 

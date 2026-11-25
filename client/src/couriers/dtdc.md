@@ -40,4 +40,6 @@ The exact wording differs from parcel to parcel, but most DTDC updates fall into
 - **DTDC customer care** — contact details are on [dtdc.in](https://www.dtdc.in/). Have the consignment number ready.
 - **The seller** — for online orders. The seller booked the shipment and can escalate it, replace the item or refund you.
 
+If tracking says delivered but you don't have the parcel, see [delivered but not received](/blog/delivered-but-not-received); for a damaged parcel, see [what to do about a damaged parcel](/blog/damaged-parcel-what-to-do).
+
 Track My Ship only shows the scans DTDC publishes; we can't change a DTDC delivery.

@@ -32,11 +32,13 @@ Delhivery waybill numbers are usually **13 or 14 digits** long.
 
 **Delivery OTP.** Many Delhivery deliveries for online orders need an OTP, which the seller or Delhivery sends to the phone number on the order. Only share it with the delivery person **when you have the parcel in hand**. Never share it with someone who calls or messages you asking for it — see [fake courier SMS and calls](/blog/fake-courier-sms-scams).
 
-**Wrong phone number on the order.** If the phone number is wrong, you won't get calls or OTPs and the delivery will fail. Correct it with the seller as early as possible.
+**Wrong phone number on the order.** If the phone number is wrong, you won't get calls or OTPs and the delivery will fail. Correct it with the seller as early as possible. Paying cash? Read our [cash on delivery tips](/blog/cash-on-delivery-tips) first.
 
 ## Who to contact
 
 - **The seller** — first, for any online order. They booked the shipment and can raise a ticket with Delhivery, change some details, or arrange a refund or replacement.
 - **Delhivery customer support** — contact options are on [delhivery.com](https://www.delhivery.com/). Have the waybill number ready.
+
+If tracking says delivered but you don't have the parcel, see [delivered but not received](/blog/delivered-but-not-received); for a damaged parcel, see [what to do about a damaged parcel](/blog/damaged-parcel-what-to-do).
 
 Track My Ship is an independent tracking website and is not connected to Delhivery.
